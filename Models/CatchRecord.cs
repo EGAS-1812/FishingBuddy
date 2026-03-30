@@ -1,0 +1,25 @@
+using System;
+
+namespace FishingBuddy.Models;
+
+public class CatchRecord
+{
+    public int CatchID { get; set; }
+    public int UserID { get; set; }
+    public int FishID { get; set; }
+    public DateTime CatchDate { get; set; }
+    public double Weight { get; set; }
+    public string Location { get; set; } = string.Empty;
+
+    public CatchRecord() { }
+
+    public CatchRecord(int catchID, int userID, int fishID, DateTime catchDate, double weight, string location)
+    {
+        CatchID = catchID;
+        UserID = userID;
+        FishID = fishID;
+        CatchDate = catchDate;
+        Weight = weight;
+        Location = location ?? string.Empty;
+    }
+}
