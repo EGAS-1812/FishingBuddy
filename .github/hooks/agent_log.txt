@@ -1,1 +1,8 @@
-Test hook entry at 03/22/2026 18:50:36
+{"hookEventName":"UserPromptSubmit","prompt":"Test prompt from manual validation"}
+[2026-03-31 16:55:10Z] Prompt validation after rebuild
+[2026-03-31 16:56:08Z] Test prompt
+[2026-03-31 16:59:26Z] Explain what LINQ commands are. with an example.
+[2026-03-31 17:26:44Z] Scan FBuddy.cs and alter line 30. Make DateTime argument in catchrecord1 constructor equal to 18.12.2001.
+[2026-03-31 18:06:24Z] what does var mean? how does it behave? can any data type be placed as var?
+[2026-03-31 18:07:48Z] what are the similarities between LINQ and streams in Java
+[2026-03-31 18:10:35Z] Write me an example of LINQ query that prints out to console all Users that caught fish heavier than 2 (kilograms)

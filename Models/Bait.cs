@@ -4,16 +4,16 @@ public class Bait
 {
     public int BaitID { get; set; }
     public string BaitName { get; set; } = string.Empty;
-    public string BaitType { get; set; } = string.Empty;
-    public string PreparationNote { get; set; } = string.Empty;
+    public BaitType BaitType { get; set; } = BaitType.Live;
+    public string PreparationMethod { get; set; } = string.Empty;
 
     public Bait() { }
 
-    public Bait(int baitID, string baitName, string baitType, string preparationNote)
+    public Bait(int baitID, string baitName, BaitType baitType, string preparationMethod)
     {
         BaitID = baitID;
         BaitName = baitName ?? string.Empty;
-        BaitType = baitType ?? string.Empty;
-        PreparationNote = preparationNote ?? string.Empty;
+        BaitType = baitType;
+        PreparationMethod = preparationMethod ?? string.Empty;
     }
 }

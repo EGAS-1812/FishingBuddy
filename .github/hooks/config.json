@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"c:\\Users\\Eamon\\source\\repos\\FishingBuddy\\.github\\hooks\\log-prompt.ps1\""
+      }
+    ]
+  }
+}
