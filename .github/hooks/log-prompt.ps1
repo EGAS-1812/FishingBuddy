@@ -3,7 +3,17 @@ Param(
     [string]$InputJson
 )
 
-$logFile = Join-Path $PSScriptRoot "agent_log.txt"
+$repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+$logDirectory = Join-Path $repoRoot "lab-1"
+$logFile = Join-Path $logDirectory "agent_log.txt"
+
+if (-not (Test-Path -Path $logDirectory)) {
+    New-Item -Path $logDirectory -ItemType Directory -Force | Out-Null
+}
+
+if (-not (Test-Path -Path $logFile)) {
+    New-Item -Path $logFile -ItemType File -Force | Out-Null
+}
 
 if (-not $InputJson) {
     $InputJson = [Console]::In.ReadToEnd()

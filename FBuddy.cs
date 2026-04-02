@@ -46,10 +46,12 @@ internal class FBuddy
         {
             new FishingSpot(1, "Rijeka", "Primorsko-goranska", hasPiers: true, boatAccess: true, mostLikelyCatch: fish),
             new FishingSpot(2, "Kraljevica", "Primorsko-goranska", hasPiers: false, boatAccess: true, mostLikelyCatch: new List<Fish>{ fish[0], fish[2] }),
-            new FishingSpot(3, "Bakarac", "Primorsko-goranska", hasPiers: true, boatAccess: false, mostLikelyCatch: new List<Fish>{ fish[1] })
+            new FishingSpot(3, "Bakarac", "Primorsko-goranska", hasPiers: true, boatAccess: false, mostLikelyCatch: new List<Fish>{ fish[1] }),
+            new FishingSpot(4, "Pazin", "Istarska", hasPiers: false, boatAccess: false, mostLikelyCatch: new List<Fish>{ fish[2] }),
+            new FishingSpot(5, "Zadar", "Zadarska", hasPiers: true, boatAccess: true, mostLikelyCatch: new List<Fish>{ fish[0], fish[1] })
         };
 
-        /* Ispis zakomentiran za potrebe labosa:
+        /* Ispis svih podataka
         Console.WriteLine("Techniques:");
         foreach (var t in techniques)
             Console.WriteLine($"  {t.TechniqueID}: {t.TechniqueName}");
@@ -78,13 +80,13 @@ internal class FBuddy
         Console.ReadKey();
         */
 
-        // Primjer LINQ upita nad listom 'fishes':
-        // Nalazimo sve ribe koje se love ljeti, sortiramo po imenu i pretvaramo u listu.
+        // Primjer LINQ upita
+        // Nalazim sve ribe koje se love ljeti, sortiramo po imenu i pretvaramo u listu.
         var summerFishes = fish
             .Where(f => f.CatchSeason == Season.Summer)
             .OrderBy(f => f.SpeciesName)
             .ToList();
-
+        
         var usersWithHeavyCatch =
             (from user in users
              from catchRecord in user.CatchRecords
@@ -92,8 +94,17 @@ internal class FBuddy
              select user)
             .DistinctBy(u => u.UserID)
             .ToList();
+        
+        var spotsByRegion = spots
+            .GroupBy(s => s.Region)
+            .OrderBy(g => g.Key)
+            .Select(g => $"{g.Key}: {string.Join(", ", g.Select(s => s.SpotName))}")
+            .ToList();
 
-        //summerFishes.ForEach(f => Console.WriteLine($"{f.FishID}: {f.SpeciesName} ({f.CatchSeason})"));
+        summerFishes.ForEach(f => Console.WriteLine($"{f.FishID}: {f.SpeciesName} ({f.CatchSeason})"));
+        Console.WriteLine("###");
+        spotsByRegion.ForEach(Console.WriteLine);
+        Console.WriteLine("###");
         usersWithHeavyCatch.ForEach(u => Console.WriteLine($"{u.Username} caught fish heavier than 2 kg."));
     }
 }

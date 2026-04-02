@@ -1,0 +1,44 @@
+{"hookEventName":"UserPromptSubmit","prompt":"Test prompt from manual validation"}
+[2026-03-31 16:55:10Z] Prompt validation after rebuild
+[2026-03-31 16:56:08Z] Test prompt
+[2026-03-31 16:59:26Z] Explain what LINQ commands are. with an example.
+[2026-03-31 17:26:44Z] Scan FBuddy.cs and alter line 30. Make DateTime argument in catchrecord1 constructor equal to 18.12.2001.
+[2026-03-31 18:06:24Z] what does var mean? how does it behave? can any data type be placed as var?
+[2026-03-31 18:07:48Z] what are the similarities between LINQ and streams in Java?
+[2026-03-31 18:10:35Z] Write me an example of LINQ query that prints out to console all Users that caught fish heavier than 2 (kilograms)
+[2026-04-01 18:20:40Z] Can you write me a LINQ query that groups Fishing Spots by Region, so the result is formatted as Region: SpotName1, SpotName2...
+[2026-04-01 18:22:10Z] I need a LINQ query that groups FishingSpots in spots list and prints them out by Region, if they have the same Region group them 
+[2026-04-01 18:23:12Z] mgt.clearMarks is not a function - what does this mean?
+[2026-04-02 14:11:50Z] Can you explain to me what LINQ means?
+[2026-04-02 14:20:20Z] Correct me if I'm wrong:
+LINQ queries work similarly to Java streams in a way that, in my particular code examples, in a named var variable (undetermined data type which will be List because of the .ToList() at the end) the query stores differently ordered, filtered and selected list elements from preexisting lists? 
+[2026-04-02 14:21:01Z] Okay so var is determined moments after I click on Compile and Run.
+[2026-04-02 14:21:56Z] I understand, the program has to build first and then run, so at "build" time var is determined based on the last ToList(), and if there were no ToList() it would be an IEnumerable right?
+[2026-04-02 14:22:37Z] What does it mean that LINQs are lazy?
+[2026-04-02 14:25:09Z] Can you briefly explain the concept of async-await in C#
+[2026-04-02 14:27:12Z] so async is a keyword declaration before function return type that determines that it's an asynchronus task? and await is a keyword declaration before methods that signifies it pauses the method until the async operation is completed? 
+[2026-04-02 14:27:51Z] Okay so async needs to be marked so that the method can even use await inside it?
+[2026-04-02 14:28:50Z] Write me 10 most important bullet points about LINQ commands, and 10 about async await
+[2026-04-02 14:32:26Z] What is an asynchronus task? 
+[2026-04-02 14:33:16Z] So it's basically "if you can do it later, do it then"?
+[2026-04-02 14:34:41Z] Is this a good analogy? After cooking soak the dishes so that they get degreased while I'm doing something else, rather than staring at the dish getting soaped and me being blocked from any other activities while waiting for the dish to degrease?
+[2026-04-02 14:35:27Z] Okay so async task is a task that is running in background? 
+[2026-04-02 14:36:22Z] can you give me a simple example in my every day real life, video games, social media apps, where async await might be used? 
+[2026-04-02 14:38:14Z] Okay but then what is running the FindMatchAsync, SendMessageAsync? I understand its not the main thread or my CPU? It's a process started by my CPU, passed onto something else and await for feedback to process right?
+[2026-04-02 14:40:10Z] I think the perfect analogy would be a microwave then? I put something in to heat it up and leave (async), I get notified with a sound (await) when it's ready to be eaten (processed)?
+[2026-04-02 14:40:37Z] okay so await is really a flag then? where the code stops and continues at?
+[2026-04-02 14:42:07Z] so async marks a task that can be awaited?
+task or task<T> is usually the return type?
+await is a keyword that can only be used in async methods and processes that marks  the suspension point where execution of the method pauses and continues right after?
+non-blocking occurs, or in other words the thread that passed the async method can go do other processing work until called back upon by await?
+[2026-04-02 14:42:47Z] Great. Thank you :)
+[2026-04-02 15:07:28Z] So LINQ is always comprised of .where, .orderby, .select, .distinctby, like a query in MySQL
+[2026-04-02 15:08:08Z] Yeah I understand, it doesn't have to have all that, it can or it doesn't have to.
+[2026-04-02 15:08:53Z] So .where fulfills a condition? Like where something equals or does not equal some other comparator? and proceed accordingly based on true / false where condition
+[2026-04-02 15:10:00Z] Do they need to follow an order? or can it be .where .orderby and then .where again
+[2026-04-02 15:10:51Z] OrderBy is a sorting mechanism, explain .select a bit further please
+[2026-04-02 15:14:45Z] So it behaves like: "From the filtered objects select their X or Y, or X and Y and transform into a new collection of sorts."?
+[2026-04-02 15:15:10Z] and after .select usually comes a .toList? or something else can come?
+[2026-04-02 15:18:42Z] Can you explain to me in my code, my last LINQ about spots uses g.Key, I don't understand where that came from because I don't have an attribute called Key
+[2026-04-02 15:19:58Z] So it makes a Map <Key (region), Value (List<FishingSpots>)> ?
+[2026-04-02 15:21:30Z] Thank you for helping, I mostly understood. I will update you after the assignment.
