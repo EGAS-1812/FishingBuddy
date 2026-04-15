@@ -1,0 +1,26 @@
+@{
+    var breadcrumbItems = ViewData["BreadcrumbItems"] as List<(string, string?)>;
+}
+
+@if (breadcrumbItems != null && breadcrumbItems.Count > 1)
+{
+    <div class="fb-breadcrumb-shell border-bottom mb-4">
+        <div class="container py-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    @foreach (var item in breadcrumbItems)
+                    {
+                        if (string.IsNullOrWhiteSpace(item.Item2))
+                        {
+                            <li class="breadcrumb-item active" aria-current="page">@item.Item1</li>
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item"><a href="@item.Item2">@item.Item1</a></li>
+                        }
+                    }
+                </ol>
+            </nav>
+        </div>
+    </div>
+}

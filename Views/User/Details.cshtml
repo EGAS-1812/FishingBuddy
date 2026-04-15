@@ -1,0 +1,85 @@
+@model FishingBuddy.Models.User
+@{
+    ViewData["Title"] = Model.Username;
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribari", "/User"),
+        (Model.Username, null)
+    };
+}
+
+<section class="card shadow-sm border-0 mb-3">
+    <div class="card-body">
+        <h1 class="h2 mb-3">@Model.Username</h1>
+        <dl class="row mb-4">
+            <dt class="col-sm-3">ID ribara</dt>
+            <dd class="col-sm-9">@Model.UserID</dd>
+
+            <dt class="col-sm-3">Korisničko ime</dt>
+            <dd class="col-sm-9">@Model.Username</dd>
+
+            <dt class="col-sm-3">E-pošta</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+        </dl>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <h2 class="h5">Omiljene ribe</h2>
+                @if (Model.FavoriteFish.Count > 0)
+                {
+                    <ul class="list-group list-group-flush border rounded">
+                        @foreach (var fish in Model.FavoriteFish)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@fish.SpeciesName</span>
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="Fish" asp-action="Details" asp-route-id="@fish.FishID">Detalji</a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Nisu dodane omiljene ribe.</p>
+                }
+            </div>
+            <div class="col-lg-6">
+                <h2 class="h5">Evidencija ulova</h2>
+                @if (Model.CatchRecords.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">ID ulova</th>
+                                    <th scope="col">Datum</th>
+                                    <th scope="col">Težina (kg)</th>
+                                    <th scope="col" class="text-end">Radnje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var catchRecord in Model.CatchRecords)
+                                {
+                                    <tr>
+                                        <td>@catchRecord.CatchID</td>
+                                        <td>@catchRecord.CatchDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@catchRecord.Weight.ToString("0.##")</td>
+                                        <td class="text-end">
+                                            <a class="btn btn-sm btn-outline-primary" asp-controller="CatchRecord" asp-action="Details" asp-route-id="@catchRecord.CatchID">Detalji</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Nema evidencije ulova za ovog ribara.</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<a class="btn btn-outline-secondary btn-sm" asp-controller="User" asp-action="Index">Natrag na popis ribara</a>

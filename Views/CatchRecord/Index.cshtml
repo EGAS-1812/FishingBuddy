@@ -1,0 +1,45 @@
+@model IReadOnlyList<FishingBuddy.Models.CatchRecord>
+@{
+    ViewData["Title"] = "Evidencija ulova";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/")
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h2 mb-0">Evidencija ulova</h1>
+            <span class="badge bg-primary">@Model.Count zapisa</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Lokacija</th>
+                        <th scope="col">Težina (kg)</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var catchRecord in Model)
+                    {
+                        <tr>
+                            <td>@catchRecord.CatchID</td>
+                            <td>@catchRecord.CatchDate.ToString("yyyy-MM-dd")</td>
+                            <td>@catchRecord.Location</td>
+                            <td>@catchRecord.Weight.ToString("0.##")</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="CatchRecord" asp-action="Details" asp-route-id="@catchRecord.CatchID">Detalji</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

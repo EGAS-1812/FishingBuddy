@@ -1,6 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privatnost";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Privatnost", null)
+    };
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<section class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <h1 class="h2 mb-3">Privatnost</h1>
+        <p class="text-muted mb-3">FishingBuddy sprema demo podatke o ribolovu lokalno za ovu demo aplikaciju i ne spaja se na vanjske analitičke ili reklamne servise.</p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100 bg-light">
+                    <h2 class="h5">Što se pohranjuje</h2>
+                    <p class="mb-0">Tehnike, mamci, vrste riba, ribolovna mjesta, evidencija ulova i korisnički profili prikazani u aplikaciji.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100 bg-light">
+                    <h2 class="h5">Kako se koristi</h2>
+                    <p class="mb-0">Podaci se koriste isključivo za demonstraciju navigacije, nadzornih ploča i stranica s detaljima unutar aplikacije FishingBuddy.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

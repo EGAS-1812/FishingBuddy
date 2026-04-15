@@ -1,0 +1,31 @@
+@model FishingBuddy.Models.Bait
+@{
+    ViewData["Title"] = Model.BaitName;
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Mamci", "/Bait"),
+        (Model.BaitName, null)
+    };
+}
+
+<section class="card shadow-sm border-0 mb-3">
+    <div class="card-body">
+        <h1 class="h2 mb-3">@Model.BaitName</h1>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID mamca</dt>
+            <dd class="col-sm-9">@Model.BaitID</dd>
+
+            <dt class="col-sm-3">Naziv</dt>
+            <dd class="col-sm-9">@Model.BaitName</dd>
+
+            <dt class="col-sm-3">Vrsta</dt>
+            <dd class="col-sm-9"><span class="badge bg-primary">@Model.BaitType</span></dd>
+
+            <dt class="col-sm-3">Metoda pripreme</dt>
+            <dd class="col-sm-9">@Model.PreparationMethod</dd>
+        </dl>
+    </div>
+</section>
+
+<a class="btn btn-outline-secondary btn-sm" asp-controller="Bait" asp-action="Index">Natrag na popis mamaca</a>

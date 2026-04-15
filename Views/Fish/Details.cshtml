@@ -1,0 +1,40 @@
+@using FishingBuddy.Models
+@model FishingBuddy.Models.Fish
+@{
+    ViewData["Title"] = Model.SpeciesName;
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribe", "/Fish"),
+        (Model.SpeciesName, null)
+    };
+
+    var favouriteBait = ViewBag.FavouriteBait as Bait;
+}
+
+<section class="card shadow-sm border-0 mb-3">
+    <div class="card-body">
+        <h1 class="h2 mb-3">@Model.SpeciesName</h1>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID ribe</dt>
+            <dd class="col-sm-9">@Model.FishID</dd>
+
+            <dt class="col-sm-3">Naziv vrste</dt>
+            <dd class="col-sm-9">@Model.SpeciesName</dd>
+
+            <dt class="col-sm-3">Sezona ulova</dt>
+            <dd class="col-sm-9"><span class="badge bg-success">@Model.CatchSeason</span></dd>
+
+            <dt class="col-sm-3">Omiljeni mamac</dt>
+            <dd class="col-sm-9">@(favouriteBait?.BaitName ?? "(nepoznato)")</dd>
+
+            <dt class="col-sm-3">Boja mesa</dt>
+            <dd class="col-sm-9"><span class="badge bg-secondary">@Model.FleshColor</span></dd>
+
+            <dt class="col-sm-3">Preferirana tehnika</dt>
+            <dd class="col-sm-9">@Model.PreferredMethod.TechniqueName</dd>
+        </dl>
+    </div>
+</section>
+
+<a class="btn btn-outline-secondary btn-sm" asp-controller="Fish" asp-action="Index">Natrag na popis riba</a>

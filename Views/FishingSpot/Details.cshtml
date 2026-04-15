@@ -1,0 +1,51 @@
+@model FishingBuddy.Models.FishingSpot
+@{
+    ViewData["Title"] = Model.SpotName;
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribolovna mjesta", "/FishingSpot"),
+        (Model.SpotName, null)
+    };
+}
+
+<section class="card shadow-sm border-0 mb-3">
+    <div class="card-body">
+        <h1 class="h2 mb-3">@Model.SpotName</h1>
+        <dl class="row">
+            <dt class="col-sm-3">ID mjesta</dt>
+            <dd class="col-sm-9">@Model.SpotID</dd>
+
+            <dt class="col-sm-3">Naziv</dt>
+            <dd class="col-sm-9">@Model.SpotName</dd>
+
+            <dt class="col-sm-3">Regija</dt>
+            <dd class="col-sm-9">@Model.Region</dd>
+
+            <dt class="col-sm-3">Ima pristanište</dt>
+            <dd class="col-sm-9"><span class="fw-semibold @(Model.HasPiers ? "text-success" : "text-danger")">@(Model.HasPiers ? "&#10003;" : "&#10007;")</span></dd>
+
+            <dt class="col-sm-3">Pristup brodom</dt>
+            <dd class="col-sm-9"><span class="fw-semibold @(Model.BoatAccess ? "text-success" : "text-danger")">@(Model.BoatAccess ? "&#10003;" : "&#10007;")</span></dd>
+        </dl>
+
+        <h2 class="h5 mt-4">Najvjerojatnije ribe na lokaciji</h2>
+        @if (Model.MostLikelyCatch.Count > 0)
+        {
+            <ul class="mb-0">
+                @foreach (var fish in Model.MostLikelyCatch)
+                {
+                    <li>
+                        <a asp-controller="Fish" asp-action="Details" asp-route-id="@fish.FishID">@fish.SpeciesName</a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted mb-0">Nema dostupnih podataka o ribama za ovo mjesto.</p>
+        }
+    </div>
+</section>
+
+<a class="btn btn-outline-secondary btn-sm" asp-controller="FishingSpot" asp-action="Index">Natrag na popis mjesta</a>

@@ -1,0 +1,41 @@
+@using FishingBuddy.Models
+@model FishingBuddy.Models.CatchRecord
+@{
+    ViewData["Title"] = $"Ulov #{Model.CatchID}";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Evidencija ulova", "/CatchRecord"),
+        ($"Ulov #{Model.CatchID}", null)
+    };
+
+    var fish = ViewBag.Fish as Fish;
+    var user = ViewBag.User as User;
+}
+
+<section class="card shadow-sm border-0 mb-3">
+    <div class="card-body">
+        <h1 class="h2 mb-3">Ulov #@Model.CatchID</h1>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID ulova</dt>
+            <dd class="col-sm-9">@Model.CatchID</dd>
+
+            <dt class="col-sm-3">Ribar</dt>
+            <dd class="col-sm-9">@(user?.Username ?? "(nepoznato)")</dd>
+
+            <dt class="col-sm-3">Riba</dt>
+            <dd class="col-sm-9">@(fish?.SpeciesName ?? "(nepoznato)")</dd>
+
+            <dt class="col-sm-3">Datum ulova</dt>
+            <dd class="col-sm-9">@Model.CatchDate.ToString("yyyy-MM-dd")</dd>
+
+            <dt class="col-sm-3">Težina</dt>
+            <dd class="col-sm-9">@Model.Weight.ToString("0.##") kg</dd>
+
+            <dt class="col-sm-3">Lokacija</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+        </dl>
+    </div>
+</section>
+
+<a class="btn btn-outline-secondary btn-sm" asp-controller="CatchRecord" asp-action="Index">Natrag na popis ulova</a>

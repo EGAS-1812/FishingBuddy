@@ -22,6 +22,8 @@ if (-not $InputJson) {
 $timestamp = Get-Date -Format "u"
 $prompt = $null
 
+$uiPromptPattern = '(?i)\b(ui|ux|design|style|visual|color|layout|css|theme|branding|illustration|navbar|button|buttons|card|cards|form|forms|animation|animations|razor\s+view|view\s+appearance)\b'
+
 try {
     $payload = $InputJson | ConvertFrom-Json -ErrorAction Stop
     if ($null -ne $payload.prompt) {
@@ -36,3 +38,7 @@ if ([string]::IsNullOrWhiteSpace($prompt)) {
 }
 
 Add-Content -Path $logFile -Value "[$timestamp] $prompt"
+
+if (-not [string]::IsNullOrWhiteSpace($prompt) -and $prompt -match $uiPromptPattern) {
+    Add-Content -Path $logFile -Value "[$timestamp] [FishingStylist_SPAWNED] $prompt"
+}

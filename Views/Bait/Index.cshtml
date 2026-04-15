@@ -1,0 +1,45 @@
+@model IReadOnlyList<FishingBuddy.Models.Bait>
+@{
+    ViewData["Title"] = "Mamci";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/")
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h2 mb-0">Mamci</h1>
+            <span class="badge bg-primary">@Model.Count unosa</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Vrsta</th>
+                        <th scope="col">Metoda pripreme</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var bait in Model)
+                    {
+                        <tr>
+                            <td>@bait.BaitID</td>
+                            <td>@bait.BaitName</td>
+                            <td><span class="badge bg-primary">@bait.BaitType</span></td>
+                            <td>@bait.PreparationMethod</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="Bait" asp-action="Details" asp-route-id="@bait.BaitID">Detalji</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,41 @@
+@model IReadOnlyList<FishingBuddy.Models.Technique>
+@{
+    ViewData["Title"] = "Tehnike";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/")
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h2 mb-0">Tehnike</h1>
+            <span class="badge bg-primary">@Model.Count tehnika</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Naziv</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var technique in Model)
+                    {
+                        <tr>
+                            <td>@technique.TechniqueID</td>
+                            <td>@technique.TechniqueName</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
