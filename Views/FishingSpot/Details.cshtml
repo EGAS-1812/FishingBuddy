@@ -9,13 +9,10 @@
     };
 }
 
-<section class="card shadow-sm border-0 mb-3">
+<section class="card fb-white-pill-card shadow-sm border-0 mb-3">
     <div class="card-body">
         <h1 class="h2 mb-3">@Model.SpotName</h1>
         <dl class="row">
-            <dt class="col-sm-3">ID mjesta</dt>
-            <dd class="col-sm-9">@Model.SpotID</dd>
-
             <dt class="col-sm-3">Naziv</dt>
             <dd class="col-sm-9">@Model.SpotName</dd>
 
@@ -23,10 +20,10 @@
             <dd class="col-sm-9">@Model.Region</dd>
 
             <dt class="col-sm-3">Ima pristanište</dt>
-            <dd class="col-sm-9"><span class="fw-semibold @(Model.HasPiers ? "text-success" : "text-danger")">@(Model.HasPiers ? "&#10003;" : "&#10007;")</span></dd>
+            <dd class="col-sm-9"><span class="fw-semibold @(Model.HasPiers ? "text-primary" : "text-danger")">@(Model.HasPiers ? "DA" : "NE")</span></dd>
 
             <dt class="col-sm-3">Pristup brodom</dt>
-            <dd class="col-sm-9"><span class="fw-semibold @(Model.BoatAccess ? "text-success" : "text-danger")">@(Model.BoatAccess ? "&#10003;" : "&#10007;")</span></dd>
+            <dd class="col-sm-9"><span class="fw-semibold @(Model.BoatAccess ? "text-primary" : "text-danger")">@(Model.BoatAccess ? "DA" : "NE")</span></dd>
         </dl>
 
         <h2 class="h5 mt-4">Najvjerojatnije ribe na lokaciji</h2>

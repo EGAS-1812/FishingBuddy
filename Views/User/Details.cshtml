@@ -1,5 +1,9 @@
 @model FishingBuddy.Models.User
 @{
+    var today = DateTime.Today;
+    var fishingLicense = Model.FishingLicense;
+    var isLicenseValid = fishingLicense?.IsValidOn(today) ?? false;
+
     ViewData["Title"] = Model.Username;
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
     {
@@ -9,13 +13,10 @@
     };
 }
 
-<section class="card shadow-sm border-0 mb-3">
+<section class="card fb-white-pill-card shadow-sm border-0 mb-3">
     <div class="card-body">
         <h1 class="h2 mb-3">@Model.Username</h1>
         <dl class="row mb-4">
-            <dt class="col-sm-3">ID ribara</dt>
-            <dd class="col-sm-9">@Model.UserID</dd>
-
             <dt class="col-sm-3">Korisničko ime</dt>
             <dd class="col-sm-9">@Model.Username</dd>
 
@@ -23,12 +24,31 @@
             <dd class="col-sm-9">@Model.Email</dd>
         </dl>
 
+        <h2 class="h5">Ribolovna dozvola</h2>
+        @if (fishingLicense is not null)
+        {
+            <dl class="row mb-4">
+                <dt class="col-sm-3">Početak važenja</dt>
+                <dd class="col-sm-9">@fishingLicense.BeginDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Vrijedi do</dt>
+                <dd class="col-sm-9">@fishingLicense.ExpirationDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Trenutno važeća</dt>
+                <dd class="col-sm-9">@(isLicenseValid ? "Da" : "Ne")</dd>
+            </dl>
+        }
+        else
+        {
+            <p class="text-muted mb-4">Ribolovna dozvola nije evidentirana.</p>
+        }
+
         <div class="row g-4">
             <div class="col-lg-6">
                 <h2 class="h5">Omiljene ribe</h2>
                 @if (Model.FavoriteFish.Count > 0)
                 {
-                    <ul class="list-group list-group-flush border rounded">
+                    <ul class="list-group list-group-flush fb-white-pill-card rounded overflow-hidden">
                         @foreach (var fish in Model.FavoriteFish)
                         {
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -51,7 +71,6 @@
                         <table class="table table-hover table-bordered table-sm align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">ID ulova</th>
                                     <th scope="col">Datum</th>
                                     <th scope="col">Težina (kg)</th>
                                     <th scope="col" class="text-end">Radnje</th>
@@ -61,8 +80,7 @@
                                 @foreach (var catchRecord in Model.CatchRecords)
                                 {
                                     <tr>
-                                        <td>@catchRecord.CatchID</td>
-                                        <td>@catchRecord.CatchDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@catchRecord.CatchDate.ToString("dd.MM.yyyy")</td>
                                         <td>@catchRecord.Weight.ToString("0.##")</td>
                                         <td class="text-end">
                                             <a class="btn btn-sm btn-outline-primary" asp-controller="CatchRecord" asp-action="Details" asp-route-id="@catchRecord.CatchID">Detalji</a>

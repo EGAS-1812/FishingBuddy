@@ -18,11 +18,8 @@
             <table class="table table-hover table-bordered table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Naziv</th>
                         <th scope="col">Regija</th>
-                        <th scope="col">Ima pristanište</th>
-                        <th scope="col">Pristup brodom</th>
                         <th scope="col" class="text-end">Radnje</th>
                     </tr>
                 </thead>
@@ -30,15 +27,8 @@
                     @foreach (var spot in Model)
                     {
                         <tr>
-                            <td>@spot.SpotID</td>
                             <td>@spot.SpotName</td>
                             <td>@spot.Region</td>
-                            <td>
-                                <span class="fw-semibold @(spot.HasPiers ? "text-success" : "text-danger")">@(spot.HasPiers ? "&#10003;" : "&#10007;")</span>
-                            </td>
-                            <td>
-                                <span class="fw-semibold @(spot.BoatAccess ? "text-success" : "text-danger")">@(spot.BoatAccess ? "&#10003;" : "&#10007;")</span>
-                            </td>
                             <td class="text-end">
                                 <a class="btn btn-sm btn-outline-primary" asp-controller="FishingSpot" asp-action="Details" asp-route-id="@spot.SpotID">Detalji</a>
                             </td>

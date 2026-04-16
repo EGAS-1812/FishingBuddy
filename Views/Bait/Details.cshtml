@@ -9,21 +9,21 @@
     };
 }
 
-<section class="card shadow-sm border-0 mb-3">
+<section class="card fb-white-pill-card shadow-sm border-0 mb-3">
     <div class="card-body">
         <h1 class="h2 mb-3">@Model.BaitName</h1>
         <dl class="row mb-0">
-            <dt class="col-sm-3">ID mamca</dt>
-            <dd class="col-sm-9">@Model.BaitID</dd>
-
             <dt class="col-sm-3">Naziv</dt>
             <dd class="col-sm-9">@Model.BaitName</dd>
 
             <dt class="col-sm-3">Vrsta</dt>
-            <dd class="col-sm-9"><span class="badge bg-primary">@Model.BaitType</span></dd>
+            <dd class="col-sm-9"><span class="badge bg-primary">@Model.BaitType.GetDisplayName()</span></dd>
 
             <dt class="col-sm-3">Metoda pripreme</dt>
             <dd class="col-sm-9">@Model.PreparationMethod</dd>
+
+            <dt class="col-sm-3">Prosječna cijena</dt>
+            <dd class="col-sm-9">@Model.AveragePriceEur.ToString("0.00") EUR</dd>
         </dl>
     </div>
 </section>

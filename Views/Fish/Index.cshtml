@@ -18,10 +18,7 @@
             <table class="table table-hover table-bordered table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Naziv vrste</th>
-                        <th scope="col">Sezona</th>
-                        <th scope="col">Boja mesa</th>
                         <th scope="col">Preferirana tehnika</th>
                         <th scope="col" class="text-end">Radnje</th>
                     </tr>
@@ -30,10 +27,7 @@
                     @foreach (var fish in Model)
                     {
                         <tr>
-                            <td>@fish.FishID</td>
                             <td>@fish.SpeciesName</td>
-                            <td><span class="badge bg-success">@fish.CatchSeason</span></td>
-                            <td><span class="badge bg-secondary">@fish.FleshColor</span></td>
                             <td>@fish.PreferredMethod.TechniqueName</td>
                             <td class="text-end">
                                 <a class="btn btn-sm btn-outline-primary" asp-controller="Fish" asp-action="Details" asp-route-id="@fish.FishID">Detalji</a>

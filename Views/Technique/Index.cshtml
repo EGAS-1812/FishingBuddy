@@ -18,7 +18,6 @@
             <table class="table table-hover table-bordered table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Naziv</th>
                         <th scope="col" class="text-end">Radnje</th>
                     </tr>
@@ -27,7 +26,6 @@
                     @foreach (var technique in Model)
                     {
                         <tr>
-                            <td>@technique.TechniqueID</td>
                             <td>@technique.TechniqueName</td>
                             <td class="text-end">
                                 <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>

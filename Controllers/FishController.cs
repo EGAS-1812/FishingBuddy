@@ -23,6 +23,11 @@ namespace FishingBuddy.Controllers
             if (fish == null) return NotFound();
 
             ViewBag.FavouriteBait = _repository.GetBaitById(fish.FavouriteBaitID);
+            ViewBag.CommonCatchSpots = _repository.FishingSpots
+                .Where(spot => spot.MostLikelyCatch.Any(currentFish => currentFish.FishID == fish.FishID))
+                .Take(3)
+                .ToList();
+
             return View(fish);
         }
     }

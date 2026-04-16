@@ -61,7 +61,7 @@
                            name="fishName"
                            type="text"
                            class="form-control"
-                           placeholder="Probaj: Brancin, Orada, Šaran..."
+                           placeholder="Brancin, Orada, Strijelka..."
                            value="@Model.SearchTerm"
                            aria-label="Pretraži ribu po nazivu" />
                     <button type="submit" class="btn btn-primary px-4">GoFish</button>
@@ -77,30 +77,30 @@
                     Nije pronađena riba za unos: <strong>@Model.SearchTerm</strong>. Pokušaj s drugim nazivom.
             </div>
         }
-        else if (Model.SearchPerformed)
+        else if (Model.SearchPerformed && Model.SearchResult is { } searchResult)
         {
             <section class="card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
-                        <h2 class="h3 mb-0">@Model.SearchResult.Fish.SpeciesName</h2>
-                        <span class="badge text-bg-primary">Sezona: @Model.SearchResult.Fish.CatchSeason</span>
+                        <h2 class="h3 mb-0">@searchResult.Fish.SpeciesName</h2>
+                        <span class="badge text-bg-primary fb-season-badge">Sezona: @searchResult.Fish.CatchSeason.GetDisplayName()</span>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6 col-xl-4">
-                            <div class="p-3 rounded-3 bg-light h-100">
+                            <div class="fb-white-pill-card p-3 rounded-3 bg-light h-100">
                                 <div class="small text-uppercase text-muted mb-1">Tehnika</div>
                                 <div class="fw-semibold">@techniqueName</div>
                             </div>
                         </div>
                         <div class="col-md-6 col-xl-4">
-                            <div class="p-3 rounded-3 bg-light h-100">
+                            <div class="fb-white-pill-card p-3 rounded-3 bg-light h-100">
                                 <div class="small text-uppercase text-muted mb-1">Mamac</div>
                                 <div class="fw-semibold">@baitName</div>
                             </div>
                         </div>
                         <div class="col-xl-4">
-                            <div class="p-3 rounded-3 bg-light h-100">
+                            <div class="fb-white-pill-card p-3 rounded-3 bg-light h-100">
                                 <div class="small text-uppercase text-muted mb-1">Oprema</div>
                                 <div class="fw-semibold">Preporučena oprema: @techniqueName + @baitName</div>
                             </div>
@@ -108,10 +108,10 @@
                     </div>
 
                     <h3 class="h5 mb-2">Preporučena mjesta</h3>
-                    @if (Model.SearchResult.RecommendedSpots.Any())
+                    @if (searchResult.RecommendedSpots.Any())
                     {
                         <ul class="list-group list-group-flush rounded-3 border overflow-hidden">
-                            @foreach (var spot in Model.SearchResult.RecommendedSpots)
+                            @foreach (var spot in searchResult.RecommendedSpots)
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <span>
@@ -139,13 +139,13 @@
         {
             <div class="col-md-6 col-xl-4">
                 <a class="text-decoration-none" asp-controller="@statCard.Controller" asp-action="Index">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body" style="min-height: 90px;">
+                    <div class="card fb-white-pill-card fb-home-stat-card h-100 shadow-sm border-0">
+                        <div class="card-body">
                             <span class="text-uppercase text-muted small d-block mb-2">@statCard.Label</span>
-                            <div class="d-flex flex-column h-100">
+                            <div class="fb-stat-card-content d-flex flex-column h-100">
                                 <span class="display-6 fw-semibold text-dark mb-auto">@statCard.Count</span>
-                                <div class="text-end mt-3">
-                                    <span class="badge bg-@statCard.Accent">Prikaži sve</span>
+                                <div class="fb-stat-card-footer text-end">
+                                    <span class="badge fb-stat-card-cta bg-@statCard.Accent">Prikaži sve</span>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
     </div>
 </section>
 
-<section class="card shadow-sm border-0 mb-4">
+<section class="card fb-white-pill-card shadow-sm border-0 mb-4">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="h4 mb-0">Nedavni ulovi</h2>
@@ -178,7 +178,7 @@
                         @foreach (var catchRecord in Model.RecentCatches)
                         {
                             <tr>
-                                <td>@catchRecord.CatchDate.ToString("yyyy-MM-dd")</td>
+                                <td>@catchRecord.CatchDate.ToString("dd.MM.yyyy")</td>
                                 <td>@catchRecord.Location</td>
                                 <td>@catchRecord.Weight.ToString("0.##")</td>
                             </tr>
@@ -194,7 +194,7 @@
     </div>
 </section>
 
-<section class="card shadow-sm border-0">
+<section class="card fb-white-pill-card shadow-sm border-0">
     <div class="card-body">
         <h2 class="h4 mb-3">Brza navigacija</h2>
         <div class="d-flex flex-wrap gap-2">
