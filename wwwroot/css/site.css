@@ -412,15 +412,26 @@ h6,
   position: relative;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px;
+  line-height: 1.4;
   margin-top: auto;
-  background: rgba(244, 249, 253, 0.7);
+  padding: 0 0 1.5rem;
+  background: transparent;
   color: var(--fb-muted);
-  backdrop-filter: blur(12px);
+  backdrop-filter: none;
+  border-top: 0 !important;
 }
 
 .fb-footer a {
   color: var(--fb-primary);
+}
+
+.fb-footer .container {
+  padding: 1rem 1.25rem;
+  background: rgba(244, 249, 253, 0.72);
+  border: 1px solid rgba(22, 58, 99, 0.1);
+  border-radius: 1rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 26px rgba(15, 41, 71, 0.08);
 }
 
 .fb-home-search-panel {
