@@ -217,6 +217,51 @@ h6,
   backdrop-filter: blur(10px);
 }
 
+.fb-breadcrumb-wrap {
+  padding-left: max(0.35rem, calc(var(--bs-gutter-x) * 0.25));
+}
+
+.fb-breadcrumb-trail {
+  align-items: center;
+  color: var(--fb-primary);
+  font-weight: 700;
+}
+
+.fb-breadcrumb-trail .breadcrumb-item,
+.fb-breadcrumb-trail .breadcrumb-item.active {
+  color: var(--fb-primary);
+  font-weight: 700;
+}
+
+.fb-breadcrumb-nav a,
+.fb-breadcrumb-trail .breadcrumb-item.active {
+  color: var(--fb-primary-deep);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.fb-breadcrumb-nav a:hover,
+.fb-breadcrumb-nav a:focus {
+  color: var(--fb-primary);
+  text-decoration: none;
+}
+
+.fb-breadcrumb-trail .breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(15, 41, 71, 0.55);
+  font-weight: 700;
+}
+
+.fb-breadcrumb-trail .breadcrumb-item a {
+  color: var(--fb-primary);
+  text-decoration: none;
+}
+
+.fb-breadcrumb-trail .breadcrumb-item a:hover,
+.fb-breadcrumb-trail .breadcrumb-item a:focus {
+  color: var(--fb-primary-deep);
+  text-decoration: none;
+}
+
 .breadcrumb-item,
 .breadcrumb-item.active {
   color: var(--fb-muted);
