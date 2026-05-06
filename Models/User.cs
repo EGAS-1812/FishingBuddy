@@ -1,13 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FishingBuddy.Models;
 
 public class User
 {
+    [Key]
     public int UserID { get; set; }
+
+    [Required]
+    [MaxLength(100)]
     public string Username { get; set; } = string.Empty;
+
+    [Required]
+    [EmailAddress]
+    [MaxLength(150)]
     public string Email { get; set; } = string.Empty;
-    public FishingLicense? FishingLicense { get; set; }
-    public List<Fish> FavoriteFish { get; set; } = new List<Fish>();
-    public List<CatchRecord> CatchRecords { get; set; } = new List<CatchRecord>();
+
+    public virtual FishingLicense? FishingLicense { get; set; }
+    public virtual ICollection<Fish> FavoriteFish { get; set; } = new HashSet<Fish>();
+    public virtual ICollection<CatchRecord> CatchRecords { get; set; } = new HashSet<CatchRecord>();
 
     public User() { }
 

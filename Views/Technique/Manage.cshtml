@@ -1,0 +1,74 @@
+@model IReadOnlyList<FishingBuddy.Models.Technique>
+@{
+    ViewData["Title"] = "Upravljanje tehnikama";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Tehnike", "/Technique"),
+        ("Upravljanje", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+                <h1 class="h2 mb-1">Upravljanje tehnikama</h1>
+                <p class="text-muted mb-0">Administrirajte tehnike, poveznice na vodice i povezane vrste riba.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary">@Model.Count tehnika</span>
+                <a class="btn btn-primary btn-sm" asp-controller="Technique" asp-action="Create">Dodaj tehniku</a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Naziv</th>
+                        <th scope="col">Tutorial</th>
+                        <th scope="col" class="text-center">Povezane ribe</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">
+                                Nema unesenih tehnika.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var technique in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@technique.TechniqueName</td>
+                                <td>
+                                    @if (string.IsNullOrWhiteSpace(technique.TutorialUrl))
+                                    {
+                                        <span class="text-muted">Nije dodan vodic</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@technique.TutorialUrl" target="_blank" rel="noopener noreferrer">Pogledaj vodic</a>
+                                    }
+                                </td>
+                                <td class="text-center">@(technique.FishUsingTechnique?.Count ?? 0)</td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>
+                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace FishingBuddy.Models;
 
+[Owned]
 public class FReel
 {
     public int Size { get; set; }

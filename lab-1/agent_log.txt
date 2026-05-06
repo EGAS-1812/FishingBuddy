@@ -175,3 +175,123 @@ Fast please.
 [2026-04-16 17:56:20Z] [FishingStylist_SPAWNED] FishingBuddy repo, ASP.NET MVC with Razor and Bootstrap 5. We need minimal UI-only changes for breadcrumbs. The user wants breadcrumbs to look less like default links/HTML, shifted a bit left, and styled in bold navy blue. Keep the current site visual language. Likely files are Views/Shared/_Breadcrumb.cshtml and wwwroot/css/site.css. Return concrete Razor/CSS edits only, minimal and targeted.
 [2026-04-16 17:59:07Z] Run the build
 [2026-04-16 18:00:28Z] I can't build it
+[2026-04-17 11:38:10Z] Can you explain to me how models, views and controllers work together and individually.
+
+[2026-04-17 11:53:35Z] I'm not really sure exactly how the communication is done. 
+I understand that Models model the data in my program, they declare the rules of entities and atributes and how things should be stored.
+I also understand that Views are comprised of html and some server calls for data.
+But I don't understand Controllers and what's in my FBuddy.cs.
+What I see in a Controller is a declaration of an instance of my repository, a constructor with a parameter of said repository, an Index action, which is I guess an action that controller calls to return a View of certain information, for example a FishController calls an Index for index fish page by returning View(repo.Fish).
+Lastly I see a similar action for the details page but it's more complex, because I think the details regard a particular fish while index regards all fish. So Index pulls upon all Fish in the repository while details pull only one fish by id and it pulls extra information about that fish for example it's favourite bait and common catch spots using some LINQ and returns a View for that var fish.
+
+I think I got the jist of it all, but how are they communicating? 
+I think my biggest gap in knowledge is the FBuddy.cs I think the communication between these three parts is declared there
+[2026-04-17 12:16:39Z] 1. Whats the difference between the IFishingRepository and the MockFishingRepository
+2. ViewModel vs View?
+3. What and where are dependency injection and dependencies in my code
+4. What's a ViewBag?
+5. I need this process: 
+- receives the request
+- decides what data is needed
+- fetches or shapes that data
+- chooses what response to return 
+-> in detail
+[2026-04-17 12:29:52Z] 1. IFishingRepository line by line explain please, I see they're all the same but what they're just get methods? 
+2. But how does a ViewModel carry exact data a view needs, it's just a bunch of getters and setters?
+
+[2026-04-17 13:07:06Z] Okay now explain to me FBuddy.cs line by line
+[2026-04-17 13:12:38Z] So is my app the Server and browser is the Client?
+[2026-04-17 13:18:17Z] Yes please client-server exchange validation in short
+[2026-04-17 13:20:47Z] What are the 10 key things I need to know to understand how to work with custom AI agents? How to prompt them etc
+[2026-04-17 13:22:40Z] Can you check if my FishingStylist.md is well coded and rate it from 1-10
+[2026-04-17 13:24:16Z] do that
+[2026-04-17 13:25:08Z] Just apply the changes you think are best and leave it at that 
+[2026-04-17 13:25:38Z] can you delegate to main Agent to perform changes
+[2026-05-04 15:59:34Z] I have new things to implement in this project, it's called an EF.
+This is what I need to do:
+1. Configure EF in the project: 
+1.1 add correct annotations to model so it would be EF-ready
+1.2 adjust virutal and iCollection<> properties so the connection between class and tables work
+1.3 install a database (MSSQL / some other) or start it in Docker, set up connection string
+1.4 set up DbContext and ensure required DI
+
+2. switch from mock repository to an EF repository
+2.1 generate initial migration script
+
+3. setup and examine the adjustment of routing to at least 4 action controllers by personal choice (custom routing, default is not counted)
+
+4. make a semantic DB model: semantic-model.md
+4.1 content of it: summarized list of model/class/tables, list of main features and connections between table/class
+
+5. make a semantic route model: sitemap.md
+5.1 for every accessible URL in the app it needs to say which controller and which action and which views use it.
+
+
+Please tell me how many of these can you execute and complete, then do them, then tell me what you've done
+The criteria for grading are the following:
+1. Adjustment and configuration of model for EF - 1 point
+2. Understanding EF principles (questioning live) - 1 point
+3. Understanding routing principles (questioning live) - 1 point
+4. Making of semantic and routing model (md file) using AI - 1 point
+5. Making and using skills (EF skill, routing skill, UX skill) - 1 point
+
+Begin and update me once you're done with what you're done and thank you. :)
+[2026-05-04 15:59:34Z] [FishingStylist_SPAWNED] I have new things to implement in this project, it's called an EF.
+This is what I need to do:
+1. Configure EF in the project: 
+1.1 add correct annotations to model so it would be EF-ready
+1.2 adjust virutal and iCollection<> properties so the connection between class and tables work
+1.3 install a database (MSSQL / some other) or start it in Docker, set up connection string
+1.4 set up DbContext and ensure required DI
+
+2. switch from mock repository to an EF repository
+2.1 generate initial migration script
+
+3. setup and examine the adjustment of routing to at least 4 action controllers by personal choice (custom routing, default is not counted)
+
+4. make a semantic DB model: semantic-model.md
+4.1 content of it: summarized list of model/class/tables, list of main features and connections between table/class
+
+5. make a semantic route model: sitemap.md
+5.1 for every accessible URL in the app it needs to say which controller and which action and which views use it.
+
+
+Please tell me how many of these can you execute and complete, then do them, then tell me what you've done
+The criteria for grading are the following:
+1. Adjustment and configuration of model for EF - 1 point
+2. Understanding EF principles (questioning live) - 1 point
+3. Understanding routing principles (questioning live) - 1 point
+4. Making of semantic and routing model (md file) using AI - 1 point
+5. Making and using skills (EF skill, routing skill, UX skill) - 1 point
+
+Begin and update me once you're done with what you're done and thank you. :)
+[2026-05-04 16:00:26Z] Explore the FishingBuddy workspace and return concise findings with file paths for: 1) application startup and DI setup (likely Program.cs or equivalent), 2) current repository interface and implementation details (IFishingRepository and MockFishingRepository), 3) all controllers and their constructor dependencies, 4) current routing setup (MapControllerRoute, attribute routes), 5) any existing Entity Framework references (DbContext, UseSqlServer, Microsoft.EntityFrameworkCore packages), and 6) model classes with potential navigation properties and existing data annotations. Provide exact file paths and key code snippets/line descriptions. Thoroughness: medium.
+[2026-05-04 16:22:25Z] Review the recent EF/routing/documentation changes from a UX perspective only. No code changes needed unless a UX issue is critical. Return a concise note stating whether any Razor/CSS/UI updates are required for these backend changes.
+[2026-05-04 16:22:25Z] [FishingStylist_SPAWNED] Review the recent EF/routing/documentation changes from a UX perspective only. No code changes needed unless a UX issue is critical. Return a concise note stating whether any Razor/CSS/UI updates are required for these backend changes.
+[2026-05-06 18:45:09Z] walk me through what you added in my project in order to complete 1-5 tasks
+[2026-05-06 19:12:47Z] Now we need to configure some skills on you agent.
+configure SKILL.md file for entitiy-framework skill - used when we need to make a change to some EF class, generate migration, etc...
+configure SKILL.md file for making a "list" page - used when we need a list page, then make one to show as an example
+configure SKILL.md file for making an "edit form" page - used when we need edit/create pages. Then make one to show as an example
+[2026-05-06 19:12:47Z] [FishingStylist_SPAWNED] Now we need to configure some skills on you agent.
+configure SKILL.md file for entitiy-framework skill - used when we need to make a change to some EF class, generate migration, etc...
+configure SKILL.md file for making a "list" page - used when we need a list page, then make one to show as an example
+configure SKILL.md file for making an "edit form" page - used when we need edit/create pages. Then make one to show as an example
+[2026-05-06 19:13:45Z] FishingBuddy repo, ASP.NET MVC Razor + Bootstrap 5. We need UI-only Razor markup for example pages that demonstrate a reusable list-page pattern and an edit/create form pattern. Keep the current visual language used in Views/Technique/Index.cshtml and Views/Technique/Details.cshtml. Do not add CSS files unless absolutely necessary. Produce complete Razor for these files only:
+1) Views/Technique/Manage.cshtml: admin-style list page for IReadOnlyList<FishingBuddy.Models.Technique> with title, count badge, button linking to Create, table columns Name / Tutorial / Related Fish Count / Actions. Actions should link to Details and Edit.
+2) Views/Technique/Create.cshtml: form page for FishingBuddy.Models.Technique with fields TechniqueName, PerformanceNote, TutorialUrl, validation summary, submit and cancel buttons, and validation scripts section.
+3) Views/Technique/Edit.cshtml: same form style as Create but for editing existing technique.
+4) Update idea for existing Views/Technique/Index.cshtml: add a small secondary button linking to Manage without disturbing current layout too much.
+Return only the Razor file contents and the minimal Index edit snippet.
+[2026-05-06 19:13:45Z] [FishingStylist_SPAWNED] FishingBuddy repo, ASP.NET MVC Razor + Bootstrap 5. We need UI-only Razor markup for example pages that demonstrate a reusable list-page pattern and an edit/create form pattern. Keep the current visual language used in Views/Technique/Index.cshtml and Views/Technique/Details.cshtml. Do not add CSS files unless absolutely necessary. Produce complete Razor for these files only:
+1) Views/Technique/Manage.cshtml: admin-style list page for IReadOnlyList<FishingBuddy.Models.Technique> with title, count badge, button linking to Create, table columns Name / Tutorial / Related Fish Count / Actions. Actions should link to Details and Edit.
+2) Views/Technique/Create.cshtml: form page for FishingBuddy.Models.Technique with fields TechniqueName, PerformanceNote, TutorialUrl, validation summary, submit and cancel buttons, and validation scripts section.
+3) Views/Technique/Edit.cshtml: same form style as Create but for editing existing technique.
+4) Update idea for existing Views/Technique/Index.cshtml: add a small secondary button linking to Manage without disturbing current layout too much.
+Return only the Razor file contents and the minimal Index edit snippet.
+[2026-05-06 19:39:37Z] I ran the application, so far I think it looks good but the data has been severly cut. I want to make a full migration from mock repositories to EF.
+Everything that's in the mock needs to be in the database
+[2026-05-06 20:22:48Z] How can I check that everything we made today works 
+[2026-05-06 20:27:22Z] can I somehow open the database in web mode or some mode to see columns and data
+[2026-05-06 20:37:55Z] is there a portable way?
+[2026-05-06 20:41:05Z] So the tables are designed in a way that a webapk uses and projects them, and not in a way where Fish is all in a Fishtable and Technique in a TechniqueTable and you merge them. Am I correct?

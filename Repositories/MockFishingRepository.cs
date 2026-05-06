@@ -205,4 +205,25 @@ var fishingSpots = new List<FishingSpot>
     public FishingLicense? GetFishingLicenseByUserId(int userId) => FishingLicenses.FirstOrDefault(l => l.UserID == userId);
     public User? GetUserById(int id) => Users.FirstOrDefault(u => u.UserID == id);
     public FishingSpot? GetFishingSpotById(int id) => FishingSpots.FirstOrDefault(s => s.SpotID == id);
+
+    public void AddTechnique(Technique technique)
+    {
+        var techniques = (List<Technique>)Techniques;
+        technique.TechniqueID = techniques.Count == 0 ? 1 : techniques.Max(t => t.TechniqueID) + 1;
+        techniques.Add(technique);
+    }
+
+    public void UpdateTechnique(Technique technique)
+    {
+        var techniques = (List<Technique>)Techniques;
+        var existingTechnique = techniques.FirstOrDefault(t => t.TechniqueID == technique.TechniqueID);
+        if (existingTechnique == null)
+        {
+            throw new InvalidOperationException($"Technique with ID {technique.TechniqueID} was not found.");
+        }
+
+        existingTechnique.TechniqueName = technique.TechniqueName;
+        existingTechnique.PerformanceNote = technique.PerformanceNote;
+        existingTechnique.TutorialUrl = technique.TutorialUrl;
+    }
 }

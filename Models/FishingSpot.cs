@@ -1,14 +1,25 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace FishingBuddy.Models;
 
 public class FishingSpot
 {
+    [Key]
     public int SpotID { get; set; }
+
+    [Required]
+    [MaxLength(120)]
     public string SpotName { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(120)]
     public string Region { get; set; } = string.Empty;
+
     public bool HasPiers { get; set; }
     public bool BoatAccess { get; set; }
-    public List<Fish> MostLikelyCatch { get; set; } = new List<Fish>();
+
+    public virtual ICollection<Fish> MostLikelyCatch { get; set; } = new HashSet<Fish>();
 
     public FishingSpot() { }
 

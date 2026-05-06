@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace FishingBuddy.Models;
 
+[Owned]
 public class FLine
 {
     public FLineType Type { get; set; } = FLineType.Nylon;

@@ -19,4 +19,7 @@ public interface IFishingRepository
     FishingLicense? GetFishingLicenseByUserId(int userId);
     User? GetUserById(int id);
     FishingSpot? GetFishingSpotById(int id);
+
+    void AddTechnique(Technique technique);
+    void UpdateTechnique(Technique technique);
 }

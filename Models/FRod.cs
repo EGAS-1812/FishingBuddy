@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace FishingBuddy.Models;
 
+[Owned]
 public class FRod
 {
     public decimal LengthMeters { get; set; }

@@ -1,10 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FishingBuddy.Models;
 
 public class FishingLicense
 {
+    [Key]
     public int UserID { get; set; }
+
     public DateTime BeginDate { get; set; }
     public DateTime ExpirationDate { get; set; }
+
+    public virtual User User { get; set; } = null!;
 
     public FishingLicense() { }
 
