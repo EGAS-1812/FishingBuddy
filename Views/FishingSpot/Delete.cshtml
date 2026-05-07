@@ -1,0 +1,41 @@
+@model FishingBuddy.Models.FishingSpot
+@{
+    ViewData["Title"] = "Obriši ribolovno mjesto";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribolovna mjesta", "/FishingSpot"),
+        ("Upravljanje", "/FishingSpot/Manage"),
+        ("Obriši", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1 text-danger">Potvrda brisanja</h1>
+        <p class="text-muted mb-4">Jeste li sigurni da želite obrisati ovo ribolovno mjesto?</p>
+
+        <dl class="row">
+            <dt class="col-sm-3">Naziv mjesta</dt>
+            <dd class="col-sm-9">@Model.SpotName</dd>
+
+            <dt class="col-sm-3">Regija</dt>
+            <dd class="col-sm-9">@Model.Region</dd>
+
+            <dt class="col-sm-3">Mol/Pristanište</dt>
+            <dd class="col-sm-9">@(Model.HasPiers ? "Da" : "Ne")</dd>
+
+            <dt class="col-sm-3">Pristup brodom</dt>
+            <dd class="col-sm-9">@(Model.BoatAccess ? "Da" : "Ne")</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input asp-for="SpotID" type="hidden" />
+            @Html.AntiForgeryToken()
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Obriši</button>
+                <a class="btn btn-outline-secondary" asp-controller="FishingSpot" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>

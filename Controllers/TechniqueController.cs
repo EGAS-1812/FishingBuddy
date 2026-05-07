@@ -79,5 +79,21 @@ namespace FishingBuddy.Controllers
             _repository.UpdateTechnique(technique);
             return RedirectToAction(nameof(Manage));
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var technique = _repository.GetTechniqueById(id);
+            if (technique == null) return NotFound();
+            return View(technique);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _repository.DeleteTechnique(id);
+            return RedirectToAction(nameof(Manage));
+        }
     }
 }

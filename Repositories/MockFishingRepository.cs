@@ -217,13 +217,148 @@ var fishingSpots = new List<FishingSpot>
     {
         var techniques = (List<Technique>)Techniques;
         var existingTechnique = techniques.FirstOrDefault(t => t.TechniqueID == technique.TechniqueID);
-        if (existingTechnique == null)
-        {
-            throw new InvalidOperationException($"Technique with ID {technique.TechniqueID} was not found.");
-        }
-
+        if (existingTechnique == null) throw new InvalidOperationException($"Technique with ID {technique.TechniqueID} was not found.");
         existingTechnique.TechniqueName = technique.TechniqueName;
         existingTechnique.PerformanceNote = technique.PerformanceNote;
         existingTechnique.TutorialUrl = technique.TutorialUrl;
+    }
+
+    public void DeleteTechnique(int id)
+    {
+        var techniques = (List<Technique>)Techniques;
+        var existing = techniques.FirstOrDefault(t => t.TechniqueID == id);
+        if (existing == null) throw new InvalidOperationException($"Technique with ID {id} was not found.");
+        techniques.Remove(existing);
+    }
+
+    public void AddBait(Bait bait)
+    {
+        var baits = (List<Bait>)Baits;
+        bait.BaitID = baits.Count == 0 ? 1 : baits.Max(b => b.BaitID) + 1;
+        baits.Add(bait);
+    }
+
+    public void UpdateBait(Bait bait)
+    {
+        var baits = (List<Bait>)Baits;
+        var existing = baits.FirstOrDefault(b => b.BaitID == bait.BaitID);
+        if (existing == null) throw new InvalidOperationException($"Bait with ID {bait.BaitID} was not found.");
+        existing.BaitName = bait.BaitName;
+        existing.BaitType = bait.BaitType;
+        existing.PreparationMethod = bait.PreparationMethod;
+        existing.AveragePriceEur = bait.AveragePriceEur;
+    }
+
+    public void DeleteBait(int id)
+    {
+        var baits = (List<Bait>)Baits;
+        var existing = baits.FirstOrDefault(b => b.BaitID == id);
+        if (existing == null) throw new InvalidOperationException($"Bait with ID {id} was not found.");
+        baits.Remove(existing);
+    }
+
+    public void AddFish(Fish fish)
+    {
+        var fishList = (List<Fish>)Fish;
+        fish.FishID = fishList.Count == 0 ? 1 : fishList.Max(f => f.FishID) + 1;
+        fishList.Add(fish);
+    }
+
+    public void UpdateFish(Fish fish)
+    {
+        var fishList = (List<Fish>)Fish;
+        var existing = fishList.FirstOrDefault(f => f.FishID == fish.FishID);
+        if (existing == null) throw new InvalidOperationException($"Fish with ID {fish.FishID} was not found.");
+        existing.SpeciesName = fish.SpeciesName;
+        existing.CatchSeason = fish.CatchSeason;
+        existing.FleshColor = fish.FleshColor;
+        existing.FavouriteBaitID = fish.FavouriteBaitID;
+        existing.PreferredMethodID = fish.PreferredMethodID;
+    }
+
+    public void DeleteFish(int id)
+    {
+        var fishList = (List<Fish>)Fish;
+        var existing = fishList.FirstOrDefault(f => f.FishID == id);
+        if (existing == null) throw new InvalidOperationException($"Fish with ID {id} was not found.");
+        fishList.Remove(existing);
+    }
+
+    public void AddUser(User user)
+    {
+        var users = (List<User>)Users;
+        user.UserID = users.Count == 0 ? 1 : users.Max(u => u.UserID) + 1;
+        users.Add(user);
+    }
+
+    public void UpdateUser(User user)
+    {
+        var users = (List<User>)Users;
+        var existing = users.FirstOrDefault(u => u.UserID == user.UserID);
+        if (existing == null) throw new InvalidOperationException($"User with ID {user.UserID} was not found.");
+        existing.Username = user.Username;
+        existing.Email = user.Email;
+    }
+
+    public void DeleteUser(int id)
+    {
+        var users = (List<User>)Users;
+        var existing = users.FirstOrDefault(u => u.UserID == id);
+        if (existing == null) throw new InvalidOperationException($"User with ID {id} was not found.");
+        users.Remove(existing);
+    }
+
+    public void AddFishingSpot(FishingSpot spot)
+    {
+        var spots = (List<FishingSpot>)FishingSpots;
+        spot.SpotID = spots.Count == 0 ? 1 : spots.Max(s => s.SpotID) + 1;
+        spots.Add(spot);
+    }
+
+    public void UpdateFishingSpot(FishingSpot spot)
+    {
+        var spots = (List<FishingSpot>)FishingSpots;
+        var existing = spots.FirstOrDefault(s => s.SpotID == spot.SpotID);
+        if (existing == null) throw new InvalidOperationException($"FishingSpot with ID {spot.SpotID} was not found.");
+        existing.SpotName = spot.SpotName;
+        existing.Region = spot.Region;
+        existing.HasPiers = spot.HasPiers;
+        existing.BoatAccess = spot.BoatAccess;
+    }
+
+    public void DeleteFishingSpot(int id)
+    {
+        var spots = (List<FishingSpot>)FishingSpots;
+        var existing = spots.FirstOrDefault(s => s.SpotID == id);
+        if (existing == null) throw new InvalidOperationException($"FishingSpot with ID {id} was not found.");
+        spots.Remove(existing);
+    }
+
+    public void AddCatchRecord(CatchRecord catchRecord)
+    {
+        var records = (List<CatchRecord>)CatchRecords;
+        catchRecord.CatchID = records.Count == 0 ? 1 : records.Max(c => c.CatchID) + 1;
+        records.Add(catchRecord);
+    }
+
+    public void UpdateCatchRecord(CatchRecord catchRecord)
+    {
+        var records = (List<CatchRecord>)CatchRecords;
+        var existing = records.FirstOrDefault(c => c.CatchID == catchRecord.CatchID);
+        if (existing == null) throw new InvalidOperationException($"CatchRecord with ID {catchRecord.CatchID} was not found.");
+        existing.UserID = catchRecord.UserID;
+        existing.FishID = catchRecord.FishID;
+        existing.CatchDate = catchRecord.CatchDate;
+        existing.Weight = catchRecord.Weight;
+        existing.LengthCm = catchRecord.LengthCm;
+        existing.Location = catchRecord.Location;
+    }
+
+    public void DeleteCatchRecord(int id)
+    {
+        var records = (List<CatchRecord>)CatchRecords;
+        var existing = records.FirstOrDefault(c => c.CatchID == id);
+        if (existing == null) throw new InvalidOperationException($"CatchRecord with ID {id} was not found.");
+        records.Remove(existing);
     }
 }

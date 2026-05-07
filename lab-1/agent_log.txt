@@ -295,3 +295,553 @@ Everything that's in the mock needs to be in the database
 [2026-05-06 20:27:22Z] can I somehow open the database in web mode or some mode to see columns and data
 [2026-05-06 20:37:55Z] is there a portable way?
 [2026-05-06 20:41:05Z] So the tables are designed in a way that a webapk uses and projects them, and not in a way where Fish is all in a Fishtable and Technique in a TechniqueTable and you merge them. Am I correct?
+[2026-05-07 15:32:57Z] can you explain to me what's happening in the Data folder?
+[2026-05-07 15:38:07Z] so a DbSet<Technique> is a table that will contain Technique entities and => Set<Technique>(); does what?
+[2026-05-07 15:48:17Z] Please add basic CRUD operations menu for every entity page. Like you did for Techniques but now for everything and add all CRUD operations. Make it a dropdown menu that says CRUD, when it drops down it says Create in a green pill, Update in a yellow pill and Delete in a red pill.
+[2026-05-07 15:48:43Z] In the FishingBuddy ASP.NET MVC project at c:\Users\Eamon\source\repos\FishingBuddy, I need a thorough inventory of:
+
+1. All controller files in Controllers/ - read each one fully and list what actions exist (Index, Details, Create GET, Create POST, Edit GET, Edit POST, Delete GET, Delete POST, Manage, etc.)
+2. All view files in Views/ - list what .cshtml files exist per entity
+3. The current Technique controller (Controllers/TechniqueController.cs) - read it fully as a reference for what CRUD looks like already
+4. The current Technique views (Views/Technique/*.cshtml) - read them all fully as reference
+5. The IFishingRepository interface (Repositories/IFishingRepository.cs) - read it fully
+6. The EfFishingRepository (Repositories/EfFishingRepository.cs) - read it fully
+7. The MockFishingRepository (Repositories/MockFishingRepository.cs) - read first 50 lines to understand entity IDs
+
+Return ALL file contents fully - I need exact code to implement CRUD for: Fish, Bait, User, FishingSpot, CatchRecord. For each entity tell me: what actions already exist, what's missing, and what the model's primary key property name is.
+[2026-05-07 15:56:18Z] You need to create all CRUD Razor views for a FishingBuddy ASP.NET MVC project and add a CRUD dropdown button to every existing entity Index page. The project uses Bootstrap 5 and follows the exact style of the existing Technique pages (Croatian language throughout).
+
+---
+
+## WHAT TO BUILD
+
+For each of the 6 entities below, create these views:
+- `Manage.cshtml` GÇö admin list page (like existing `Views/Technique/Manage.cshtml`)
+- `Create.cshtml` GÇö create form (like existing `Views/Technique/Create.cshtml`)
+- `Edit.cshtml` GÇö edit form (like existing `Views/Technique/Edit.cshtml`)
+- `Delete.cshtml` GÇö delete confirmation page (NEW GÇö doesn't exist yet for Technique either)
+
+Also **update** these existing Index pages to add the CRUD dropdown button:
+- `Views/Bait/Index.cshtml`
+- `Views/Fish/Index.cshtml`
+- `Views/User/Index.cshtml`
+- `Views/FishingSpot/Index.cshtml`
+- `Views/CatchRecord/Index.cshtml`
+- `Views/Technique/Index.cshtml` (already has Manage link GÇö replace with CRUD dropdown)
+
+Also add the CRUD dropdown to the **existing Manage pages** that already exist:
+- `Views/Technique/Manage.cshtml` GÇö add CRUD dropdown button to its header area
+
+---
+
+## CRUD DROPDOWN DESIGN (apply everywhere)
+
+Each entity Index and Manage page must have this Bootstrap dropdown in its header area:
+
+```html
+<div class="dropdown">
+  <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    CRUD
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <a class="dropdown-item" asp-controller="ENTITY" asp-action="Create">
+        <span class="badge bg-success rounded-pill me-2">Create</span>
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" asp-controller="ENTITY" asp-action="Manage">
+        <span class="badge bg-warning text-dark rounded-pill me-2">Update</span>
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" asp-controller="ENTITY" asp-action="Manage">
+        <span class="badge bg-danger rounded-pill me-2">Delete</span>
+      </a>
+    </li>
+  </ul>
+</div>
+```
+Replace "ENTITY" with the actual controller name. The Update and Delete pills both link to Manage (where inline edit/delete row buttons live).
+
+---
+
+## EXISTING REFERENCE STYLES (copy exactly)
+
+**Existing Manage.cshtml (Technique) as template:**
+```html
+@model IReadOnlyList<FishingBuddy.Models.Technique>
+@{
+    ViewData["Title"] = "Upravljanje tehnikama";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Po-ìetna", "/"),
+        ("Tehnike", "/Technique"),
+        ("Upravljanje", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+                <h1 class="h2 mb-1">Upravljanje tehnikama</h1>
+                <p class="text-muted mb-0">Administrirajte tehnike, poveznice na vodice i povezane vrste riba.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary">@Model.Count tehnika</span>
+                <a class="btn btn-primary btn-sm" asp-controller="Technique" asp-action="Create">Dodaj tehniku</a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Tutorial</th>
+                        <th class="text-center">Povezane ribe</th>
+                        <th class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var technique in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@technique.TechniqueName</td>
+                            <td>...</td>
+                            <td class="text-center">@(technique.FishUsingTechnique?.Count ?? 0)</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="Technique" asp-action="Delete" asp-route-id="@technique.TechniqueID">Obri+íi</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+```
+
+**Existing Create.cshtml (Technique) as template:**
+```html
+@model FishingBuddy.Models.Technique
+@{
+    ViewData["Title"] = "Nova tehnika";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)> { ... };
+}
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1">Nova tehnika</h1>
+        <form asp-action="Create" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+            <div class="row g-3">
+                <!-- fields here -->
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Stvori</button>
+                <a class="btn btn-outline-secondary" asp-controller="X" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+```
+
+**Delete confirmation template (new pattern):**
+```html
+@model FishingBuddy.Models.ENTITY
+@{
+    ViewData["Title"] = "Obri+íi ...";
+    ViewData["BreadcrumbItems"] = ...;
+}
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1 text-danger">Potvrda brisanja</h1>
+        <p class="text-muted">Jeste li sigurni da ++elite obrisati ovaj zapis?</p>
+        <dl class="row">
+            <!-- show key fields for confirmation -->
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="PrimaryKeyProp" />
+            @Html.AntiForgeryToken()
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Obri+íi</button>
+                <a class="btn btn-outline-secondary" asp-controller="X" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+```
+
+---
+
+## ENTITY SPECIFICATIONS
+
+### Bait (Mamac)
+- Controller: `Bait`, Views folder: `Views/Bait/`
+- Model: `FishingBuddy.Models.Bait`
+- PK: `BaitID`
+- Fields: `BaitName` (string, required), `BaitType` (enum BaitType: Live/Dead/Artificial), `PreparationMethod` (string), `AveragePriceEur` (decimal)
+- Manage columns: BaitName, BaitType, AveragePriceEur, Radnje (Edit + Delete buttons)
+- Croatian labels: Naziv mamca, Tip mamca, Priprema, Prosje-ìna cijena (Gé¼)
+- BaitType select options: Live="++ivi", Dead="Mrtvi", Artificial="Umjetni"
+
+### Fish (Riba)
+- Controller: `Fish`, Views folder: `Views/Fish/`
+- Model: `FishingBuddy.Models.Fish`
+- PK: `FishID`
+- Fields: `SpeciesName` (string, required), `CatchSeason` (enum Season), `FleshColor` (enum FishFlesh), `FavouriteBaitID` (int, select from ViewBag.Baits), `PreferredMethodID` (int, select from ViewBag.Techniques)
+- Manage columns: SpeciesName, CatchSeason, FleshColor, Radnje
+- Croatian labels: Naziv vrste, Sezona lova, Boja mesa, Omiljeni mamac, Preferirana tehnika
+- Season options: Spring="Prolje-çe", Summer="Ljeto", Autumn="Jesen", Winter="Zima"
+- FishFlesh options: Blue="Plavo", Red="Crveno", White="Bijelo"
+- For Create/Edit forms: use `<select asp-for="FavouriteBaitID" asp-items="ViewBag.Baits" class="form-select">` and same for Techniques
+
+### User (Ribar)
+- Controller: `User`, Views folder: `Views/User/`
+- Model: `FishingBuddy.Models.User`
+- PK: `UserID`
+- Fields: `Username` (string, required), `Email` (string, required, email)
+- Manage columns: Username, Email, Ulovi (CatchRecords?.Count ?? 0), Radnje
+- Croatian labels: Korisni-ìko ime, E-mail adresa
+
+### FishingSpot (Ribolovno mjesto)
+- Controller: `FishingSpot`, Views folder: `Views/FishingSpot/`
+- Model: `FishingBuddy.Models.FishingSpot`
+- PK: `SpotID`
+- Fields: `SpotName` (string, required), `Region` (string, required), `HasPiers` (bool), `BoatAccess` (bool)
+- Manage columns: SpotName, Region, HasPiers (G£ô/G£ù), BoatAccess (G£ô/G£ù), Radnje
+- Croatian labels: Naziv mjesta, Regija, Mol/Pristani+íte, Pristup brodom
+- For booleans use `<div class="form-check"><input asp-for="HasPiers" class="form-check-input" type="checkbox" />`
+
+### CatchRecord (Evidencija ulova)
+- Controller: `CatchRecord`, Views folder: `Views/CatchRecord/`
+- Model: `FishingBuddy.Models.CatchRecord`
+- PK: `CatchID`
+- Fields: `UserID` (int, select from ViewBag.Users), `FishID` (int, select from ViewBag.Fish), `CatchDate` (DateTime, type="date"), `Weight` (double), `LengthCm` (double), `Location` (string)
+- Manage columns: CatchDate, Location, Weight (kg), LengthCm (cm), Radnje
+- Croatian labels: Ribar, Vrsta ribe, Datum ulova, Te++ina (kg), Duljina (cm), Lokacija
+
+### Technique (Tehnika) GÇö already has Manage/Create/Edit, only needs Delete + CRUD dropdown on Index
+- Controller: `Technique`, Views folder: `Views/Technique/`
+- Model: `FishingBuddy.Models.Technique`
+- PK: `TechniqueID`
+- Fields: `TechniqueName`, `PerformanceNote`, `TutorialUrl`
+- Create Delete.cshtml for technique
+- Update Index.cshtml to replace current "Upravljanje" button with the CRUD dropdown
+- Update Manage.cshtml to add CRUD dropdown in the header area (keep existing "Dodaj tehniku" button too)
+
+---
+
+## FILES TO CREATE (new):
+1. `Views/Bait/Manage.cshtml`
+2. `Views/Bait/Create.cshtml`
+3. `Views/Bait/Edit.cshtml`
+4. `Views/Bait/Delete.cshtml`
+5. `Views/Fish/Manage.cshtml`
+6. `Views/Fish/Create.cshtml`
+7. `Views/Fish/Edit.cshtml`
+8. `Views/Fish/Delete.cshtml`
+9. `Views/User/Manage.cshtml`
+10. `Views/User/Create.cshtml`
+11. `Views/User/Edit.cshtml`
+12. `Views/User/Delete.cshtml`
+13. `Views/FishingSpot/Manage.cshtml`
+14. `Views/FishingSpot/Create.cshtml`
+15. `Views/FishingSpot/Edit.cshtml`
+16. `Views/FishingSpot/Delete.cshtml`
+17. `Views/CatchRecord/Manage.cshtml`
+18. `Views/CatchRecord/Create.cshtml`
+19. `Views/CatchRecord/Edit.cshtml`
+20. `Views/CatchRecord/Delete.cshtml`
+21. `Views/Technique/Delete.cshtml`
+
+## FILES TO UPDATE (existing):
+22. `Views/Bait/Index.cshtml` GÇö add CRUD dropdown
+23. `Views/Fish/Index.cshtml` GÇö add CRUD dropdown
+24. `Views/User/Index.cshtml` GÇö add CRUD dropdown
+25. `Views/FishingSpot/Index.cshtml` GÇö add CRUD dropdown
+26. `Views/CatchRecord/Index.cshtml` GÇö add CRUD dropdown
+27. `Views/Technique/Index.cshtml` GÇö replace "Upravljanje" button with CRUD dropdown
+28. `Views/Technique/Manage.cshtml` GÇö add CRUD dropdown in header area
+
+---
+
+## IMPORTANT NOTES
+- All text must be in Croatian (Bosnian/Croatian/Serbian)
+- Follow exact Bootstrap card/table/form structure from existing Technique views
+- Breadcrumb format: `ViewData["BreadcrumbItems"] = new List<(string, string?)> { ("Po-ìetna", "/"), ("EntityName", "/Controller"), ("PageName", null) };`
+- All forms need `@Html.AntiForgeryToken()` or `asp-action` (which auto-includes it), plus `method="post"`
+- Edit forms need `<input asp-for="PrimaryKey" type="hidden" />`
+- Delete forms POST to `asp-action="Delete"` with hidden primary key
+- Create all 28 files GÇö do not skip any
+[2026-05-07 15:56:18Z] [FishingStylist_SPAWNED] You need to create all CRUD Razor views for a FishingBuddy ASP.NET MVC project and add a CRUD dropdown button to every existing entity Index page. The project uses Bootstrap 5 and follows the exact style of the existing Technique pages (Croatian language throughout).
+
+---
+
+## WHAT TO BUILD
+
+For each of the 6 entities below, create these views:
+- `Manage.cshtml` GÇö admin list page (like existing `Views/Technique/Manage.cshtml`)
+- `Create.cshtml` GÇö create form (like existing `Views/Technique/Create.cshtml`)
+- `Edit.cshtml` GÇö edit form (like existing `Views/Technique/Edit.cshtml`)
+- `Delete.cshtml` GÇö delete confirmation page (NEW GÇö doesn't exist yet for Technique either)
+
+Also **update** these existing Index pages to add the CRUD dropdown button:
+- `Views/Bait/Index.cshtml`
+- `Views/Fish/Index.cshtml`
+- `Views/User/Index.cshtml`
+- `Views/FishingSpot/Index.cshtml`
+- `Views/CatchRecord/Index.cshtml`
+- `Views/Technique/Index.cshtml` (already has Manage link GÇö replace with CRUD dropdown)
+
+Also add the CRUD dropdown to the **existing Manage pages** that already exist:
+- `Views/Technique/Manage.cshtml` GÇö add CRUD dropdown button to its header area
+
+---
+
+## CRUD DROPDOWN DESIGN (apply everywhere)
+
+Each entity Index and Manage page must have this Bootstrap dropdown in its header area:
+
+```html
+<div class="dropdown">
+  <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    CRUD
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <a class="dropdown-item" asp-controller="ENTITY" asp-action="Create">
+        <span class="badge bg-success rounded-pill me-2">Create</span>
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" asp-controller="ENTITY" asp-action="Manage">
+        <span class="badge bg-warning text-dark rounded-pill me-2">Update</span>
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" asp-controller="ENTITY" asp-action="Manage">
+        <span class="badge bg-danger rounded-pill me-2">Delete</span>
+      </a>
+    </li>
+  </ul>
+</div>
+```
+Replace "ENTITY" with the actual controller name. The Update and Delete pills both link to Manage (where inline edit/delete row buttons live).
+
+---
+
+## EXISTING REFERENCE STYLES (copy exactly)
+
+**Existing Manage.cshtml (Technique) as template:**
+```html
+@model IReadOnlyList<FishingBuddy.Models.Technique>
+@{
+    ViewData["Title"] = "Upravljanje tehnikama";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Po-ìetna", "/"),
+        ("Tehnike", "/Technique"),
+        ("Upravljanje", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+                <h1 class="h2 mb-1">Upravljanje tehnikama</h1>
+                <p class="text-muted mb-0">Administrirajte tehnike, poveznice na vodice i povezane vrste riba.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary">@Model.Count tehnika</span>
+                <a class="btn btn-primary btn-sm" asp-controller="Technique" asp-action="Create">Dodaj tehniku</a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Tutorial</th>
+                        <th class="text-center">Povezane ribe</th>
+                        <th class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var technique in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@technique.TechniqueName</td>
+                            <td>...</td>
+                            <td class="text-center">@(technique.FishUsingTechnique?.Count ?? 0)</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="Technique" asp-action="Delete" asp-route-id="@technique.TechniqueID">Obri+íi</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+```
+
+**Existing Create.cshtml (Technique) as template:**
+```html
+@model FishingBuddy.Models.Technique
+@{
+    ViewData["Title"] = "Nova tehnika";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)> { ... };
+}
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1">Nova tehnika</h1>
+        <form asp-action="Create" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+            <div class="row g-3">
+                <!-- fields here -->
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Stvori</button>
+                <a class="btn btn-outline-secondary" asp-controller="X" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+```
+
+**Delete confirmation template (new pattern):**
+```html
+@model FishingBuddy.Models.ENTITY
+@{
+    ViewData["Title"] = "Obri+íi ...";
+    ViewData["BreadcrumbItems"] = ...;
+}
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1 text-danger">Potvrda brisanja</h1>
+        <p class="text-muted">Jeste li sigurni da ++elite obrisati ovaj zapis?</p>
+        <dl class="row">
+            <!-- show key fields for confirmation -->
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="PrimaryKeyProp" />
+            @Html.AntiForgeryToken()
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Obri+íi</button>
+                <a class="btn btn-outline-secondary" asp-controller="X" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+```
+
+---
+
+## ENTITY SPECIFICATIONS
+
+### Bait (Mamac)
+- Controller: `Bait`, Views folder: `Views/Bait/`
+- Model: `FishingBuddy.Models.Bait`
+- PK: `BaitID`
+- Fields: `BaitName` (string, required), `BaitType` (enum BaitType: Live/Dead/Artificial), `PreparationMethod` (string), `AveragePriceEur` (decimal)
+- Manage columns: BaitName, BaitType, AveragePriceEur, Radnje (Edit + Delete buttons)
+- Croatian labels: Naziv mamca, Tip mamca, Priprema, Prosje-ìna cijena (Gé¼)
+- BaitType select options: Live="++ivi", Dead="Mrtvi", Artificial="Umjetni"
+
+### Fish (Riba)
+- Controller: `Fish`, Views folder: `Views/Fish/`
+- Model: `FishingBuddy.Models.Fish`
+- PK: `FishID`
+- Fields: `SpeciesName` (string, required), `CatchSeason` (enum Season), `FleshColor` (enum FishFlesh), `FavouriteBaitID` (int, select from ViewBag.Baits), `PreferredMethodID` (int, select from ViewBag.Techniques)
+- Manage columns: SpeciesName, CatchSeason, FleshColor, Radnje
+- Croatian labels: Naziv vrste, Sezona lova, Boja mesa, Omiljeni mamac, Preferirana tehnika
+- Season options: Spring="Prolje-çe", Summer="Ljeto", Autumn="Jesen", Winter="Zima"
+- FishFlesh options: Blue="Plavo", Red="Crveno", White="Bijelo"
+- For Create/Edit forms: use `<select asp-for="FavouriteBaitID" asp-items="ViewBag.Baits" class="form-select">` and same for Techniques
+
+### User (Ribar)
+- Controller: `User`, Views folder: `Views/User/`
+- Model: `FishingBuddy.Models.User`
+- PK: `UserID`
+- Fields: `Username` (string, required), `Email` (string, required, email)
+- Manage columns: Username, Email, Ulovi (CatchRecords?.Count ?? 0), Radnje
+- Croatian labels: Korisni-ìko ime, E-mail adresa
+
+### FishingSpot (Ribolovno mjesto)
+- Controller: `FishingSpot`, Views folder: `Views/FishingSpot/`
+- Model: `FishingBuddy.Models.FishingSpot`
+- PK: `SpotID`
+- Fields: `SpotName` (string, required), `Region` (string, required), `HasPiers` (bool), `BoatAccess` (bool)
+- Manage columns: SpotName, Region, HasPiers (G£ô/G£ù), BoatAccess (G£ô/G£ù), Radnje
+- Croatian labels: Naziv mjesta, Regija, Mol/Pristani+íte, Pristup brodom
+- For booleans use `<div class="form-check"><input asp-for="HasPiers" class="form-check-input" type="checkbox" />`
+
+### CatchRecord (Evidencija ulova)
+- Controller: `CatchRecord`, Views folder: `Views/CatchRecord/`
+- Model: `FishingBuddy.Models.CatchRecord`
+- PK: `CatchID`
+- Fields: `UserID` (int, select from ViewBag.Users), `FishID` (int, select from ViewBag.Fish), `CatchDate` (DateTime, type="date"), `Weight` (double), `LengthCm` (double), `Location` (string)
+- Manage columns: CatchDate, Location, Weight (kg), LengthCm (cm), Radnje
+- Croatian labels: Ribar, Vrsta ribe, Datum ulova, Te++ina (kg), Duljina (cm), Lokacija
+
+### Technique (Tehnika) GÇö already has Manage/Create/Edit, only needs Delete + CRUD dropdown on Index
+- Controller: `Technique`, Views folder: `Views/Technique/`
+- Model: `FishingBuddy.Models.Technique`
+- PK: `TechniqueID`
+- Fields: `TechniqueName`, `PerformanceNote`, `TutorialUrl`
+- Create Delete.cshtml for technique
+- Update Index.cshtml to replace current "Upravljanje" button with the CRUD dropdown
+- Update Manage.cshtml to add CRUD dropdown in the header area (keep existing "Dodaj tehniku" button too)
+
+---
+
+## FILES TO CREATE (new):
+1. `Views/Bait/Manage.cshtml`
+2. `Views/Bait/Create.cshtml`
+3. `Views/Bait/Edit.cshtml`
+4. `Views/Bait/Delete.cshtml`
+5. `Views/Fish/Manage.cshtml`
+6. `Views/Fish/Create.cshtml`
+7. `Views/Fish/Edit.cshtml`
+8. `Views/Fish/Delete.cshtml`
+9. `Views/User/Manage.cshtml`
+10. `Views/User/Create.cshtml`
+11. `Views/User/Edit.cshtml`
+12. `Views/User/Delete.cshtml`
+13. `Views/FishingSpot/Manage.cshtml`
+14. `Views/FishingSpot/Create.cshtml`
+15. `Views/FishingSpot/Edit.cshtml`
+16. `Views/FishingSpot/Delete.cshtml`
+17. `Views/CatchRecord/Manage.cshtml`
+18. `Views/CatchRecord/Create.cshtml`
+19. `Views/CatchRecord/Edit.cshtml`
+20. `Views/CatchRecord/Delete.cshtml`
+21. `Views/Technique/Delete.cshtml`
+
+## FILES TO UPDATE (existing):
+22. `Views/Bait/Index.cshtml` GÇö add CRUD dropdown
+23. `Views/Fish/Index.cshtml` GÇö add CRUD dropdown
+24. `Views/User/Index.cshtml` GÇö add CRUD dropdown
+25. `Views/FishingSpot/Index.cshtml` GÇö add CRUD dropdown
+26. `Views/CatchRecord/Index.cshtml` GÇö add CRUD dropdown
+27. `Views/Technique/Index.cshtml` GÇö replace "Upravljanje" button with CRUD dropdown
+28. `Views/Technique/Manage.cshtml` GÇö add CRUD dropdown in header area
+
+---
+
+## IMPORTANT NOTES
+- All text must be in Croatian (Bosnian/Croatian/Serbian)
+- Follow exact Bootstrap card/table/form structure from existing Technique views
+- Breadcrumb format: `ViewData["BreadcrumbItems"] = new List<(string, string?)> { ("Po-ìetna", "/"), ("EntityName", "/Controller"), ("PageName", null) };`
+- All forms need `@Html.AntiForgeryToken()` or `asp-action` (which auto-includes it), plus `method="post"`
+- Edit forms need `<input asp-for="PrimaryKey" type="hidden" />`
+- Delete forms POST to `asp-action="Delete"` with hidden primary key
+- Create all 28 files GÇö do not skip any

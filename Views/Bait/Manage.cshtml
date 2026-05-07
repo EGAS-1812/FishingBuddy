@@ -1,0 +1,71 @@
+@model IReadOnlyList<FishingBuddy.Models.Bait>
+@{
+    ViewData["Title"] = "Upravljanje mamcima";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Mamci", "/Bait"),
+        ("Upravljanje", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+                <h1 class="h2 mb-1">Upravljanje mamcima</h1>
+                <p class="text-muted mb-0">Administrirajte mamce, vrste i prosječne cijene.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary">@Model.Count mamaca</span>
+                <a class="btn btn-primary btn-sm" asp-controller="Bait" asp-action="Create">Dodaj mamac</a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Bait" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="Bait" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="Bait" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Naziv mamca</th>
+                        <th scope="col">Tip mamca</th>
+                        <th scope="col">Prosječna cijena (€)</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">Nema unesenih mamaca.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var bait in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@bait.BaitName</td>
+                                <td><span class="badge bg-primary">@bait.BaitType.GetDisplayName()</span></td>
+                                <td>@bait.AveragePriceEur.ToString("F2")</td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Bait" asp-action="Edit" asp-route-id="@bait.BaitID">Uredi</a>
+                                        <a class="btn btn-sm btn-outline-danger" asp-controller="Bait" asp-action="Delete" asp-route-id="@bait.BaitID">Obriši</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

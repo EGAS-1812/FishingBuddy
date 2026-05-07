@@ -1,0 +1,35 @@
+@model FishingBuddy.Models.User
+@{
+    ViewData["Title"] = "Obriši ribara";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribari", "/User"),
+        ("Upravljanje", "/User/Manage"),
+        ("Obriši", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1 text-danger">Potvrda brisanja</h1>
+        <p class="text-muted mb-4">Jeste li sigurni da želite obrisati ovog ribara?</p>
+
+        <dl class="row">
+            <dt class="col-sm-3">Korisničko ime</dt>
+            <dd class="col-sm-9">@Model.Username</dd>
+
+            <dt class="col-sm-3">E-mail adresa</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input asp-for="UserID" type="hidden" />
+            @Html.AntiForgeryToken()
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Obriši</button>
+                <a class="btn btn-outline-secondary" asp-controller="User" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>

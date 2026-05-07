@@ -1,0 +1,71 @@
+@model IReadOnlyList<FishingBuddy.Models.User>
+@{
+    ViewData["Title"] = "Upravljanje ribarima";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribari", "/User"),
+        ("Upravljanje", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+                <h1 class="h2 mb-1">Upravljanje ribarima</h1>
+                <p class="text-muted mb-0">Administrirajte korisnike i njihove podatke.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary">@Model.Count ribara</span>
+                <a class="btn btn-primary btn-sm" asp-controller="User" asp-action="Create">Dodaj ribara</a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Korisničko ime</th>
+                        <th scope="col">E-mail adresa</th>
+                        <th scope="col" class="text-center">Ulovi</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">Nema unesenih ribara.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@user.Username</td>
+                                <td>@user.Email</td>
+                                <td class="text-center">@(user.CatchRecords?.Count ?? 0)</td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="User" asp-action="Edit" asp-route-id="@user.UserID">Uredi</a>
+                                        <a class="btn btn-sm btn-outline-danger" asp-controller="User" asp-action="Delete" asp-route-id="@user.UserID">Obriši</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

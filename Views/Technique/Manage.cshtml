@@ -19,6 +19,14 @@
             <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-primary">@Model.Count tehnika</span>
                 <a class="btn btn-primary btn-sm" asp-controller="Technique" asp-action="Create">Dodaj tehniku</a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Technique" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="Technique" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="Technique" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 

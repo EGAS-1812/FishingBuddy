@@ -81,16 +81,125 @@ public class EfFishingRepository(FishingBuddyDbContext dbContext) : IFishingRepo
 
     public void UpdateTechnique(Technique technique)
     {
-        var existingTechnique = dbContext.Techniques.FirstOrDefault(t => t.TechniqueID == technique.TechniqueID);
-        if (existingTechnique == null)
-        {
-            throw new InvalidOperationException($"Technique with ID {technique.TechniqueID} was not found.");
-        }
+        var existing = dbContext.Techniques.FirstOrDefault(t => t.TechniqueID == technique.TechniqueID);
+        if (existing == null) throw new InvalidOperationException($"Technique with ID {technique.TechniqueID} was not found.");
+        existing.TechniqueName = technique.TechniqueName;
+        existing.PerformanceNote = technique.PerformanceNote;
+        existing.TutorialUrl = technique.TutorialUrl;
+        dbContext.SaveChanges();
+    }
 
-        existingTechnique.TechniqueName = technique.TechniqueName;
-        existingTechnique.PerformanceNote = technique.PerformanceNote;
-        existingTechnique.TutorialUrl = technique.TutorialUrl;
+    public void DeleteTechnique(int id)
+    {
+        var existing = dbContext.Techniques.FirstOrDefault(t => t.TechniqueID == id);
+        if (existing == null) throw new InvalidOperationException($"Technique with ID {id} was not found.");
+        dbContext.Techniques.Remove(existing);
+        dbContext.SaveChanges();
+    }
 
+    public void AddBait(Bait bait) { dbContext.Baits.Add(bait); dbContext.SaveChanges(); }
+
+    public void UpdateBait(Bait bait)
+    {
+        var existing = dbContext.Baits.FirstOrDefault(b => b.BaitID == bait.BaitID);
+        if (existing == null) throw new InvalidOperationException($"Bait with ID {bait.BaitID} was not found.");
+        existing.BaitName = bait.BaitName;
+        existing.BaitType = bait.BaitType;
+        existing.PreparationMethod = bait.PreparationMethod;
+        existing.AveragePriceEur = bait.AveragePriceEur;
+        dbContext.SaveChanges();
+    }
+
+    public void DeleteBait(int id)
+    {
+        var existing = dbContext.Baits.FirstOrDefault(b => b.BaitID == id);
+        if (existing == null) throw new InvalidOperationException($"Bait with ID {id} was not found.");
+        dbContext.Baits.Remove(existing);
+        dbContext.SaveChanges();
+    }
+
+    public void AddFish(Fish fish) { dbContext.Fish.Add(fish); dbContext.SaveChanges(); }
+
+    public void UpdateFish(Fish fish)
+    {
+        var existing = dbContext.Fish.FirstOrDefault(f => f.FishID == fish.FishID);
+        if (existing == null) throw new InvalidOperationException($"Fish with ID {fish.FishID} was not found.");
+        existing.SpeciesName = fish.SpeciesName;
+        existing.CatchSeason = fish.CatchSeason;
+        existing.FleshColor = fish.FleshColor;
+        existing.FavouriteBaitID = fish.FavouriteBaitID;
+        existing.PreferredMethodID = fish.PreferredMethodID;
+        dbContext.SaveChanges();
+    }
+
+    public void DeleteFish(int id)
+    {
+        var existing = dbContext.Fish.FirstOrDefault(f => f.FishID == id);
+        if (existing == null) throw new InvalidOperationException($"Fish with ID {id} was not found.");
+        dbContext.Fish.Remove(existing);
+        dbContext.SaveChanges();
+    }
+
+    public void AddUser(User user) { dbContext.Users.Add(user); dbContext.SaveChanges(); }
+
+    public void UpdateUser(User user)
+    {
+        var existing = dbContext.Users.FirstOrDefault(u => u.UserID == user.UserID);
+        if (existing == null) throw new InvalidOperationException($"User with ID {user.UserID} was not found.");
+        existing.Username = user.Username;
+        existing.Email = user.Email;
+        dbContext.SaveChanges();
+    }
+
+    public void DeleteUser(int id)
+    {
+        var existing = dbContext.Users.FirstOrDefault(u => u.UserID == id);
+        if (existing == null) throw new InvalidOperationException($"User with ID {id} was not found.");
+        dbContext.Users.Remove(existing);
+        dbContext.SaveChanges();
+    }
+
+    public void AddFishingSpot(FishingSpot spot) { dbContext.FishingSpots.Add(spot); dbContext.SaveChanges(); }
+
+    public void UpdateFishingSpot(FishingSpot spot)
+    {
+        var existing = dbContext.FishingSpots.FirstOrDefault(s => s.SpotID == spot.SpotID);
+        if (existing == null) throw new InvalidOperationException($"FishingSpot with ID {spot.SpotID} was not found.");
+        existing.SpotName = spot.SpotName;
+        existing.Region = spot.Region;
+        existing.HasPiers = spot.HasPiers;
+        existing.BoatAccess = spot.BoatAccess;
+        dbContext.SaveChanges();
+    }
+
+    public void DeleteFishingSpot(int id)
+    {
+        var existing = dbContext.FishingSpots.FirstOrDefault(s => s.SpotID == id);
+        if (existing == null) throw new InvalidOperationException($"FishingSpot with ID {id} was not found.");
+        dbContext.FishingSpots.Remove(existing);
+        dbContext.SaveChanges();
+    }
+
+    public void AddCatchRecord(CatchRecord catchRecord) { dbContext.CatchRecords.Add(catchRecord); dbContext.SaveChanges(); }
+
+    public void UpdateCatchRecord(CatchRecord catchRecord)
+    {
+        var existing = dbContext.CatchRecords.FirstOrDefault(c => c.CatchID == catchRecord.CatchID);
+        if (existing == null) throw new InvalidOperationException($"CatchRecord with ID {catchRecord.CatchID} was not found.");
+        existing.UserID = catchRecord.UserID;
+        existing.FishID = catchRecord.FishID;
+        existing.CatchDate = catchRecord.CatchDate;
+        existing.Weight = catchRecord.Weight;
+        existing.LengthCm = catchRecord.LengthCm;
+        existing.Location = catchRecord.Location;
+        dbContext.SaveChanges();
+    }
+
+    public void DeleteCatchRecord(int id)
+    {
+        var existing = dbContext.CatchRecords.FirstOrDefault(c => c.CatchID == id);
+        if (existing == null) throw new InvalidOperationException($"CatchRecord with ID {id} was not found.");
+        dbContext.CatchRecords.Remove(existing);
         dbContext.SaveChanges();
     }
 }

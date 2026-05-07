@@ -1,0 +1,73 @@
+@model IReadOnlyList<FishingBuddy.Models.CatchRecord>
+@{
+    ViewData["Title"] = "Upravljanje evidencijom ulova";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Evidencija ulova", "/CatchRecord"),
+        ("Upravljanje", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+                <h1 class="h2 mb-1">Upravljanje evidencijom ulova</h1>
+                <p class="text-muted mb-0">Administrirajte zapise o ulovima, ribarima i ribolovnim mjestima.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary">@Model.Count zapisa</span>
+                <a class="btn btn-primary btn-sm" asp-controller="CatchRecord" asp-action="Create">Dodaj ulov</a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="CatchRecord" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="CatchRecord" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item" asp-controller="CatchRecord" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Datum ulova</th>
+                        <th scope="col">Lokacija</th>
+                        <th scope="col">Težina (kg)</th>
+                        <th scope="col">Duljina (cm)</th>
+                        <th scope="col" class="text-end">Radnje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">Nema unesenih zapisa o ulovima.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var record in Model)
+                        {
+                            <tr>
+                                <td>@record.CatchDate.ToString("dd.MM.yyyy")</td>
+                                <td class="fw-semibold">@record.Location</td>
+                                <td>@record.Weight.ToString("F2")</td>
+                                <td>@record.LengthCm.ToString("F1")</td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="CatchRecord" asp-action="Edit" asp-route-id="@record.CatchID">Uredi</a>
+                                        <a class="btn btn-sm btn-outline-danger" asp-controller="CatchRecord" asp-action="Delete" asp-route-id="@record.CatchID">Obriši</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

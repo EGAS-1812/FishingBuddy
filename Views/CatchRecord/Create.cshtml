@@ -1,0 +1,75 @@
+@model FishingBuddy.Models.CatchRecord
+@{
+    ViewData["Title"] = "Novi ulov";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Evidencija ulova", "/CatchRecord"),
+        ("Upravljanje", "/CatchRecord/Manage"),
+        ("Novi ulov", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Novi ulov</h1>
+            <p class="text-muted mb-0">Dodajte novi zapis o ulovu s datumom, težinom i lokacijom.</p>
+        </div>
+
+        <form asp-action="Create" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="UserID" class="form-label">Ribar</label>
+                    <select asp-for="UserID" asp-items="ViewBag.Users" class="form-select">
+                        <option value="">-- Odaberite ribara --</option>
+                    </select>
+                    <span asp-validation-for="UserID" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="FishID" class="form-label">Vrsta ribe</label>
+                    <select asp-for="FishID" asp-items="ViewBag.Fish" class="form-select">
+                        <option value="">-- Odaberite vrstu ribe --</option>
+                    </select>
+                    <span asp-validation-for="FishID" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="CatchDate" class="form-label">Datum ulova</label>
+                    <input asp-for="CatchDate" class="form-control" type="date" />
+                    <span asp-validation-for="CatchDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Location" class="form-label">Lokacija</label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label asp-for="Weight" class="form-label">Težina (kg)</label>
+                    <input asp-for="Weight" class="form-control" type="number" step="0.01" min="0" />
+                    <span asp-validation-for="Weight" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label asp-for="LengthCm" class="form-label">Duljina (cm)</label>
+                    <input asp-for="LengthCm" class="form-control" type="number" step="0.1" min="0" />
+                    <span asp-validation-for="LengthCm" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Stvori zapis</button>
+                <a class="btn btn-outline-secondary" asp-controller="CatchRecord" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

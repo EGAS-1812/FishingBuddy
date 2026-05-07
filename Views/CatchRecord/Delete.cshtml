@@ -1,0 +1,41 @@
+@model FishingBuddy.Models.CatchRecord
+@{
+    ViewData["Title"] = "Obriši zapis o ulovu";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Evidencija ulova", "/CatchRecord"),
+        ("Upravljanje", "/CatchRecord/Manage"),
+        ("Obriši", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="h2 mb-1 text-danger">Potvrda brisanja</h1>
+        <p class="text-muted mb-4">Jeste li sigurni da želite obrisati ovaj zapis o ulovu?</p>
+
+        <dl class="row">
+            <dt class="col-sm-3">Datum ulova</dt>
+            <dd class="col-sm-9">@Model.CatchDate.ToString("dd.MM.yyyy")</dd>
+
+            <dt class="col-sm-3">Lokacija</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+
+            <dt class="col-sm-3">Težina (kg)</dt>
+            <dd class="col-sm-9">@Model.Weight.ToString("F2")</dd>
+
+            <dt class="col-sm-3">Duljina (cm)</dt>
+            <dd class="col-sm-9">@Model.LengthCm.ToString("F1")</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input asp-for="CatchID" type="hidden" />
+            @Html.AntiForgeryToken()
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Obriši</button>
+                <a class="btn btn-outline-secondary" asp-controller="CatchRecord" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>

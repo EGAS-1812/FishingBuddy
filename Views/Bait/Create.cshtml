@@ -1,0 +1,64 @@
+@model FishingBuddy.Models.Bait
+@{
+    ViewData["Title"] = "Novi mamac";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Mamci", "/Bait"),
+        ("Upravljanje", "/Bait/Manage"),
+        ("Novi mamac", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Novi mamac</h1>
+            <p class="text-muted mb-0">Dodajte novi mamac s tipom, metodom pripreme i prosječnom cijenom.</p>
+        </div>
+
+        <form asp-action="Create" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="BaitName" class="form-label">Naziv mamca</label>
+                    <input asp-for="BaitName" class="form-control" />
+                    <span asp-validation-for="BaitName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="BaitType" class="form-label">Tip mamca</label>
+                    <select asp-for="BaitType" class="form-select">
+                        <option value="">-- Odaberite tip --</option>
+                        <option value="Live">Živi</option>
+                        <option value="Dead">Mrtvi</option>
+                        <option value="Artificial">Umjetni</option>
+                    </select>
+                    <span asp-validation-for="BaitType" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="PreparationMethod" class="form-label">Priprema</label>
+                    <textarea asp-for="PreparationMethod" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="PreparationMethod" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label asp-for="AveragePriceEur" class="form-label">Prosječna cijena (€)</label>
+                    <input asp-for="AveragePriceEur" class="form-control" type="number" step="0.01" min="0" />
+                    <span asp-validation-for="AveragePriceEur" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Stvori mamac</button>
+                <a class="btn btn-outline-secondary" asp-controller="Bait" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

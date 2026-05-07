@@ -1,0 +1,61 @@
+@model FishingBuddy.Models.FishingSpot
+@{
+    ViewData["Title"] = "Novo ribolovno mjesto";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Početna", "/"),
+        ("Ribolovna mjesta", "/FishingSpot"),
+        ("Upravljanje", "/FishingSpot/Manage"),
+        ("Novo ribolovno mjesto", null)
+    };
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Novo ribolovno mjesto</h1>
+            <p class="text-muted mb-0">Dodajte novo ribolovno mjesto s regijom i dostupnom infrastrukturom.</p>
+        </div>
+
+        <form asp-action="Create" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="SpotName" class="form-label">Naziv mjesta</label>
+                    <input asp-for="SpotName" class="form-control" />
+                    <span asp-validation-for="SpotName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Region" class="form-label">Regija</label>
+                    <input asp-for="Region" class="form-control" />
+                    <span asp-validation-for="Region" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="form-check">
+                        <input asp-for="HasPiers" class="form-check-input" type="checkbox" />
+                        <label asp-for="HasPiers" class="form-check-label">Mol/Pristanište</label>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="form-check">
+                        <input asp-for="BoatAccess" class="form-check-input" type="checkbox" />
+                        <label asp-for="BoatAccess" class="form-check-label">Pristup brodom</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Stvori mjesto</button>
+                <a class="btn btn-outline-secondary" asp-controller="FishingSpot" asp-action="Manage">Odustani</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
