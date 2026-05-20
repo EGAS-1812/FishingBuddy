@@ -24,6 +24,45 @@ namespace FishingBuddy.Controllers
             return View(_repository.Fish.OrderBy(f => f.SpeciesName).ToList());
         }
 
+        [HttpGet]
+        public IActionResult Search(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var query = _repository.Fish.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                query = query.Where(f =>
+                    (f.SpeciesName != null && f.SpeciesName.Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (f.CatchSeason.ToString().Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (f.FleshColor.ToString().Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (f.FavouriteBait != null && f.FavouriteBait.BaitName != null && f.FavouriteBait.BaitName.Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (f.PreferredMethod != null && f.PreferredMethod.TechniqueName != null && f.PreferredMethod.TechniqueName.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            return PartialView("_FishRows", query.OrderBy(f => f.SpeciesName).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult Autocomplete(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var results = _repository.Fish
+                .Where(f => string.IsNullOrWhiteSpace(normalized) || f.SpeciesName.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(f => f.SpeciesName)
+                .Take(10)
+                .Select(f => new
+                {
+                    id = f.FishID,
+                    label = f.SpeciesName,
+                    subtitle = f.CatchSeason.ToString()
+                })
+                .ToList();
+
+            return Json(results);
+        }
+
         public IActionResult Details(int id)
         {
             var fish = _repository.GetFishById(id);
@@ -50,6 +89,8 @@ namespace FishingBuddy.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Fish fish)
         {
+            ValidateRelatedEntities(fish);
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName");
@@ -75,6 +116,9 @@ namespace FishingBuddy.Controllers
         public IActionResult Edit(int id, Fish fish)
         {
             if (id != fish.FishID) return NotFound();
+
+            ValidateRelatedEntities(fish);
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName", fish.FavouriteBaitID);
@@ -99,6 +143,19 @@ namespace FishingBuddy.Controllers
         {
             _repository.DeleteFish(id);
             return RedirectToAction(nameof(Manage));
+        }
+
+        private void ValidateRelatedEntities(Fish fish)
+        {
+            if (_repository.GetBaitById(fish.FavouriteBaitID) == null)
+            {
+                ModelState.AddModelError(nameof(Fish.FavouriteBaitID), "Selected bait is not valid.");
+            }
+
+            if (_repository.GetTechniqueById(fish.PreferredMethodID) == null)
+            {
+                ModelState.AddModelError(nameof(Fish.PreferredMethodID), "Selected technique is not valid.");
+            }
         }
     }
 }

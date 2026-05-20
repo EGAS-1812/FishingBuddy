@@ -22,24 +22,42 @@
 
             <div class="row g-3">
                 <div class="col-12 col-md-6">
-                    <label asp-for="UserID" class="form-label">Ribar</label>
-                    <select asp-for="UserID" asp-items="ViewBag.Users" class="form-select">
-                        <option value="">-- Odaberite ribara --</option>
-                    </select>
+                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.UserID),
+                        ["FieldId"] = nameof(Model.UserID),
+                        ["Label"] = "Ribar",
+                        ["Endpoint"] = Url.Action("Autocomplete", "User"),
+                        ["SelectedValue"] = Model.UserID > 0 ? Model.UserID.ToString() : string.Empty,
+                        ["SelectedLabel"] = string.Empty,
+                        ["Placeholder"] = "Upisite ime ribara"
+                    })
                     <span asp-validation-for="UserID" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12 col-md-6">
-                    <label asp-for="FishID" class="form-label">Vrsta ribe</label>
-                    <select asp-for="FishID" asp-items="ViewBag.Fish" class="form-select">
-                        <option value="">-- Odaberite vrstu ribe --</option>
-                    </select>
+                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.FishID),
+                        ["FieldId"] = nameof(Model.FishID),
+                        ["Label"] = "Vrsta ribe",
+                        ["Endpoint"] = Url.Action("Autocomplete", "Fish"),
+                        ["SelectedValue"] = Model.FishID > 0 ? Model.FishID.ToString() : string.Empty,
+                        ["SelectedLabel"] = string.Empty,
+                        ["Placeholder"] = "Upisite vrstu ribe"
+                    })
                     <span asp-validation-for="FishID" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12 col-md-6">
-                    <label asp-for="CatchDate" class="form-label">Datum ulova</label>
-                    <input asp-for="CatchDate" class="form-control" type="date" />
+                    @await Html.PartialAsync("_DateTimeInput", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.CatchDate),
+                        ["FieldId"] = nameof(Model.CatchDate),
+                        ["Label"] = "Datum ulova",
+                        ["Value"] = Model.CatchDate,
+                        ["Placeholder"] = "dd.mm.yyyy hh:mm"
+                    })
                     <span asp-validation-for="CatchDate" class="text-danger small"></span>
                 </div>
 

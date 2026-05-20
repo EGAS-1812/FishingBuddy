@@ -1,0 +1,38 @@
+@model IReadOnlyList<FishingBuddy.Models.FishingSpot>
+@{
+    var isManage = (ViewData["ManageMode"] as bool?) ?? string.Equals(Context.Request.Query["mode"], "manage", StringComparison.OrdinalIgnoreCase);
+}
+
+@if (Model.Count == 0)
+{
+    <tr>
+        <td colspan="@(isManage ? 5 : 3)" class="text-center py-4 text-muted">Nema trazenih ribolovnih mjesta.</td>
+    </tr>
+}
+else
+{
+    foreach (var spot in Model)
+    {
+        <tr>
+            <td class="fw-semibold">@spot.SpotName</td>
+            <td>@spot.Region</td>
+            @if (isManage)
+            {
+                <td class="text-center">@(spot.HasPiers ? "Da" : "Ne")</td>
+                <td class="text-center">@(spot.BoatAccess ? "Da" : "Ne")</td>
+                <td class="text-end">
+                    <div class="d-inline-flex gap-2">
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="FishingSpot" asp-action="Edit" asp-route-id="@spot.SpotID">Uredi</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-controller="FishingSpot" asp-action="Delete" asp-route-id="@spot.SpotID">Obrisi</a>
+                    </div>
+                </td>
+            }
+            else
+            {
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-controller="FishingSpot" asp-action="Details" asp-route-id="@spot.SpotID">Detalji</a>
+                </td>
+            }
+        </tr>
+    }
+}

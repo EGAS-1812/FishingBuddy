@@ -1,0 +1,41 @@
+@inject FishingBuddy.Repositories.IFishingRepository Repository
+@model IReadOnlyList<FishingBuddy.Models.CatchRecord>
+@{
+    var isManage = (ViewData["ManageMode"] as bool?) ?? string.Equals(Context.Request.Query["mode"], "manage", StringComparison.OrdinalIgnoreCase);
+}
+
+@if (Model.Count == 0)
+{
+    <tr>
+        <td colspan="@(isManage ? 5 : 3)" class="text-center py-4 text-muted">Nema trazenih zapisa o ulovu.</td>
+    </tr>
+}
+else
+{
+    foreach (var record in Model)
+    {
+        var fisherman = Repository.GetUserById(record.UserID);
+        <tr>
+            <td>@record.CatchDate.ToString("dd.MM.yyyy")</td>
+            @if (isManage)
+            {
+                <td class="fw-semibold">@record.Location</td>
+                <td>@record.Weight.ToString("F2")</td>
+                <td>@record.LengthCm.ToString("F1")</td>
+                <td class="text-end">
+                    <div class="d-inline-flex gap-2">
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="CatchRecord" asp-action="Edit" asp-route-id="@record.CatchID">Uredi</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-controller="CatchRecord" asp-action="Delete" asp-route-id="@record.CatchID">Obrisi</a>
+                    </div>
+                </td>
+            }
+            else
+            {
+                <td>@(fisherman?.Username ?? "(nepoznato)")</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-controller="CatchRecord" asp-action="Details" asp-route-id="@record.CatchID">Detalji</a>
+                </td>
+            }
+        </tr>
+    }
+}

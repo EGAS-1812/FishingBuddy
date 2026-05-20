@@ -23,6 +23,23 @@ namespace FishingBuddy.Controllers
             return View(_repository.FishingSpots.OrderBy(s => s.SpotName).ToList());
         }
 
+        [HttpGet]
+        public IActionResult Search(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var query = _repository.FishingSpots.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                query = query.Where(s =>
+                    (s.SpotName != null && s.SpotName.Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (s.Region != null && s.Region.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            return PartialView("_FishingSpotRows", query.OrderBy(s => s.SpotName).ToList());
+        }
+
         public IActionResult Details(int id)
         {
             var spot = _repository.GetFishingSpotById(id);

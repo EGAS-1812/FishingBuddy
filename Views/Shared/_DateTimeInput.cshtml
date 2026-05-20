@@ -1,0 +1,21 @@
+@{
+    var fieldName = ViewData["FieldName"] as string ?? string.Empty;
+    var fieldId = ViewData["FieldId"] as string ?? fieldName;
+    var label = ViewData["Label"] as string ?? fieldName;
+    var placeholder = ViewData["Placeholder"] as string ?? "dd.mm.yyyy hh:mm";
+    var value = ViewData["Value"] as DateTime?;
+    var initialValue = value.HasValue ? value.Value.ToString("yyyy-MM-ddTHH:mm:ss") : string.Empty;
+}
+
+<div class="fb-datetime-control" data-datetime-control>
+    <label class="form-label" for="@($"{fieldId}Display")">@label</label>
+    <input type="hidden" id="@fieldId" name="@fieldName" value="@initialValue" data-datetime-value />
+    <input
+        type="text"
+        id="@($"{fieldId}Display")"
+        class="form-control"
+        placeholder="@placeholder"
+        autocomplete="off"
+        data-datetime-display />
+    <div class="form-text">Unesite datum i vrijeme prema lokalnom formatu preglednika.</div>
+</div>

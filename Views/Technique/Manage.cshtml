@@ -18,19 +18,28 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-primary">@Model.Count tehnika</span>
-                <a class="btn btn-primary btn-sm" asp-controller="Technique" asp-action="Create">Dodaj tehniku</a>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="Technique" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
-                        <li><a class="dropdown-item" asp-controller="Technique" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
-                        <li><a class="dropdown-item" asp-controller="Technique" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                <div class="dropdown fb-crud-dropdown">
+                    <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu fb-crud-menu">
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="Technique" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Technique" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Technique" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="fb-list-search"
+             data-ajax-search
+             data-search-endpoint="@Url.Action("Search", "Technique")"
+             data-search-mode="manage"
+             data-empty-colspan="4"
+             data-empty-message="Nema trazenih tehnika.">
+            <label class="form-label" for="techniqueManageSearch">Pretrazi tehnike</label>
+            <input id="techniqueManageSearch" type="search" class="form-control" placeholder="Naziv, tutorial ili povezane ribe..." data-search-input autocomplete="off" />
+            <div class="form-text fb-search-status" data-search-status aria-live="polite">Prikaz svih zapisa.</div>
+
+            <div class="table-responsive">
             <table class="table table-hover table-bordered table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
@@ -40,43 +49,12 @@
                         <th scope="col" class="text-end">Radnje</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if (Model.Count == 0)
-                    {
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">
-                                Nema unesenih tehnika.
-                            </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (var technique in Model)
-                        {
-                            <tr>
-                                <td class="fw-semibold">@technique.TechniqueName</td>
-                                <td>
-                                    @if (string.IsNullOrWhiteSpace(technique.TutorialUrl))
-                                    {
-                                        <span class="text-muted">Nije dodan vodic</span>
-                                    }
-                                    else
-                                    {
-                                        <a href="@technique.TutorialUrl" target="_blank" rel="noopener noreferrer">Pogledaj vodic</a>
-                                    }
-                                </td>
-                                <td class="text-center">@(technique.FishUsingTechnique?.Count ?? 0)</td>
-                                <td class="text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>
-                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    }
+                <tbody data-search-target>
+                    @await Html.PartialAsync("_TechniqueRows", Model, new ViewDataDictionary(ViewData) { ["ManageMode"] = true })
                 </tbody>
             </table>
         </div>
+        </div>
     </div>
 </section>
+

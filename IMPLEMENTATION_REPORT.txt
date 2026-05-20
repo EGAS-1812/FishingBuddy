@@ -1,0 +1,241 @@
+FishingBuddy Implementation Report
+Date: 2026-05-18
+
+Purpose
+This report documents the changes implemented for the grading criteria:
+1) Full CRUD support + list searching
+2) Custom dropdown with AJAX autocomplete
+3) Validation (client + server)
+4) Advanced JavaScript + animations
+5) Custom date+time control via partial view
+
+======================================================================
+A) REQUIREMENT COVERAGE SUMMARY
+======================================================================
+
+A1) Full CRUD pages (view/search/create/edit/delete)
+Status: Implemented for active managed entities:
+- Bait
+- Fish
+- CatchRecord
+- FishingSpot
+- Technique
+- User
+
+Evidence (controllers):
+- Controllers/BaitController.cs:27 (Search), 45 (Autocomplete), standard CRUD actions present
+- Controllers/FishController.cs:28 (Search), 48 (Autocomplete), 92/120 (server validation call), 148 (relation validator)
+- Controllers/CatchRecordController.cs:28 (Search), 70/98 (server validation call), 126 (relation validator)
+- Controllers/FishingSpotController.cs:27 (Search)
+- Controllers/TechniqueController.cs:31 (Search), 49 (Autocomplete)
+- Controllers/UserController.cs:27 (Search), 44 (Autocomplete)
+
+A2) AJAX search on each list page
+Status: Implemented on both Index + Manage pages for all 6 managed entities.
+
+Evidence (list pages):
+- Views/Bait/Index.cshtml:28, Views/Bait/Manage.cshtml:34
+- Views/Fish/Index.cshtml:28, Views/Fish/Manage.cshtml:34
+- Views/CatchRecord/Index.cshtml:28, Views/CatchRecord/Manage.cshtml:34
+- Views/FishingSpot/Index.cshtml:28, Views/FishingSpot/Manage.cshtml:34
+- Views/Technique/Index.cshtml:28, Views/Technique/Manage.cshtml:34
+- Views/User/Index.cshtml:28, Views/User/Manage.cshtml:34
+
+Row partial rendering used by AJAX endpoints:
+- Views/Bait/_BaitRows.cshtml
+- Views/Fish/_FishRows.cshtml
+- Views/CatchRecord/_CatchRecordRows.cshtml
+- Views/FishingSpot/_FishingSpotRows.cshtml
+- Views/Technique/_TechniqueRows.cshtml
+- Views/User/_UserRows.cshtml
+
+A3) Custom dropdown with autocomplete
+Status: Implemented reusable custom control + keyboard navigation.
+
+Shared control:
+- Views/Shared/_AutocompleteDropdown.cshtml:11, 13, 21, 27, 28
+
+Used in forms:
+- Fish Create/Edit:
+  - Views/Fish/Create.cshtml:54, 68
+  - Views/Fish/Edit.cshtml:61, 75
+- CatchRecord Create/Edit:
+  - Views/CatchRecord/Create.cshtml:25, 39
+  - Views/CatchRecord/Edit.cshtml:32, 46
+
+AJAX JSON endpoints:
+- BaitController.cs:45
+- FishController.cs:48
+- TechniqueController.cs:49
+- UserController.cs:44
+
+A4) Validation (client + server)
+Status: Implemented.
+
+Server-side:
+- DataAnnotations remain in models (Bait, Fish, CatchRecord, etc.).
+- Added relation-validation guards:
+  - Controllers/FishController.cs:92, 120, 148
+  - Controllers/CatchRecordController.cs:70, 98, 126
+
+Client-side:
+- Existing unobtrusive validation script partial retained in all forms.
+- Blur/change trigger added in JS:
+  - wwwroot/js/site.js:476 (initValidationOnBlur)
+
+Validation UI styling:
+- wwwroot/css/site.css (validation visual polish section; text-danger/input-validation-error/summary styles)
+
+A5) Advanced JavaScript + animation
+Status: Implemented.
+
+Main JS modules:
+- wwwroot/js/site.js:102 (animateRows)
+- wwwroot/js/site.js:127 (setSearchLoadingState)
+- wwwroot/js/site.js:135 (initAjaxSearchTables)
+- wwwroot/js/site.js:219 (initPageLoadReveal)
+- wwwroot/js/site.js:240 (initAutocompleteDropdowns)
+- wwwroot/js/site.js:430 (initDateTimeInputs)
+- wwwroot/js/site.js:476 (initValidationOnBlur)
+- wwwroot/js/site.js:497-501 (startup wiring)
+
+Main CSS animation blocks:
+- wwwroot/css/site.css:716 (search loading pulse)
+- wwwroot/css/site.css:728, 743 (dropdown animated open/close)
+- wwwroot/css/site.css:754-772 (dropdown item stagger)
+- wwwroot/css/site.css:845 (pill bubble keyframes)
+- wwwroot/css/site.css:883 (row reveal keyframes)
+- wwwroot/css/site.css:1046+ (reduced-motion coverage)
+
+A6) Date+time control (partial view)
+Status: Implemented custom control, no browser datepicker.
+
+Shared control:
+- Views/Shared/_DateTimeInput.cshtml:10, 12, 19
+
+Used in forms:
+- Views/CatchRecord/Create.cshtml:53
+- Views/CatchRecord/Edit.cshtml:60
+
+Formatting support in JS:
+- parseLocaleDateTime + formatLocaleDateTime in wwwroot/js/site.js (hr/en aware parsing and display)
+
+======================================================================
+B) ADDITIONAL UI CHANGE (FISH GIF HERO)
+======================================================================
+
+B1) fish.gif integration
+- Source file copied to web assets:
+  - wwwroot/images/fish.gif
+- Home hero changed so fish.gif is a layered background of the large panel (between title and search bar).
+  - Views/Home/Index.cshtml:20, 25
+  - wwwroot/css/site.css:521 (background image layer)
+  - wwwroot/css/site.css:537 (overlay readability layer)
+  - wwwroot/css/site.css:594 (fish drift keyframes)
+  - wwwroot/css/site.css:684, 690 (mobile tuning)
+
+B2) Revert support
+- Revert note preserved in view:
+  - Views/Home/Index.cshtml:25
+
+======================================================================
+C) FILES ADDED / CREATED
+======================================================================
+
+- Views/Shared/_AutocompleteDropdown.cshtml
+- Views/Shared/_DateTimeInput.cshtml
+- Views/Bait/_BaitRows.cshtml
+- Views/Fish/_FishRows.cshtml
+- Views/CatchRecord/_CatchRecordRows.cshtml
+- Views/FishingSpot/_FishingSpotRows.cshtml
+- Views/Technique/_TechniqueRows.cshtml
+- Views/User/_UserRows.cshtml
+- wwwroot/images/fish.gif
+- .github/skills/js-animation-mastery/SKILL.md
+- IMPLEMENTATION_REPORT.txt (this file)
+
+======================================================================
+D) LINES TO REVISIT (STUDY / UNDERSTAND)
+======================================================================
+
+1) AJAX endpoint filtering logic
+- Controllers/BaitController.cs:27
+- Controllers/FishController.cs:28
+- Controllers/CatchRecordController.cs:28
+- Controllers/FishingSpotController.cs:27
+- Controllers/TechniqueController.cs:31
+- Controllers/UserController.cs:27
+Why revisit: string matching logic, expected results, and edge cases.
+
+2) Server-side relational validation
+- Controllers/FishController.cs:148
+- Controllers/CatchRecordController.cs:126
+Why revisit: preventing invalid foreign-key submissions.
+
+3) Custom autocomplete control contract
+- Views/Shared/_AutocompleteDropdown.cshtml:11-28
+- wwwroot/js/site.js:240+
+Why revisit: hidden input + display input synchronization and keyboard accessibility.
+
+4) Custom date-time control + locale parsing
+- Views/Shared/_DateTimeInput.cshtml:10-19
+- wwwroot/js/site.js:22+ (parseLocaleDateTime), 64+ (formatLocaleDateTime), 430+ (initDateTimeInputs)
+Why revisit: hr/en parsing assumptions and conversion to hidden ISO-like value.
+
+5) AJAX table search engine
+- wwwroot/js/site.js:135+
+Why revisit: debounce, abort controller, partial HTML replacement, loading states.
+
+6) Motion architecture
+- wwwroot/css/site.css:716, 728, 845, 883, 1046
+Why revisit: timing/easing strategy, stagger rules, reduced-motion support.
+
+7) Hero fish background composition
+- wwwroot/css/site.css:521, 537, 594, 684, 690
+- Views/Home/Index.cshtml:20, 25
+Why revisit: layered backgrounds, readability overlays, responsive visual tuning.
+
+======================================================================
+E) WHAT TO RESEARCH TO UNDERSTAND THESE CHANGES
+======================================================================
+
+- ASP.NET MVC partial views with ViewDataDictionary
+- jQuery unobtrusive validation + triggering .valid() on blur/change
+- Fetch API + AbortController + debounce patterns
+- Accessible custom combobox/listbox behavior (WAI-ARIA basics)
+- CSS animation easing functions (cubic-bezier)
+- CSS blend modes (soft-light/screen) and layered gradients
+- Locale-aware date parsing/formatting pitfalls in JavaScript
+
+======================================================================
+F) FISHINGLICENSE SCOPE REVIEW (COMPLETED)
+======================================================================
+
+Verified coverage:
+- Model exists with date fields:
+  - Models/FishingLicense.cs:10-11
+- Repository and EF data access exist:
+  - Repositories/IFishingRepository.cs:11, 19
+  - Repositories/EfFishingRepository.cs:29, 60
+  - Repositories/MockFishingRepository.cs:11, 87-94, 205
+- DbContext and seed sync exist:
+  - Data/FishingBuddyDbContext.cs:12, 43, 45
+  - Data/DbInitializer.cs:17, 131, 138
+- Read-only UI display exists under User details:
+  - Views/User/Details.cshtml:4, 5, 28, 32, 35
+
+Verified gap:
+- No dedicated FishingLicense controller exists in Controllers/.
+- No dedicated FishingLicense CRUD views exist in Views/FishingLicense/.
+
+Conclusion:
+- FishingLicense is currently integrated as a related sub-entity of User (data + read-only display), not as a standalone managed CRUD area.
+- If evaluation requires standalone CRUD for every model type, add FishingLicense controller + CRUD pages + AJAX list search + custom date-time partial usage for BeginDate/ExpirationDate.
+
+======================================================================
+G) BUILD / VALIDATION
+======================================================================
+
+- Build command executed: dotnet build FishingBuddy.slnx
+- Result: build succeeded (warnings present, no blocking compile errors).
+- CSS/JS/View targeted error checks for modified files returned no errors.

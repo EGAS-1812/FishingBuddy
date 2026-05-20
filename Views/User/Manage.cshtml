@@ -18,19 +18,28 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-primary">@Model.Count ribara</span>
-                <a class="btn btn-primary btn-sm" asp-controller="User" asp-action="Create">Dodaj ribara</a>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                <div class="dropdown fb-crud-dropdown">
+                    <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu fb-crud-menu">
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="User" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="User" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="User" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="fb-list-search"
+             data-ajax-search
+             data-search-endpoint="@Url.Action("Search", "User")"
+             data-search-mode="manage"
+             data-empty-colspan="4"
+             data-empty-message="Nema trazenih ribara.">
+            <label class="form-label" for="userManageSearch">Pretrazi ribare</label>
+            <input id="userManageSearch" type="search" class="form-control" placeholder="Korisnicko ime, e-mail ili ulovi..." data-search-input autocomplete="off" />
+            <div class="form-text fb-search-status" data-search-status aria-live="polite">Prikaz svih zapisa.</div>
+
+            <div class="table-responsive">
             <table class="table table-hover table-bordered table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
@@ -40,32 +49,13 @@
                         <th scope="col" class="text-end">Radnje</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if (Model.Count == 0)
-                    {
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">Nema unesenih ribara.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (var user in Model)
-                        {
-                            <tr>
-                                <td class="fw-semibold">@user.Username</td>
-                                <td>@user.Email</td>
-                                <td class="text-center">@(user.CatchRecords?.Count ?? 0)</td>
-                                <td class="text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="User" asp-action="Edit" asp-route-id="@user.UserID">Uredi</a>
-                                        <a class="btn btn-sm btn-outline-danger" asp-controller="User" asp-action="Delete" asp-route-id="@user.UserID">Obriši</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    }
+                <tbody data-search-target>
+                    @await Html.PartialAsync("_UserRows", Model, new ViewDataDictionary(ViewData) { ["ManageMode"] = true })
                 </tbody>
             </table>
         </div>
+        </div>
     </div>
 </section>
+
+

@@ -22,37 +22,7 @@
         <h1 class="fb-home-hero-title display-4 fw-bold">FishingBuddy</h1>
         <p class="fb-home-hero-tagline lead fst-italic mb-0">Your #1 Fishing application</p>
     </div>
-    <div class="fb-home-hero-visual" aria-hidden="true">
-        <div class="fb-home-hero-pill">
-            <svg class="fb-home-hero-fish" viewBox="0 0 640 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false">
-                <defs>
-                    <linearGradient id="fbFishBody" x1="128" y1="60" x2="515" y2="158" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#CFEFFF" />
-                        <stop offset="0.48" stop-color="#6EC0F0" />
-                        <stop offset="1" stop-color="#1E6DAD" />
-                    </linearGradient>
-                    <linearGradient id="fbFishFin" x1="252" y1="54" x2="361" y2="166" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#F4FBFF" stop-opacity="0.92" />
-                        <stop offset="1" stop-color="#3F93CE" stop-opacity="0.88" />
-                    </linearGradient>
-                    <linearGradient id="fbFishTail" x1="42" y1="65" x2="138" y2="159" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#84D2FF" />
-                        <stop offset="1" stop-color="#14558A" />
-                    </linearGradient>
-                </defs>
-                <ellipse cx="320" cy="110" rx="260" ry="64" fill="rgba(196, 233, 255, 0.14)" />
-                <path d="M129 110C164 71 229 49 324 56C390 61 455 80 505 110C455 140 390 159 324 164C229 171 164 149 129 110Z" fill="url(#fbFishBody)" />
-                <path d="M129 110L47 60L63 110L47 160L129 110Z" fill="url(#fbFishTail)" />
-                <path d="M269 69C294 41 332 34 369 48C344 61 323 75 305 100L269 69Z" fill="url(#fbFishFin)" fill-opacity="0.95" />
-                <path d="M284 148C312 129 348 127 385 141C354 151 328 166 307 187L284 148Z" fill="url(#fbFishFin)" fill-opacity="0.82" />
-                <path d="M360 76C406 84 447 97 474 110C447 123 406 136 360 144" stroke="rgba(244, 251, 255, 0.52)" stroke-width="8" stroke-linecap="round" />
-                <path d="M385 83C402 91 412 100 412 110C412 120 402 129 385 137" stroke="#0D3E67" stroke-opacity="0.38" stroke-width="4" stroke-linecap="round" />
-                <circle cx="447" cy="101" r="8" fill="#F8FDFF" fill-opacity="0.98" />
-                <circle cx="449" cy="101" r="3.5" fill="#123A60" />
-                <path d="M496 113C506 113 514 116 520 122" stroke="#0E3B62" stroke-opacity="0.48" stroke-width="4" stroke-linecap="round" />
-            </svg>
-        </div>
-    </div>
+    @* Revert note: previous inline blue fish SVG was replaced by fish.gif as a layered background in .fb-home-search-panel. Reapply the prior SVG by restoring the former hero visual block if you want the old state. *@
     <div class="row justify-content-center fb-home-search-row">
         <div class="col-lg-10 col-xl-8 mx-auto">
             <form asp-action="Index" asp-controller="Home" method="get" class="fb-search-form" role="search" aria-label="Pretraga riba">

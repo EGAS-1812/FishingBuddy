@@ -23,6 +23,43 @@ namespace FishingBuddy.Controllers
             return View(_repository.Baits.OrderBy(b => b.BaitName).ToList());
         }
 
+        [HttpGet]
+        public IActionResult Search(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var query = _repository.Baits.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                query = query.Where(b =>
+                    (b.BaitName != null && b.BaitName.Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (b.BaitType.ToString().Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (b.PreparationMethod != null && b.PreparationMethod.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            return PartialView("_BaitRows", query.OrderBy(b => b.BaitName).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult Autocomplete(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var results = _repository.Baits
+                .Where(b => string.IsNullOrWhiteSpace(normalized) || b.BaitName.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(b => b.BaitName)
+                .Take(10)
+                .Select(b => new
+                {
+                    id = b.BaitID,
+                    label = b.BaitName,
+                    subtitle = b.BaitType.ToString()
+                })
+                .ToList();
+
+            return Json(results);
+        }
+
         public IActionResult Details(int id)
         {
             var bait = _repository.GetBaitById(id);

@@ -1,0 +1,46 @@
+@model IReadOnlyList<FishingBuddy.Models.Technique>
+@{
+    var isManage = (ViewData["ManageMode"] as bool?) ?? string.Equals(Context.Request.Query["mode"], "manage", StringComparison.OrdinalIgnoreCase);
+}
+
+@if (Model.Count == 0)
+{
+    <tr>
+        <td colspan="@(isManage ? 4 : 2)" class="text-center py-4 text-muted">Nema trazenih tehnika.</td>
+    </tr>
+}
+else
+{
+    foreach (var technique in Model)
+    {
+        <tr>
+            <td class="fw-semibold">@technique.TechniqueName</td>
+            @if (isManage)
+            {
+                <td>
+                    @if (string.IsNullOrWhiteSpace(technique.TutorialUrl))
+                    {
+                        <span class="text-muted">Nije dodan vodic</span>
+                    }
+                    else
+                    {
+                        <a href="@technique.TutorialUrl" target="_blank" rel="noopener noreferrer">Pogledaj vodic</a>
+                    }
+                </td>
+                <td class="text-center">@(technique.FishUsingTechnique?.Count ?? 0)</td>
+                <td class="text-end">
+                    <div class="d-inline-flex gap-2">
+                        <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
+                    </div>
+                </td>
+            }
+            else
+            {
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>
+                </td>
+            }
+        </tr>
+    }
+}

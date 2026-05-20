@@ -1,5 +1,11 @@
 @model FishingBuddy.Models.Fish
+@using System.Linq
 @{
+    var baitOptions = ViewBag.Baits as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
+    var techniqueOptions = ViewBag.Techniques as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
+    var selectedBaitLabel = baitOptions.FirstOrDefault(x => x.Value == Model.FavouriteBaitID.ToString())?.Text ?? string.Empty;
+    var selectedTechniqueLabel = techniqueOptions.FirstOrDefault(x => x.Value == Model.PreferredMethodID.ToString())?.Text ?? string.Empty;
+
     ViewData["Title"] = "Uredi vrstu ribe";
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
     {
@@ -52,18 +58,30 @@
                 </div>
 
                 <div class="col-12 col-md-6">
-                    <label asp-for="FavouriteBaitID" class="form-label">Omiljeni mamac</label>
-                    <select asp-for="FavouriteBaitID" asp-items="ViewBag.Baits" class="form-select">
-                        <option value="">-- Odaberite mamac --</option>
-                    </select>
+                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.FavouriteBaitID),
+                        ["FieldId"] = nameof(Model.FavouriteBaitID),
+                        ["Label"] = "Omiljeni mamac",
+                        ["Endpoint"] = Url.Action("Autocomplete", "Bait"),
+                        ["SelectedValue"] = Model.FavouriteBaitID.ToString(),
+                        ["SelectedLabel"] = selectedBaitLabel,
+                        ["Placeholder"] = "Upisite naziv mamca"
+                    })
                     <span asp-validation-for="FavouriteBaitID" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12 col-md-6">
-                    <label asp-for="PreferredMethodID" class="form-label">Preferirana tehnika</label>
-                    <select asp-for="PreferredMethodID" asp-items="ViewBag.Techniques" class="form-select">
-                        <option value="">-- Odaberite tehniku --</option>
-                    </select>
+                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.PreferredMethodID),
+                        ["FieldId"] = nameof(Model.PreferredMethodID),
+                        ["Label"] = "Preferirana tehnika",
+                        ["Endpoint"] = Url.Action("Autocomplete", "Technique"),
+                        ["SelectedValue"] = Model.PreferredMethodID.ToString(),
+                        ["SelectedLabel"] = selectedTechniqueLabel,
+                        ["Placeholder"] = "Upisite naziv tehnike"
+                    })
                     <span asp-validation-for="PreferredMethodID" class="text-danger small"></span>
                 </div>
             </div>

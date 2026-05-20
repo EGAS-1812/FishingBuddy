@@ -1,0 +1,29 @@
+@{
+    var fieldName = ViewData["FieldName"] as string ?? string.Empty;
+    var fieldId = ViewData["FieldId"] as string ?? fieldName;
+    var endpoint = ViewData["Endpoint"] as string ?? string.Empty;
+    var selectedValue = ViewData["SelectedValue"]?.ToString() ?? string.Empty;
+    var selectedLabel = ViewData["SelectedLabel"] as string ?? string.Empty;
+    var label = ViewData["Label"] as string ?? fieldName;
+    var placeholder = ViewData["Placeholder"] as string ?? "Pocnite tipkati...";
+}
+
+<div class="fb-autocomplete" data-autocomplete data-endpoint="@endpoint" data-placeholder="@placeholder">
+    <label class="form-label" for="@($"{fieldId}Display")">@label</label>
+    <input type="hidden" id="@fieldId" name="@fieldName" value="@selectedValue" data-autocomplete-value />
+    <input
+        id="@($"{fieldId}Display")"
+        type="text"
+        class="form-control fb-autocomplete-input"
+        value="@selectedLabel"
+        placeholder="@placeholder"
+        autocomplete="off"
+        data-autocomplete-text
+        data-selected-label="@selectedLabel"
+        role="combobox"
+        aria-expanded="false"
+        aria-autocomplete="list"
+        aria-controls="@($"{fieldId}List")" />
+    <ul id="@($"{fieldId}List")" class="fb-autocomplete-list" role="listbox" data-autocomplete-list></ul>
+    <div class="form-text" data-autocomplete-status aria-live="polite"></div>
+</div>

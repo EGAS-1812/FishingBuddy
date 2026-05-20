@@ -23,6 +23,44 @@ namespace FishingBuddy.Controllers
             return View(_repository.Users.OrderBy(u => u.Username).ToList());
         }
 
+        [HttpGet]
+        public IActionResult Search(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var query = _repository.Users.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                query = query.Where(u =>
+                    (u.Username != null && u.Username.Contains(normalized, StringComparison.OrdinalIgnoreCase)) ||
+                    (u.Email != null && u.Email.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            return PartialView("_UserRows", query.OrderBy(u => u.Username).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult Autocomplete(string? term)
+        {
+            var normalized = term?.Trim() ?? string.Empty;
+            var results = _repository.Users
+                .Where(u => string.IsNullOrWhiteSpace(normalized) ||
+                            u.Username.Contains(normalized, StringComparison.OrdinalIgnoreCase) ||
+                            u.Email.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(u => u.Username)
+                .Take(10)
+                .Select(u => new
+                {
+                    id = u.UserID,
+                    label = u.Username,
+                    subtitle = u.Email
+                })
+                .ToList();
+
+            return Json(results);
+        }
+
         public IActionResult Details(int id)
         {
             var user = _repository.GetUserById(id);

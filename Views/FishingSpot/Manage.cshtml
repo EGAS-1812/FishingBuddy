@@ -18,19 +18,28 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-primary">@Model.Count mjesta</span>
-                <a class="btn btn-primary btn-sm" asp-controller="FishingSpot" asp-action="Create">Dodaj mjesto</a>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="FishingSpot" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
-                        <li><a class="dropdown-item" asp-controller="FishingSpot" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
-                        <li><a class="dropdown-item" asp-controller="FishingSpot" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                <div class="dropdown fb-crud-dropdown">
+                    <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu fb-crud-menu">
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="FishingSpot" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="FishingSpot" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="FishingSpot" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="fb-list-search"
+             data-ajax-search
+             data-search-endpoint="@Url.Action("Search", "FishingSpot")"
+             data-search-mode="manage"
+             data-empty-colspan="5"
+             data-empty-message="Nema trazenih ribolovnih mjesta.">
+            <label class="form-label" for="spotManageSearch">Pretrazi ribolovna mjesta</label>
+            <input id="spotManageSearch" type="search" class="form-control" placeholder="Naziv, regija, mol ili brod..." data-search-input autocomplete="off" />
+            <div class="form-text fb-search-status" data-search-status aria-live="polite">Prikaz svih zapisa.</div>
+
+            <div class="table-responsive">
             <table class="table table-hover table-bordered table-sm align-middle mb-0">
                 <thead class="table-light">
                     <tr>
@@ -41,33 +50,13 @@
                         <th scope="col" class="text-end">Radnje</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if (Model.Count == 0)
-                    {
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">Nema unesenih ribolovnih mjesta.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (var spot in Model)
-                        {
-                            <tr>
-                                <td class="fw-semibold">@spot.SpotName</td>
-                                <td>@spot.Region</td>
-                                <td class="text-center">@(spot.HasPiers ? "✓" : "✗")</td>
-                                <td class="text-center">@(spot.BoatAccess ? "✓" : "✗")</td>
-                                <td class="text-end">
-                                    <div class="d-inline-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-secondary" asp-controller="FishingSpot" asp-action="Edit" asp-route-id="@spot.SpotID">Uredi</a>
-                                        <a class="btn btn-sm btn-outline-danger" asp-controller="FishingSpot" asp-action="Delete" asp-route-id="@spot.SpotID">Obriši</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    }
+                <tbody data-search-target>
+                    @await Html.PartialAsync("_FishingSpotRows", Model, new ViewDataDictionary(ViewData) { ["ManageMode"] = true })
                 </tbody>
             </table>
         </div>
+        </div>
     </div>
 </section>
+
+
