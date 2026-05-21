@@ -21,7 +21,22 @@
 
             <dt class="col-sm-3">E-mail adresa</dt>
             <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Dozvola</dt>
+            <dd class="col-sm-9">
+                @if (Model.FishingLicense is not null)
+                {
+                    <div><strong>Početak:</strong> @Model.FishingLicense.BeginDate.ToString("dd.MM.yyyy HH:mm")</div>
+                    <div><strong>Istek:</strong> @Model.FishingLicense.ExpirationDate.ToString("dd.MM.yyyy HH:mm")</div>
+                }
+                else
+                {
+                    <span>Nema dozvole</span>
+                }
+            </dd>
         </dl>
+
+        <p class="small text-danger mb-4">Brisanjem ribara briše se i njegova povezana ribolovna dozvola.</p>
 
         <form asp-action="Delete" method="post">
             <input asp-for="UserID" type="hidden" />

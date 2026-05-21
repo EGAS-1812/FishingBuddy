@@ -71,14 +71,16 @@ namespace FishingBuddy.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new User());
+            return View(new UserUpsertViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(User user)
+        public IActionResult Create(UserUpsertViewModel model)
         {
-            if (!ModelState.IsValid) return View(user);
+            if (!ModelState.IsValid) return View(model);
+
+            var user = MapToUser(model);
             _repository.AddUser(user);
             return RedirectToAction(nameof(Manage));
         }
@@ -88,15 +90,17 @@ namespace FishingBuddy.Controllers
         {
             var user = _repository.GetUserById(id);
             if (user == null) return NotFound();
-            return View(user);
+            return View(MapToUpsertViewModel(user));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, User user)
+        public IActionResult Edit(int id, UserUpsertViewModel model)
         {
-            if (id != user.UserID) return NotFound();
-            if (!ModelState.IsValid) return View(user);
+            if (id != model.UserID) return NotFound();
+            if (!ModelState.IsValid) return View(model);
+
+            var user = MapToUser(model);
             _repository.UpdateUser(user);
             return RedirectToAction(nameof(Manage));
         }
@@ -115,6 +119,41 @@ namespace FishingBuddy.Controllers
         {
             _repository.DeleteUser(id);
             return RedirectToAction(nameof(Manage));
+        }
+
+        private static User MapToUser(UserUpsertViewModel model)
+        {
+            var user = new User
+            {
+                UserID = model.UserID,
+                Username = model.Username,
+                Email = model.Email
+            };
+
+            if (model.HasFishingLicense && model.LicenseBeginDate.HasValue && model.LicenseExpirationDate.HasValue)
+            {
+                user.FishingLicense = new FishingLicense
+                {
+                    UserID = model.UserID,
+                    BeginDate = model.LicenseBeginDate.Value,
+                    ExpirationDate = model.LicenseExpirationDate.Value
+                };
+            }
+
+            return user;
+        }
+
+        private static UserUpsertViewModel MapToUpsertViewModel(User user)
+        {
+            return new UserUpsertViewModel
+            {
+                UserID = user.UserID,
+                Username = user.Username,
+                Email = user.Email,
+                HasFishingLicense = user.FishingLicense != null,
+                LicenseBeginDate = user.FishingLicense?.BeginDate,
+                LicenseExpirationDate = user.FishingLicense?.ExpirationDate
+            };
         }
     }
 }

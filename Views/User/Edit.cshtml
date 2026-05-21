@@ -1,4 +1,4 @@
-@model FishingBuddy.Models.User
+@model FishingBuddy.Models.UserUpsertViewModel
 @{
     ViewData["Title"] = "Uredi ribara";
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
@@ -32,6 +32,38 @@
                     <label asp-for="Email" class="form-label">E-mail adresa</label>
                     <input asp-for="Email" class="form-control" type="email" />
                     <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check form-switch mt-1">
+                        <input asp-for="HasFishingLicense" class="form-check-input" role="switch" />
+                        <label asp-for="HasFishingLicense" class="form-check-label">Ima ribolovnu dozvolu</label>
+                    </div>
+                    <span asp-validation-for="HasFishingLicense" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    @await Html.PartialAsync("_DateTimeInput", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.LicenseBeginDate),
+                        ["FieldId"] = nameof(Model.LicenseBeginDate),
+                        ["Label"] = "Početak dozvole",
+                        ["Value"] = Model.LicenseBeginDate,
+                        ["Placeholder"] = "dd.mm.yyyy hh:mm"
+                    })
+                    <span asp-validation-for="LicenseBeginDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    @await Html.PartialAsync("_DateTimeInput", null, new ViewDataDictionary(ViewData)
+                    {
+                        ["FieldName"] = nameof(Model.LicenseExpirationDate),
+                        ["FieldId"] = nameof(Model.LicenseExpirationDate),
+                        ["Label"] = "Istek dozvole",
+                        ["Value"] = Model.LicenseExpirationDate,
+                        ["Placeholder"] = "dd.mm.yyyy hh:mm"
+                    })
+                    <span asp-validation-for="LicenseExpirationDate" class="text-danger small"></span>
                 </div>
             </div>
 

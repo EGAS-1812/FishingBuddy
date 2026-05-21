@@ -140,21 +140,72 @@ public class EfFishingRepository(FishingBuddyDbContext dbContext) : IFishingRepo
         dbContext.SaveChanges();
     }
 
-    public void AddUser(User user) { dbContext.Users.Add(user); dbContext.SaveChanges(); }
+    public void AddUser(User user)
+    {
+        var license = user.FishingLicense;
+        user.FishingLicense = null;
+
+        dbContext.Users.Add(user);
+        dbContext.SaveChanges();
+
+        if (license != null)
+        {
+            license.UserID = user.UserID;
+            dbContext.FishingLicenses.Add(license);
+            dbContext.SaveChanges();
+        }
+    }
 
     public void UpdateUser(User user)
     {
-        var existing = dbContext.Users.FirstOrDefault(u => u.UserID == user.UserID);
+        var existing = dbContext.Users
+            .Include(u => u.FishingLicense)
+            .FirstOrDefault(u => u.UserID == user.UserID);
         if (existing == null) throw new InvalidOperationException($"User with ID {user.UserID} was not found.");
         existing.Username = user.Username;
         existing.Email = user.Email;
+
+        if (user.FishingLicense == null)
+        {
+            if (existing.FishingLicense != null)
+            {
+                dbContext.FishingLicenses.Remove(existing.FishingLicense);
+                existing.FishingLicense = null;
+            }
+        }
+        else
+        {
+            if (existing.FishingLicense == null)
+            {
+                existing.FishingLicense = new FishingLicense
+                {
+                    UserID = existing.UserID,
+                    BeginDate = user.FishingLicense.BeginDate,
+                    ExpirationDate = user.FishingLicense.ExpirationDate
+                };
+            }
+            else
+            {
+                existing.FishingLicense.BeginDate = user.FishingLicense.BeginDate;
+                existing.FishingLicense.ExpirationDate = user.FishingLicense.ExpirationDate;
+            }
+        }
+
         dbContext.SaveChanges();
     }
 
     public void DeleteUser(int id)
     {
-        var existing = dbContext.Users.FirstOrDefault(u => u.UserID == id);
+        var existing = dbContext.Users
+            .Include(u => u.FishingLicense)
+            .FirstOrDefault(u => u.UserID == id);
         if (existing == null) throw new InvalidOperationException($"User with ID {id} was not found.");
+
+        if (existing.FishingLicense != null)
+        {
+            dbContext.FishingLicenses.Remove(existing.FishingLicense);
+        }
+
         dbContext.Users.Remove(existing);
         dbContext.SaveChanges();
     }

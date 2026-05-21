@@ -1614,3 +1614,110 @@ After edits, return concise list of changed files and confirmation no other UI c
 [2026-05-18 18:30:44Z] Where can I find the file with all changes made? Have you marked which files got changes?
 [2026-05-20 15:38:51Z] Tell me what have you completed from the list I gave you
 [2026-05-20 16:12:40Z] which of these made changes to my C# code, in which files and where so I can study the lines of code you added or made sure were already there?
+[2026-05-20 16:18:58Z] Please make a file that contains every line of code that completes assignments I gave you, and where they are. So I can have a study list. Also group them by the topics of grading system I gave you. So in short what I want is a file containging:
+
+1. CRUD 
+line XX in file - because of this and that
+line XY in file - because of this and that
+2. AJAX autocomplete
+line ZZ in file - because of this and that
+
+Do you udnerstand?
+[2026-05-21 17:32:57Z] Can you confirm that you've implemented everything I have asked you to? I have to submit it in 30 minutes.
+[2026-05-21 17:35:27Z] can you add in the Create User page fields for inputting data to create a fishing license for the according user being created? So we can make up for that. We need to be able to add a fishing license to the User when creating user, also same for editing or deleting a user.
+[2026-05-21 17:37:25Z] Update only User Razor views to support FishingLicense input/display, matching existing visual style.
+
+Requirements:
+1) Create User page: allow entering FishingLicense for the new user.
+2) Edit User page: allow updating/removing FishingLicense for the user.
+3) Delete User page: clearly show FishingLicense info that will also be removed when user is deleted.
+
+Important implementation context:
+- Controller has been updated to use model type FishingBuddy.Models.UserUpsertViewModel for Create/Edit and it expects fields:
+  - UserID
+  - Username
+  - Email
+  - HasFishingLicense (bool)
+  - LicenseBeginDate (DateTime?)
+  - LicenseExpirationDate (DateTime?)
+- Shared partial exists: Views/Shared/_DateTimeInput.cshtml.
+  It expects ViewData keys: FieldName, FieldId, Label, Placeholder, Value.
+- Existing style and structure should remain close to current card/form layout.
+
+Please implement:
+A) Views/User/Create.cshtml
+- Change model to UserUpsertViewModel.
+- Keep username/email fields.
+- Add a checkbox/switch bound to HasFishingLicense.
+- Add two date-time inputs for LicenseBeginDate and LicenseExpirationDate using _DateTimeInput partial.
+- Add validation message spans for new fields.
+
+B) Views/User/Edit.cshtml
+- Change model to UserUpsertViewModel.
+- Keep existing hidden UserID and username/email.
+- Add HasFishingLicense checkbox/switch.
+- Add two _DateTimeInput partials for license dates with current values.
+- Add validation spans for new fields.
+
+C) Views/User/Delete.cshtml
+- Keep model as User (controller still sends User).
+- Add a section in the dl showing license begin/end if present, else show GǣNema dozvoleGǥ.
+- Add a small warning text stating that deleting user also deletes associated fishing license.
+
+Notes:
+- Keep labels/copy in Croatian consistent with existing pages.
+- Keep changes scoped to these 3 files only.
+- Do not modify css/js globally unless strictly required.
+
+Return:
+- changed files
+- short summary of what was added in each file.
+[2026-05-21 17:37:25Z] [FishingStylist_SPAWNED] Update only User Razor views to support FishingLicense input/display, matching existing visual style.
+
+Requirements:
+1) Create User page: allow entering FishingLicense for the new user.
+2) Edit User page: allow updating/removing FishingLicense for the user.
+3) Delete User page: clearly show FishingLicense info that will also be removed when user is deleted.
+
+Important implementation context:
+- Controller has been updated to use model type FishingBuddy.Models.UserUpsertViewModel for Create/Edit and it expects fields:
+  - UserID
+  - Username
+  - Email
+  - HasFishingLicense (bool)
+  - LicenseBeginDate (DateTime?)
+  - LicenseExpirationDate (DateTime?)
+- Shared partial exists: Views/Shared/_DateTimeInput.cshtml.
+  It expects ViewData keys: FieldName, FieldId, Label, Placeholder, Value.
+- Existing style and structure should remain close to current card/form layout.
+
+Please implement:
+A) Views/User/Create.cshtml
+- Change model to UserUpsertViewModel.
+- Keep username/email fields.
+- Add a checkbox/switch bound to HasFishingLicense.
+- Add two date-time inputs for LicenseBeginDate and LicenseExpirationDate using _DateTimeInput partial.
+- Add validation message spans for new fields.
+
+B) Views/User/Edit.cshtml
+- Change model to UserUpsertViewModel.
+- Keep existing hidden UserID and username/email.
+- Add HasFishingLicense checkbox/switch.
+- Add two _DateTimeInput partials for license dates with current values.
+- Add validation spans for new fields.
+
+C) Views/User/Delete.cshtml
+- Keep model as User (controller still sends User).
+- Add a section in the dl showing license begin/end if present, else show GǣNema dozvoleGǥ.
+- Add a small warning text stating that deleting user also deletes associated fishing license.
+
+Notes:
+- Keep labels/copy in Croatian consistent with existing pages.
+- Keep changes scoped to these 3 files only.
+- Do not modify css/js globally unless strictly required.
+
+Return:
+- changed files
+- short summary of what was added in each file.
+[2026-05-21 17:40:46Z] are your todos now complete?
+[2026-05-21 17:41:47Z] Yes run it

@@ -1,0 +1,342 @@
+FishingBuddy Assignment Study List
+Generated: 2026-05-20
+
+Format:
+line XX in file - because ...
+
+======================================================================
+1) CRUD (View/Search/Create/Edit/Delete) FOR MANAGED ENTITIES
+======================================================================
+
+1.1 Bait CRUD controller flow
+line 16 in Controllers/BaitController.cs - Index list action for Bait records.
+line 21 in Controllers/BaitController.cs - Manage list action for update/delete workflow.
+line 71 in Controllers/BaitController.cs - GET Create action (form page).
+line 78 in Controllers/BaitController.cs - POST Create action (save new record).
+line 86 in Controllers/BaitController.cs - GET Edit action (load existing record).
+line 95 in Controllers/BaitController.cs - POST Edit action (save updates).
+line 104 in Controllers/BaitController.cs - GET Delete action (confirm page).
+line 111 in Controllers/BaitController.cs - POST Delete action (final delete submit).
+
+1.2 Fish CRUD controller flow
+line 17 in Controllers/FishController.cs - Index list action for Fish records.
+line 22 in Controllers/FishController.cs - Manage list action for update/delete workflow.
+line 81 in Controllers/FishController.cs - GET Create action.
+line 90 in Controllers/FishController.cs - POST Create action.
+line 105 in Controllers/FishController.cs - GET Edit action.
+line 116 in Controllers/FishController.cs - POST Edit action.
+line 133 in Controllers/FishController.cs - GET Delete action.
+line 140 in Controllers/FishController.cs - POST Delete action.
+
+1.3 CatchRecord CRUD controller flow
+line 17 in Controllers/CatchRecordController.cs - Index list action for catch records.
+line 22 in Controllers/CatchRecordController.cs - Manage list action for update/delete workflow.
+line 59 in Controllers/CatchRecordController.cs - GET Create action.
+line 68 in Controllers/CatchRecordController.cs - POST Create action.
+line 83 in Controllers/CatchRecordController.cs - GET Edit action.
+line 94 in Controllers/CatchRecordController.cs - POST Edit action.
+line 111 in Controllers/CatchRecordController.cs - GET Delete action.
+line 118 in Controllers/CatchRecordController.cs - POST Delete action.
+
+1.4 FishingSpot CRUD controller flow
+line 16 in Controllers/FishingSpotController.cs - Index list action for FishingSpot records.
+line 21 in Controllers/FishingSpotController.cs - Manage list action for update/delete workflow.
+line 51 in Controllers/FishingSpotController.cs - GET Create action.
+line 58 in Controllers/FishingSpotController.cs - POST Create action.
+line 66 in Controllers/FishingSpotController.cs - GET Edit action.
+line 75 in Controllers/FishingSpotController.cs - POST Edit action.
+line 84 in Controllers/FishingSpotController.cs - GET Delete action.
+line 91 in Controllers/FishingSpotController.cs - POST Delete action.
+
+1.5 Technique CRUD controller flow
+line 16 in Controllers/TechniqueController.cs - Index list action for Technique records.
+line 21 in Controllers/TechniqueController.cs - Manage list action for update/delete workflow.
+line 75 in Controllers/TechniqueController.cs - GET Create action.
+line 82 in Controllers/TechniqueController.cs - POST Create action.
+line 94 in Controllers/TechniqueController.cs - GET Edit action.
+line 104 in Controllers/TechniqueController.cs - POST Edit action.
+line 121 in Controllers/TechniqueController.cs - GET Delete action.
+line 128 in Controllers/TechniqueController.cs - POST Delete action.
+
+1.6 User CRUD controller flow
+line 16 in Controllers/UserController.cs - Index list action for User records.
+line 21 in Controllers/UserController.cs - Manage list action for update/delete workflow.
+line 72 in Controllers/UserController.cs - GET Create action.
+line 79 in Controllers/UserController.cs - POST Create action.
+line 87 in Controllers/UserController.cs - GET Edit action.
+line 96 in Controllers/UserController.cs - POST Edit action.
+line 105 in Controllers/UserController.cs - GET Delete action.
+line 112 in Controllers/UserController.cs - POST Delete action.
+
+======================================================================
+2) AJAX SEARCH ON LIST PAGES
+======================================================================
+
+2.1 Search endpoints in controllers
+line 27 in Controllers/BaitController.cs - Search endpoint returns filtered Bait rows.
+line 28 in Controllers/FishController.cs - Search endpoint returns filtered Fish rows.
+line 28 in Controllers/CatchRecordController.cs - Search endpoint returns filtered CatchRecord rows.
+line 27 in Controllers/FishingSpotController.cs - Search endpoint returns filtered FishingSpot rows.
+line 31 in Controllers/TechniqueController.cs - Search endpoint returns filtered Technique rows.
+line 27 in Controllers/UserController.cs - Search endpoint returns filtered User rows.
+
+2.2 Bait list pages wired for AJAX search
+line 28 in Views/Bait/Index.cshtml - data-ajax-search marker enables JS search module.
+line 29 in Views/Bait/Index.cshtml - search endpoint URL for Bait index.
+line 46 in Views/Bait/Index.cshtml - tbody marked as replacement target.
+line 47 in Views/Bait/Index.cshtml - Bait row partial rendered for replacement.
+line 33 in Views/Bait/Manage.cshtml - data-ajax-search marker on manage view.
+line 34 in Views/Bait/Manage.cshtml - search endpoint URL for Bait manage.
+line 52 in Views/Bait/Manage.cshtml - tbody replacement target.
+line 53 in Views/Bait/Manage.cshtml - Bait row partial for manage mode.
+
+2.3 Fish list pages wired for AJAX search
+line 28 in Views/Fish/Index.cshtml - data-ajax-search marker.
+line 29 in Views/Fish/Index.cshtml - search endpoint URL.
+line 46 in Views/Fish/Index.cshtml - tbody replacement target.
+line 47 in Views/Fish/Index.cshtml - Fish row partial rendered.
+line 33 in Views/Fish/Manage.cshtml - data-ajax-search marker.
+line 34 in Views/Fish/Manage.cshtml - search endpoint URL.
+line 52 in Views/Fish/Manage.cshtml - tbody replacement target.
+line 53 in Views/Fish/Manage.cshtml - Fish row partial for manage mode.
+
+2.4 CatchRecord list pages wired for AJAX search
+line 28 in Views/CatchRecord/Index.cshtml - data-ajax-search marker.
+line 29 in Views/CatchRecord/Index.cshtml - search endpoint URL.
+line 46 in Views/CatchRecord/Index.cshtml - tbody replacement target.
+line 47 in Views/CatchRecord/Index.cshtml - CatchRecord row partial rendered.
+line 33 in Views/CatchRecord/Manage.cshtml - data-ajax-search marker.
+line 34 in Views/CatchRecord/Manage.cshtml - search endpoint URL.
+line 53 in Views/CatchRecord/Manage.cshtml - tbody replacement target.
+line 54 in Views/CatchRecord/Manage.cshtml - CatchRecord row partial for manage mode.
+
+2.5 FishingSpot list pages wired for AJAX search
+line 28 in Views/FishingSpot/Index.cshtml - data-ajax-search marker.
+line 29 in Views/FishingSpot/Index.cshtml - search endpoint URL.
+line 46 in Views/FishingSpot/Index.cshtml - tbody replacement target.
+line 47 in Views/FishingSpot/Index.cshtml - FishingSpot row partial rendered.
+line 33 in Views/FishingSpot/Manage.cshtml - data-ajax-search marker.
+line 34 in Views/FishingSpot/Manage.cshtml - search endpoint URL.
+line 53 in Views/FishingSpot/Manage.cshtml - tbody replacement target.
+line 54 in Views/FishingSpot/Manage.cshtml - FishingSpot row partial for manage mode.
+
+2.6 Technique list pages wired for AJAX search
+line 28 in Views/Technique/Index.cshtml - data-ajax-search marker.
+line 29 in Views/Technique/Index.cshtml - search endpoint URL.
+line 45 in Views/Technique/Index.cshtml - tbody replacement target.
+line 46 in Views/Technique/Index.cshtml - Technique row partial rendered.
+line 33 in Views/Technique/Manage.cshtml - data-ajax-search marker.
+line 34 in Views/Technique/Manage.cshtml - search endpoint URL.
+line 52 in Views/Technique/Manage.cshtml - tbody replacement target.
+line 53 in Views/Technique/Manage.cshtml - Technique row partial for manage mode.
+
+2.7 User list pages wired for AJAX search
+line 28 in Views/User/Index.cshtml - data-ajax-search marker.
+line 29 in Views/User/Index.cshtml - search endpoint URL.
+line 46 in Views/User/Index.cshtml - tbody replacement target.
+line 47 in Views/User/Index.cshtml - User row partial rendered.
+line 33 in Views/User/Manage.cshtml - data-ajax-search marker.
+line 34 in Views/User/Manage.cshtml - search endpoint URL.
+line 52 in Views/User/Manage.cshtml - tbody replacement target.
+line 53 in Views/User/Manage.cshtml - User row partial for manage mode.
+
+2.8 AJAX search JS engine
+line 102 in wwwroot/js/site.js - animateRows helper animates row replacement results.
+line 127 in wwwroot/js/site.js - setSearchLoadingState toggles loading status visual.
+line 135 in wwwroot/js/site.js - initAjaxSearchTables attaches handlers to data-ajax-search containers.
+line 159 in wwwroot/js/site.js - sets loading state before fetch starts.
+line 168 in wwwroot/js/site.js - fetch call to server-side search endpoint.
+line 192 in wwwroot/js/site.js - animates inserted rows after partial replacement.
+line 211 in wwwroot/js/site.js - clears loading state when request finishes.
+line 537 in wwwroot/js/site.js - DOMContentLoaded startup invokes AJAX search initializer.
+
+======================================================================
+3) AJAX AUTOCOMPLETE DROPDOWN
+======================================================================
+
+3.1 Autocomplete endpoints in controllers
+line 45 in Controllers/BaitController.cs - JSON autocomplete endpoint for bait names.
+line 48 in Controllers/FishController.cs - JSON autocomplete endpoint for fish-related lookup.
+line 49 in Controllers/TechniqueController.cs - JSON autocomplete endpoint for techniques.
+line 44 in Controllers/UserController.cs - JSON autocomplete endpoint for users.
+
+3.2 Shared autocomplete control markup
+line 11 in Views/Shared/_AutocompleteDropdown.cshtml - root control with endpoint and placeholder metadata.
+line 13 in Views/Shared/_AutocompleteDropdown.cshtml - hidden ID/value field bound to model.
+line 21 in Views/Shared/_AutocompleteDropdown.cshtml - visible text input for search typing.
+line 27 in Views/Shared/_AutocompleteDropdown.cshtml - listbox container for suggestions.
+line 28 in Views/Shared/_AutocompleteDropdown.cshtml - ARIA live status output for feedback.
+
+3.3 Autocomplete control usage in forms
+line 54 in Views/Fish/Create.cshtml - FavouriteBait field uses shared autocomplete partial.
+line 68 in Views/Fish/Create.cshtml - PreferredMethod field uses shared autocomplete partial.
+line 61 in Views/Fish/Edit.cshtml - FavouriteBait field uses shared autocomplete partial.
+line 75 in Views/Fish/Edit.cshtml - PreferredMethod field uses shared autocomplete partial.
+line 25 in Views/CatchRecord/Create.cshtml - User field uses shared autocomplete partial.
+line 39 in Views/CatchRecord/Create.cshtml - Fish field uses shared autocomplete partial.
+line 32 in Views/CatchRecord/Edit.cshtml - User field uses shared autocomplete partial.
+line 46 in Views/CatchRecord/Edit.cshtml - Fish field uses shared autocomplete partial.
+
+3.4 Autocomplete JS behavior
+line 240 in wwwroot/js/site.js - initAutocompleteDropdowns scans and wires all controls.
+line 338 in wwwroot/js/site.js - fetch request for suggestion list.
+line 377 in wwwroot/js/site.js - keydown navigation handler for keyboard accessibility.
+line 383 in wwwroot/js/site.js - ArrowDown support in suggestion navigation.
+line 389 in wwwroot/js/site.js - ArrowUp support in suggestion navigation.
+line 395 in wwwroot/js/site.js - Enter selection support.
+line 538 in wwwroot/js/site.js - startup invokes autocomplete initializer.
+
+======================================================================
+4) VALIDATION (CLIENT + SERVER)
+======================================================================
+
+4.1 Server-side relational validation guards
+line 92 in Controllers/FishController.cs - Create path invokes relation validation.
+line 120 in Controllers/FishController.cs - Edit path invokes relation validation.
+line 148 in Controllers/FishController.cs - relation validation helper definition.
+line 70 in Controllers/CatchRecordController.cs - Create path invokes relation validation.
+line 98 in Controllers/CatchRecordController.cs - Edit path invokes relation validation.
+line 126 in Controllers/CatchRecordController.cs - relation validation helper definition.
+
+4.2 Client-side validation trigger logic (blur/change)
+line 476 in wwwroot/js/site.js - initValidationOnBlur function definition.
+line 490 in wwwroot/js/site.js - attaches blur/change handlers to form fields.
+line 491 in wwwroot/js/site.js - runs jQuery valid() per field on blur/change.
+line 540 in wwwroot/js/site.js - startup invokes blur/change validation initializer.
+
+4.3 Validation integration in forms (examples)
+line 21 in Views/Bait/Create.cshtml - model-level validation summary shown.
+line 27 in Views/Bait/Create.cshtml - field-level validation span.
+line 63 in Views/Bait/Create.cshtml - unobtrusive validation scripts partial included.
+line 22 in Views/Bait/Edit.cshtml - model-level validation summary shown.
+line 64 in Views/Bait/Edit.cshtml - unobtrusive validation scripts partial included.
+
+line 21 in Views/Fish/Create.cshtml - model-level validation summary shown.
+line 27 in Views/Fish/Create.cshtml - field-level validation span.
+line 91 in Views/Fish/Create.cshtml - unobtrusive validation scripts partial included.
+line 28 in Views/Fish/Edit.cshtml - model-level validation summary shown.
+line 98 in Views/Fish/Edit.cshtml - unobtrusive validation scripts partial included.
+
+line 21 in Views/CatchRecord/Create.cshtml - model-level validation summary shown.
+line 61 in Views/CatchRecord/Create.cshtml - CatchDate validation span.
+line 92 in Views/CatchRecord/Create.cshtml - unobtrusive validation scripts partial included.
+line 28 in Views/CatchRecord/Edit.cshtml - model-level validation summary shown.
+line 68 in Views/CatchRecord/Edit.cshtml - CatchDate validation span.
+line 99 in Views/CatchRecord/Edit.cshtml - unobtrusive validation scripts partial included.
+
+line 21 in Views/Technique/Create.cshtml - model-level validation summary shown.
+line 52 in Views/Technique/Create.cshtml - unobtrusive validation scripts partial included.
+line 23 in Views/Technique/Edit.cshtml - model-level validation summary shown.
+line 54 in Views/Technique/Edit.cshtml - unobtrusive validation scripts partial included.
+
+line 21 in Views/FishingSpot/Create.cshtml - model-level validation summary shown.
+line 60 in Views/FishingSpot/Create.cshtml - unobtrusive validation scripts partial included.
+line 22 in Views/FishingSpot/Edit.cshtml - model-level validation summary shown.
+line 61 in Views/FishingSpot/Edit.cshtml - unobtrusive validation scripts partial included.
+
+line 21 in Views/User/Create.cshtml - model-level validation summary shown.
+line 46 in Views/User/Create.cshtml - unobtrusive validation scripts partial included.
+line 22 in Views/User/Edit.cshtml - model-level validation summary shown.
+line 47 in Views/User/Edit.cshtml - unobtrusive validation scripts partial included.
+
+======================================================================
+5) CUSTOM DATE + TIME CONTROL (NOT DEFAULT DATEPICKER)
+======================================================================
+
+5.1 Shared date-time partial
+line 10 in Views/Shared/_DateTimeInput.cshtml - custom control wrapper marker.
+line 12 in Views/Shared/_DateTimeInput.cshtml - hidden canonical value field.
+line 19 in Views/Shared/_DateTimeInput.cshtml - display input marker for custom parsing.
+
+5.2 Date-time control usage in forms
+line 53 in Views/CatchRecord/Create.cshtml - CatchDate uses shared _DateTimeInput partial.
+line 60 in Views/CatchRecord/Edit.cshtml - CatchDate uses shared _DateTimeInput partial.
+
+5.3 Date-time parse/format logic in JS
+line 23 in wwwroot/js/site.js - parseLocaleDateTime handles input parsing.
+line 67 in wwwroot/js/site.js - formatLocaleDateTime handles localized output display.
+line 430 in wwwroot/js/site.js - initDateTimeInputs wires focus/blur/value sync.
+line 451 in wwwroot/js/site.js - normalized display formatting after parse.
+line 458 in wwwroot/js/site.js - parse call on blur/update path.
+line 467 in wwwroot/js/site.js - final display normalization after validation.
+line 539 in wwwroot/js/site.js - startup invokes date-time initializer.
+
+======================================================================
+6) ADVANCED JS/CSS ANIMATIONS FOR DEMO VISIBILITY
+======================================================================
+
+6.1 Global list/dropdown animation system
+line 716 in wwwroot/css/site.css - search loading animation state.
+line 728 in wwwroot/css/site.css - dropdown base animated state.
+line 743 in wwwroot/css/site.css - dropdown open state transition.
+line 754 in wwwroot/css/site.css - dropdown item transition behavior.
+line 767 in wwwroot/css/site.css - stagger delay for item 1.
+line 768 in wwwroot/css/site.css - stagger delay for item 2.
+line 769 in wwwroot/css/site.css - stagger delay for item 3.
+line 770 in wwwroot/css/site.css - stagger delay for item 4.
+line 771 in wwwroot/css/site.css - stagger delay for item 5.
+line 772 in wwwroot/css/site.css - stagger delay for item 6.
+line 1041 in wwwroot/css/site.css - keyframes for pill bubble animation.
+line 1079 in wwwroot/css/site.css - keyframes for row reveal animation.
+
+6.2 CRUD-specific animated menu redesign
+line 774 in wwwroot/css/site.css - CRUD dropdown scoped variables and baseline.
+line 779 in wwwroot/css/site.css - enlarged CRUD toggle styling.
+line 790 in wwwroot/css/site.css - enlarged CRUD menu styling and positioning.
+line 801 in wwwroot/css/site.css - open animation on CRUD menu.
+line 805 in wwwroot/css/site.css - close/collapse animation state class.
+line 813 in wwwroot/css/site.css - CRUD item base style (larger pill, centered content).
+line 846 in wwwroot/css/site.css - create item full-fill color style.
+line 853 in wwwroot/css/site.css - update item full-fill color style.
+line 860 in wwwroot/css/site.css - delete item full-fill color style.
+line 897 in wwwroot/css/site.css - hover/focus tilt + glow behavior.
+line 917 in wwwroot/css/site.css - keyframes for CRUD open animation.
+line 935 in wwwroot/css/site.css - keyframes for CRUD close animation.
+line 946 in wwwroot/css/site.css - keyframes for CRUD shine animation.
+line 955 in wwwroot/css/site.css - keyframes for CRUD hover glow pulse.
+
+6.3 CRUD menu JS lifecycle (close animation hook)
+line 496 in wwwroot/js/site.js - initCrudDropdownAnimations function definition.
+line 512 in wwwroot/js/site.js - show.bs.dropdown event clears closing state.
+line 516 in wwwroot/js/site.js - hide.bs.dropdown event applies closing class.
+line 524 in wwwroot/js/site.js - hidden.bs.dropdown event cleanup after close animation.
+line 541 in wwwroot/js/site.js - startup invokes CRUD menu animation initializer.
+
+6.4 Page-load reveal and hero fish motion
+line 219 in wwwroot/js/site.js - initPageLoadReveal for staged page animation.
+line 513 in wwwroot/css/site.css - hero panel pseudo-elements setup.
+line 521 in wwwroot/css/site.css - fish.gif background layer.
+line 537 in wwwroot/css/site.css - readability overlay layer.
+line 595 in wwwroot/css/site.css - hero fish drift keyframes.
+
+======================================================================
+7) POST-REQUEST UI CLEANUP YOU ASKED FOR
+======================================================================
+
+7.1 Redundant "Dodaj ..." button removed from Manage pages
+line 21 area in Views/Bait/Manage.cshtml - redundant add button removed; Create remains in CRUD menu.
+line 21 area in Views/Fish/Manage.cshtml - redundant add button removed.
+line 21 area in Views/CatchRecord/Manage.cshtml - redundant add button removed.
+line 21 area in Views/FishingSpot/Manage.cshtml - redundant add button removed.
+line 21 area in Views/Technique/Manage.cshtml - redundant add button removed.
+line 21 area in Views/User/Manage.cshtml - redundant add button removed.
+
+======================================================================
+8) VERIFIED-ALREADY-THERE (NOT NEWLY ADDED, BUT REVIEWED FOR SCOPE)
+======================================================================
+
+8.1 FishingLicense architecture already present and confirmed
+line 11 in Repositories/IFishingRepository.cs - FishingLicenses repository contract.
+line 19 in Repositories/IFishingRepository.cs - GetFishingLicenseByUserId contract.
+line 29 in Repositories/EfFishingRepository.cs - EF query for FishingLicenses.
+line 60 in Repositories/EfFishingRepository.cs - EF helper by user ID.
+line 11 in Repositories/MockFishingRepository.cs - mock FishingLicenses store.
+line 205 in Repositories/MockFishingRepository.cs - mock helper by user ID.
+line 12 in Data/FishingBuddyDbContext.cs - DbSet<FishingLicense> mapping.
+line 45 in Data/FishingBuddyDbContext.cs - FK mapping to User.
+line 17 in Data/DbInitializer.cs - SyncFishingLicenses call during init.
+line 131 in Data/DbInitializer.cs - SyncFishingLicenses implementation.
+
+======================================================================
+END OF STUDY LIST
+======================================================================

@@ -287,24 +287,85 @@ var fishingSpots = new List<FishingSpot>
     public void AddUser(User user)
     {
         var users = (List<User>)Users;
+        var licenses = (List<FishingLicense>)FishingLicenses;
         user.UserID = users.Count == 0 ? 1 : users.Max(u => u.UserID) + 1;
+
+        if (user.FishingLicense != null)
+        {
+            user.FishingLicense.UserID = user.UserID;
+            user.FishingLicense.User = user;
+
+            var existingLicense = licenses.FirstOrDefault(l => l.UserID == user.UserID);
+            if (existingLicense == null)
+            {
+                licenses.Add(user.FishingLicense);
+            }
+            else
+            {
+                existingLicense.BeginDate = user.FishingLicense.BeginDate;
+                existingLicense.ExpirationDate = user.FishingLicense.ExpirationDate;
+                user.FishingLicense = existingLicense;
+            }
+        }
+
         users.Add(user);
     }
 
     public void UpdateUser(User user)
     {
         var users = (List<User>)Users;
+        var licenses = (List<FishingLicense>)FishingLicenses;
         var existing = users.FirstOrDefault(u => u.UserID == user.UserID);
         if (existing == null) throw new InvalidOperationException($"User with ID {user.UserID} was not found.");
         existing.Username = user.Username;
         existing.Email = user.Email;
+
+        var existingLicense = licenses.FirstOrDefault(l => l.UserID == existing.UserID);
+        if (user.FishingLicense == null)
+        {
+            if (existingLicense != null)
+            {
+                licenses.Remove(existingLicense);
+            }
+
+            existing.FishingLicense = null;
+            return;
+        }
+
+        if (existingLicense == null)
+        {
+            existingLicense = new FishingLicense
+            {
+                UserID = existing.UserID,
+                BeginDate = user.FishingLicense.BeginDate,
+                ExpirationDate = user.FishingLicense.ExpirationDate,
+                User = existing
+            };
+            licenses.Add(existingLicense);
+        }
+        else
+        {
+            existingLicense.BeginDate = user.FishingLicense.BeginDate;
+            existingLicense.ExpirationDate = user.FishingLicense.ExpirationDate;
+            existingLicense.User = existing;
+        }
+
+        existing.FishingLicense = existingLicense;
     }
 
     public void DeleteUser(int id)
     {
         var users = (List<User>)Users;
+        var licenses = (List<FishingLicense>)FishingLicenses;
         var existing = users.FirstOrDefault(u => u.UserID == id);
         if (existing == null) throw new InvalidOperationException($"User with ID {id} was not found.");
+
+        var existingLicense = licenses.FirstOrDefault(l => l.UserID == id);
+        if (existingLicense != null)
+        {
+            licenses.Remove(existingLicense);
+        }
+
         users.Remove(existing);
     }
 
