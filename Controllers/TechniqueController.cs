@@ -1,5 +1,6 @@
 using FishingBuddy.Models;
 using FishingBuddy.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FishingBuddy.Controllers
@@ -13,11 +14,13 @@ namespace FishingBuddy.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_repository.Techniques);
         }
 
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Manage()
         {
             var techniques = _repository.Techniques
@@ -28,6 +31,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Search(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -46,6 +50,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Autocomplete(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -64,6 +69,7 @@ namespace FishingBuddy.Controllers
             return Json(results);
         }
 
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var technique = _repository.GetTechniqueById(id);
@@ -72,6 +78,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create()
         {
             return View(new Technique());
@@ -79,6 +86,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(Technique technique)
         {
             if (!ModelState.IsValid)
@@ -91,6 +99,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
             var technique = _repository.GetTechniqueById(id);
@@ -101,6 +110,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, Technique technique)
         {
             if (id != technique.TechniqueID)
@@ -118,6 +128,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var technique = _repository.GetTechniqueById(id);
@@ -127,6 +138,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repository.DeleteTechnique(id);

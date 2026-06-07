@@ -1,0 +1,60 @@
+@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Dovršite registraciju";
+}
+
+<section class="card shadow-sm border-0">
+    <div class="card-body p-4 p-lg-5">
+        <div class="mb-4">
+            <h1 class="h2 mb-1">@ViewData["Title"]</h1>
+            <p id="external-login-description" class="text-muted mb-0">
+                Uspješno ste se prijavili putem servisa <strong>@Model.ProviderDisplayName</strong>.
+                Potvrdite podatke kako biste završili otvaranje računa.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-lg-8">
+                <div class="card border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h2 id="external-login-title" class="h5 mb-3">Podaci korisničkog računa</h2>
+
+                        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="Input.Email" class="form-label">Email</label>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="ime@domena.hr" />
+                                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="Input.OIB" class="form-label">OIB</label>
+                                    <input asp-for="Input.OIB" class="form-control" inputmode="numeric" placeholder="Unesite OIB" />
+                                    <span asp-validation-for="Input.OIB" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="Input.Address" class="form-label">Adresa</label>
+                                    <input asp-for="Input.Address" class="form-control" placeholder="Ulica i kućni broj" />
+                                    <span asp-validation-for="Input.Address" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary">Potvrdi i nastavi</button>
+                                <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-outline-secondary">Natrag na prijavu</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

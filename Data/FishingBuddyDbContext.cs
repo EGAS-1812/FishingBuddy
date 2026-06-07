@@ -1,17 +1,19 @@
 using FishingBuddy.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FishingBuddy.Data;
 
-public class FishingBuddyDbContext(DbContextOptions<FishingBuddyDbContext> options) : DbContext(options)
+public class FishingBuddyDbContext(DbContextOptions<FishingBuddyDbContext> options) : IdentityDbContext<AppUser>(options)
 {
     public DbSet<Technique> Techniques => Set<Technique>();
     public DbSet<Bait> Baits => Set<Bait>();
     public DbSet<Fish> Fish => Set<Fish>();
     public DbSet<CatchRecord> CatchRecords => Set<CatchRecord>();
     public DbSet<FishingLicense> FishingLicenses => Set<FishingLicense>();
-    public DbSet<User> Users => Set<User>();
+    public new DbSet<User> Users => Set<User>();
     public DbSet<FishingSpot> FishingSpots => Set<FishingSpot>();
+    public DbSet<Attachment> Attachments => Set<Attachment>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,6 +40,12 @@ public class FishingBuddyDbContext(DbContextOptions<FishingBuddyDbContext> optio
             .HasOne(cr => cr.Fish)
             .WithMany(f => f.CatchRecords)
             .HasForeignKey(cr => cr.FishID);
+
+        modelBuilder.Entity<Attachment>()
+            .HasOne(a => a.CatchRecord)
+            .WithMany(cr => cr.Attachments)
+            .HasForeignKey(a => a.CatchRecordID)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<User>()
             .HasOne(u => u.FishingLicense)

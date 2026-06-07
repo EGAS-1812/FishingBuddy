@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /.github/hooks/config.json.txt
+
+# Local SQLite sidecar files
+*.db-shm
+*.db-wal

@@ -22,79 +22,153 @@
             <h1 class="h2 mb-1">Uredi zapis o ulovu</h1>
             <p class="text-muted mb-0">Ažurirajte podatke o zabilježenom ulovu.</p>
         </div>
+        <div class="row g-4 align-items-start">
+            <div class="col-12 col-xl-7">
+                <form asp-action="Edit" method="post" novalidate>
+                    <input asp-for="CatchID" type="hidden" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
 
-        <form asp-action="Edit" method="post" novalidate>
-            <input asp-for="CatchID" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
+                            {
+                                ["FieldName"] = nameof(Model.UserID),
+                                ["FieldId"] = nameof(Model.UserID),
+                                ["Label"] = "Ribar",
+                                ["Endpoint"] = Url.Action("Autocomplete", "User"),
+                                ["SelectedValue"] = Model.UserID.ToString(),
+                                ["SelectedLabel"] = selectedUserLabel,
+                                ["Placeholder"] = "Upisite ime ribara"
+                            })
+                            <span asp-validation-for="UserID" class="text-danger small"></span>
+                        </div>
 
-            <div class="row g-3">
-                <div class="col-12 col-md-6">
-                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
-                    {
-                        ["FieldName"] = nameof(Model.UserID),
-                        ["FieldId"] = nameof(Model.UserID),
-                        ["Label"] = "Ribar",
-                        ["Endpoint"] = Url.Action("Autocomplete", "User"),
-                        ["SelectedValue"] = Model.UserID.ToString(),
-                        ["SelectedLabel"] = selectedUserLabel,
-                        ["Placeholder"] = "Upisite ime ribara"
-                    })
-                    <span asp-validation-for="UserID" class="text-danger small"></span>
-                </div>
+                        <div class="col-12 col-md-6">
+                            @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
+                            {
+                                ["FieldName"] = nameof(Model.FishID),
+                                ["FieldId"] = nameof(Model.FishID),
+                                ["Label"] = "Vrsta ribe",
+                                ["Endpoint"] = Url.Action("Autocomplete", "Fish"),
+                                ["SelectedValue"] = Model.FishID.ToString(),
+                                ["SelectedLabel"] = selectedFishLabel,
+                                ["Placeholder"] = "Upisite vrstu ribe"
+                            })
+                            <span asp-validation-for="FishID" class="text-danger small"></span>
+                        </div>
 
-                <div class="col-12 col-md-6">
-                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
-                    {
-                        ["FieldName"] = nameof(Model.FishID),
-                        ["FieldId"] = nameof(Model.FishID),
-                        ["Label"] = "Vrsta ribe",
-                        ["Endpoint"] = Url.Action("Autocomplete", "Fish"),
-                        ["SelectedValue"] = Model.FishID.ToString(),
-                        ["SelectedLabel"] = selectedFishLabel,
-                        ["Placeholder"] = "Upisite vrstu ribe"
-                    })
-                    <span asp-validation-for="FishID" class="text-danger small"></span>
-                </div>
+                        <div class="col-12 col-md-6">
+                            @await Html.PartialAsync("_DateTimeInput", null, new ViewDataDictionary(ViewData)
+                            {
+                                ["FieldName"] = nameof(Model.CatchDate),
+                                ["FieldId"] = nameof(Model.CatchDate),
+                                ["Label"] = "Datum ulova",
+                                ["Value"] = Model.CatchDate,
+                                ["Placeholder"] = "dd.mm.yyyy hh:mm"
+                            })
+                            <span asp-validation-for="CatchDate" class="text-danger small"></span>
+                        </div>
 
-                <div class="col-12 col-md-6">
-                    @await Html.PartialAsync("_DateTimeInput", null, new ViewDataDictionary(ViewData)
-                    {
-                        ["FieldName"] = nameof(Model.CatchDate),
-                        ["FieldId"] = nameof(Model.CatchDate),
-                        ["Label"] = "Datum ulova",
-                        ["Value"] = Model.CatchDate,
-                        ["Placeholder"] = "dd.mm.yyyy hh:mm"
-                    })
-                    <span asp-validation-for="CatchDate" class="text-danger small"></span>
-                </div>
+                        <div class="col-12 col-md-6">
+                            <label asp-for="Location" class="form-label">Lokacija</label>
+                            <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger small"></span>
+                        </div>
 
-                <div class="col-12 col-md-6">
-                    <label asp-for="Location" class="form-label">Lokacija</label>
-                    <input asp-for="Location" class="form-control" />
-                    <span asp-validation-for="Location" class="text-danger small"></span>
-                </div>
+                        <div class="col-12 col-md-4">
+                            <label asp-for="Weight" class="form-label">Težina (kg)</label>
+                            <input asp-for="Weight" class="form-control" type="number" step="0.01" min="0" />
+                            <span asp-validation-for="Weight" class="text-danger small"></span>
+                        </div>
 
-                <div class="col-12 col-md-4">
-                    <label asp-for="Weight" class="form-label">Težina (kg)</label>
-                    <input asp-for="Weight" class="form-control" type="number" step="0.01" min="0" />
-                    <span asp-validation-for="Weight" class="text-danger small"></span>
-                </div>
+                        <div class="col-12 col-md-4">
+                            <label asp-for="LengthCm" class="form-label">Duljina (cm)</label>
+                            <input asp-for="LengthCm" class="form-control" type="number" step="0.1" min="0" />
+                            <span asp-validation-for="LengthCm" class="text-danger small"></span>
+                        </div>
+                    </div>
 
-                <div class="col-12 col-md-4">
-                    <label asp-for="LengthCm" class="form-label">Duljina (cm)</label>
-                    <input asp-for="LengthCm" class="form-control" type="number" step="0.1" min="0" />
-                    <span asp-validation-for="LengthCm" class="text-danger small"></span>
-                </div>
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Spremi promjene</button>
+                        <a class="btn btn-outline-secondary" asp-controller="CatchRecord" asp-action="Manage">Odustani</a>
+                    </div>
+                </form>
             </div>
 
-            <div class="d-flex flex-wrap gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">Spremi promjene</button>
-                <a class="btn btn-outline-secondary" asp-controller="CatchRecord" asp-action="Manage">Odustani</a>
+            <div class="col-12 col-xl-5">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="h5 mb-3">Privitci ulova</h2>
+                        <p class="text-muted small mb-3">Povucite datoteke ili kliknite za odabir.</p>
+
+                        <form id="attachmentDz"
+                              class="dropzone border rounded bg-light"
+                              asp-controller="CatchRecord"
+                              asp-action="UploadAttachment"
+                              asp-route-catchRecordId="@Model.CatchID"
+                              method="post"
+                              enctype="multipart/form-data">
+                            <div class="dz-message m-0">
+                                <strong>Dodajte privitke</strong><br />
+                                <span class="text-muted small">Podržani su svi uobičajeni formati datoteka.</span>
+                            </div>
+                        </form>
+
+                        <div id="attachmentList" class="mt-4"></div>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </section>
 
 @section Scripts {
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" />
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        Dropzone.autoDiscover = false;
+
+        function loadAttachmentList() {
+            $.get('@Url.Action("GetAttachments", "CatchRecord")', { catchRecordId: @Model.CatchID })
+                .done(function (html) {
+                    $('#attachmentList').html(html);
+                })
+                .fail(function () {
+                    $('#attachmentList').html('<div class="alert alert-warning py-2 mb-0">Neuspjelo dohvaćanje privitaka.</div>');
+                });
+        }
+
+        function deleteAttachment(id) {
+            $.post('@Url.Action("DeleteAttachment", "CatchRecord")', { id: id })
+                .done(function () {
+                    loadAttachmentList();
+                })
+                .fail(function () {
+                    alert('Brisanje privitka nije uspjelo.');
+                });
+        }
+
+        $(function () {
+            loadAttachmentList();
+
+            new Dropzone('#attachmentDz', {
+                paramName: 'file',
+                maxFilesize: 25,
+                timeout: 0,
+                addRemoveLinks: false,
+                init: function () {
+                    this.on('success', function () {
+                        loadAttachmentList();
+                    });
+
+                    this.on('error', function (file, message) {
+                        const text = typeof message === 'string' ? message : 'Upload nije uspio.';
+                        alert(text);
+                        this.removeFile(file);
+                    });
+                }
+            });
+        });
+    </script>
 }

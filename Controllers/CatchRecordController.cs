@@ -1,30 +1,39 @@
+using FishingBuddy.Data;
 using FishingBuddy.Models;
 using FishingBuddy.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace FishingBuddy.Controllers
 {
     public class CatchRecordController : Controller
     {
         private readonly IFishingRepository _repository;
+        private readonly FishingBuddyDbContext _dbContext;
 
-        public CatchRecordController(IFishingRepository repository)
+        public CatchRecordController(IFishingRepository repository, FishingBuddyDbContext dbContext)
         {
             _repository = repository;
+            _dbContext = dbContext;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_repository.CatchRecords);
         }
 
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Manage()
         {
             return View(_repository.CatchRecords.OrderByDescending(c => c.CatchDate).ToList());
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Search(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -45,6 +54,7 @@ namespace FishingBuddy.Controllers
             return PartialView("_CatchRecordRows", query.OrderByDescending(c => c.CatchDate).ToList());
         }
 
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var record = _repository.GetCatchRecordById(id);
@@ -56,6 +66,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create()
         {
             ViewBag.Users = new SelectList(_repository.Users, "UserID", "Username");
@@ -65,6 +76,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(CatchRecord catchRecord)
         {
             ValidateRelatedEntities(catchRecord);
@@ -80,6 +92,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
             var record = _repository.GetCatchRecordById(id);
@@ -91,6 +104,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, CatchRecord catchRecord)
         {
             if (id != catchRecord.CatchID) return NotFound();
@@ -108,6 +122,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var record = _repository.GetCatchRecordById(id);
@@ -117,6 +132,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repository.DeleteCatchRecord(id);
@@ -134,6 +150,92 @@ namespace FishingBuddy.Controllers
             {
                 ModelState.AddModelError(nameof(CatchRecord.FishID), "Selected fish is not valid.");
             }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> UploadAttachment(int catchRecordId, IFormFile? file)
+        {
+            var catchRecord = await _dbContext.CatchRecords.FirstOrDefaultAsync(c => c.CatchID == catchRecordId);
+            if (catchRecord == null)
+            {
+                return NotFound();
+            }
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var uploadsPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "uploads",
+                "catch-records",
+                catchRecordId.ToString());
+
+            Directory.CreateDirectory(uploadsPath);
+
+            var generatedName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var physicalPath = Path.Combine(uploadsPath, generatedName);
+
+            await using (var stream = new FileStream(physicalPath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var attachment = new Attachment
+            {
+                CatchRecordID = catchRecordId,
+                FileName = file.FileName,
+                FilePath = $"/uploads/catch-records/{catchRecordId}/{generatedName}",
+                ContentType = file.ContentType,
+                FileSize = file.Length,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+
+            _dbContext.Attachments.Add(attachment);
+            await _dbContext.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetAttachments(int catchRecordId)
+        {
+            var attachments = await _dbContext.Attachments
+                .Where(a => a.CatchRecordID == catchRecordId)
+                .OrderByDescending(a => a.CreatedAtUtc)
+                .ToListAsync();
+
+            return PartialView("_AttachmentList", attachments);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> DeleteAttachment(int id)
+        {
+            var attachment = await _dbContext.Attachments.FirstOrDefaultAsync(a => a.AttachmentID == id);
+            if (attachment == null)
+            {
+                return NotFound();
+            }
+
+            var physicalPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                attachment.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+            if (System.IO.File.Exists(physicalPath))
+            {
+                System.IO.File.Delete(physicalPath);
+            }
+
+            _dbContext.Attachments.Remove(attachment);
+            await _dbContext.SaveChangesAsync();
+
+            return Json(new { success = true });
         }
     }
 }

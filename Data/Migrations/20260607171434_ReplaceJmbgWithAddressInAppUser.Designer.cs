@@ -3,6 +3,7 @@ using System;
 using FishingBuddy.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FishingBuddy.Data.Migrations
 {
     [DbContext(typeof(FishingBuddyDbContext))]
-    partial class FishingBuddyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260607171434_ReplaceJmbgWithAddressInAppUser")]
+    partial class ReplaceJmbgWithAddressInAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -56,6 +59,7 @@ namespace FishingBuddy.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
@@ -85,6 +89,7 @@ namespace FishingBuddy.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OIB")
+                        .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("TEXT");
 

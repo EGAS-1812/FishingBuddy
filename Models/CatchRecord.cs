@@ -29,6 +29,8 @@ public class CatchRecord
     [ForeignKey(nameof(FishID))]
     public virtual Fish Fish { get; set; } = null!;
 
+    public virtual ICollection<Attachment> Attachments { get; set; } = new HashSet<Attachment>();
+
     public CatchRecord() { }
 
     public CatchRecord(int catchID, int userID, int fishID, DateTime catchDate, double weight, double lengthCm, string location)

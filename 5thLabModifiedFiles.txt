@@ -1,0 +1,56 @@
+5th Lab Modified Files Report
+Format: file | added lines | removed/changed lines
+
+5thLabStudyList.txt | 65 | 0
+Areas/Identity/Pages/Account/ExternalLogin.cshtml | 38 | 0
+Areas/Identity/Pages/Account/ExternalLogin.cshtml.cs | 145 | 0
+Areas/Identity/Pages/Account/Register.cshtml | 67 | 0
+Areas/Identity/Pages/Account/Register.cshtml.cs | 127 | 0
+Areas/Identity/Pages/Account/_ViewImports.cshtml | 2 | 0
+Areas/Identity/Pages/_ViewImports.cshtml | 1 | 0
+Controllers/Api/BaitApiController.cs | 90 | 0
+Controllers/Api/CatchRecordApiController.cs | 131 | 0
+Controllers/Api/FishApiController.cs | 141 | 0
+Controllers/Api/FishingLicenseApiController.cs | 97 | 0
+Controllers/Api/FishingSpotApiController.cs | 89 | 0
+Controllers/Api/TechniqueApiController.cs | 85 | 0
+Controllers/Api/UserApiController.cs | 141 | 0
+Controllers/BaitController.cs | 12 | 0
+Controllers/CatchRecordController.cs | 103 | 1
+Controllers/FishController.cs | 12 | 0
+Controllers/FishingSpotController.cs | 11 | 0
+Controllers/TechniqueController.cs | 12 | 0
+Controllers/UserController.cs | 12 | 0
+Data/FishingBuddyDbContext.cs | 10 | 2
+Data/IdentitySeeder.cs | 17 | 0
+Data/Migrations/20260607165309_Lab5IdentityApiUpload.Designer.cs | 549 | 0
+Data/Migrations/20260607165309_Lab5IdentityApiUpload.cs | 231 | 0
+Data/Migrations/FishingBuddyDbContextModelSnapshot.cs | 310 | 0
+Data/NoOpEmailSender.cs | 9 | 0
+Dtos/BaitDtos.cs | 22 | 0
+Dtos/CatchRecordDtos.cs | 36 | 0
+Dtos/CommonDtos.cs | 22 | 0
+Dtos/DtoMappingExtensions.cs | 107 | 0
+Dtos/FishDtos.cs | 37 | 0
+Dtos/FishingLicenseDtos.cs | 15 | 0
+Dtos/FishingSpotDtos.cs | 22 | 0
+Dtos/TechniqueDtos.cs | 20 | 0
+Dtos/UserDtos.cs | 22 | 0
+FBuddy.cs | 46 | 3
+FishingBuddy.IntegrationTests/ApiCrudIntegrationTests.cs | 343 | 0
+FishingBuddy.IntegrationTests/CustomWebApplicationFactory.cs | 48 | 0
+FishingBuddy.IntegrationTests/FishingBuddy.IntegrationTests.csproj | 23 | 0
+FishingBuddy.csproj | 9 | 0
+Models/AppUser.cs | 14 | 0
+Models/Attachment.cs | 21 | 0
+Models/CatchRecord.cs | 2 | 0
+Views/CatchRecord/Edit.cshtml | 135 | 61
+Views/CatchRecord/_AttachmentList.cshtml | 47 | 0
+Views/Shared/_Layout.cshtml | 1 | 0
+Views/Shared/_LoginPartial.cshtml | 28 | 0
+appsettings.Development.json | 6 | 0
+appsettings.json | 6 | 0
+
+Auto-generated runtime side effects detected in workspace:
+FishingBuddy.dev.db | binary modified
+lab-1/agent_log.txt | 196 | 0

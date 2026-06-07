@@ -1,5 +1,6 @@
 using FishingBuddy.Models;
 using FishingBuddy.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FishingBuddy.Controllers
@@ -13,17 +14,20 @@ namespace FishingBuddy.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_repository.FishingSpots);
         }
 
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Manage()
         {
             return View(_repository.FishingSpots.OrderBy(s => s.SpotName).ToList());
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Search(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -40,6 +44,7 @@ namespace FishingBuddy.Controllers
             return PartialView("_FishingSpotRows", query.OrderBy(s => s.SpotName).ToList());
         }
 
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var spot = _repository.GetFishingSpotById(id);
@@ -48,6 +53,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create()
         {
             return View(new FishingSpot());
@@ -55,6 +61,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(FishingSpot spot)
         {
             if (!ModelState.IsValid) return View(spot);
@@ -63,6 +70,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
             var spot = _repository.GetFishingSpotById(id);
@@ -72,6 +80,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, FishingSpot spot)
         {
             if (id != spot.SpotID) return NotFound();
@@ -81,6 +90,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var spot = _repository.GetFishingSpotById(id);
@@ -90,6 +100,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repository.DeleteFishingSpot(id);

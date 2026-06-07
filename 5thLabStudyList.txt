@@ -1,0 +1,82 @@
+Lab 5 Study List - FishingBuddy
+
+1) ASP.NET Core Web API fundamentals
+- ApiController and attribute routing
+- HTTP verbs: GET, POST, PUT, DELETE
+- Status codes: 200, 201, 204, 400, 404, 409
+- Query-based filtering/search in endpoints
+
+2) DTO pattern and API shaping
+- Response DTO vs Upsert DTO separation
+- Preventing direct entity exposure
+- Nested DTOs for related data (User/Fish/Bait/Technique/Attachments)
+- Entity-to-DTO mapping via extension methods
+
+3) Entity Framework Core advanced usage
+- IdentityDbContext integration
+- Owned types (Equipment, FReel, FRod, FLine)
+- One-to-one relationship (User <-> FishingLicense)
+- One-to-many relationship (CatchRecord -> Attachments)
+- Many-to-many relationships (UserFavoriteFish, FishingSpotFish)
+- Migrations and snapshot updates
+
+4) ASP.NET Core Identity (local auth)
+- Custom AppUser inheriting IdentityUser
+- Extending user profile with OIB and JMBG
+- AddDefaultIdentity + roles + EF stores
+- Razor Identity pages override (Register, ExternalLogin)
+- Login/Logout/Register links in shared layout
+
+5) Authorization design
+- AllowAnonymous for public endpoints/pages
+- Role-based access with Authorize(Roles = "Admin,Manager")
+- Admin-only destructive actions (Delete)
+- Role seeding at startup (Admin + Manager)
+
+6) External authentication
+- Google OAuth provider integration
+- Facebook Login provider integration
+- Conditional provider registration from configuration
+- Secret management expectations (user-secrets/environment)
+- OAuth flow sequence:
+	1. User clicks Continue with Google/Facebook on Login page
+	2. App issues challenge to configured provider
+	3. Provider authenticates user and redirects back to callback endpoint
+	4. ASP.NET Core validates external identity and signs user in
+	5. If no local account exists, app can auto-provision one and link provider login
+- Required local callback endpoints:
+	- Google: /signin-google
+	- Facebook: /signin-facebook
+- Provider console requirements:
+	- Correct Redirect URI (scheme + host + port + path must match exactly)
+	- OAuth consent/test users configured (Google)
+	- App roles/testers configured in development mode (Facebook)
+- Common failure causes and meaning:
+	- invalid_client: wrong client ID/secret or wrong Google project
+	- Invalid App ID: wrong Facebook App ID/secret or app misconfiguration
+	- redirect_uri_mismatch: callback URL mismatch between app and provider settings
+
+7) File upload subsystem
+- Asynchronous file upload (Dropzone)
+- Upload endpoint with IFormFile
+- Disk storage under wwwroot/uploads/catch-records/{id}
+- Metadata persistence in Attachments table
+- AJAX/partial refresh for attachment list
+- Attachment delete endpoint and physical file cleanup
+
+8) Razor/MVC integration patterns
+- Edit form + attachment management in one page
+- Partial view rendering for dynamic fragments
+- jQuery AJAX for list refresh and deletion
+
+9) Integration testing architecture
+- WebApplicationFactory-based end-to-end API tests
+- Isolated test hosting environment
+- SQLite in-memory test database setup
+- CRUD happy paths + not-found + validation tests
+- Deterministic test data seeding helpers
+
+10) Project structuring and maintainability
+- Separate API controllers from MVC controllers
+- Consistent naming conventions for DTOs/controllers/routes
+- Keeping startup logic test-friendly (seed flags and environment overrides)

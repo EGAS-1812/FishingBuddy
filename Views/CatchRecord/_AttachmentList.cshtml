@@ -1,0 +1,49 @@
+@model IEnumerable<FishingBuddy.Models.Attachment>
+@using System.Globalization
+
+@{
+    var attachments = Model?.ToList() ?? new List<FishingBuddy.Models.Attachment>();
+}
+
+@if (!attachments.Any())
+{
+    <div class="alert alert-info py-2 mb-0" role="status">
+        Trenutno nema dodanih privitaka za ovaj ulov.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">Naziv datoteke</th>
+                    <th scope="col">Vrsta</th>
+                    <th scope="col">Veličina</th>
+                    <th scope="col">Dodano</th>
+                    <th scope="col" class="text-end">Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in attachments)
+                {
+                    <tr>
+                        <td>
+                            <a href="@item.FilePath" target="_blank" rel="noopener noreferrer">@item.FileName</a>
+                        </td>
+                        <td>@item.ContentType</td>
+                        <td>@string.Format(CultureInfo.GetCultureInfo("hr-HR"), "{0:N0} KB", Math.Max(1, item.FileSize / 1024d))</td>
+                        <td>@item.CreatedAtUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                        <td class="text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="deleteAttachment(@item.AttachmentID)">
+                                Obriši
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

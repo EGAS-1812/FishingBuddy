@@ -1,5 +1,6 @@
 using FishingBuddy.Models;
 using FishingBuddy.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FishingBuddy.Controllers
@@ -13,17 +14,20 @@ namespace FishingBuddy.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_repository.Users);
         }
 
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Manage()
         {
             return View(_repository.Users.OrderBy(u => u.Username).ToList());
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Search(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -41,6 +45,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Autocomplete(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -61,6 +66,7 @@ namespace FishingBuddy.Controllers
             return Json(results);
         }
 
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var user = _repository.GetUserById(id);
@@ -69,6 +75,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create()
         {
             return View(new UserUpsertViewModel());
@@ -76,6 +83,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(UserUpsertViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -86,6 +94,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
             var user = _repository.GetUserById(id);
@@ -95,6 +104,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, UserUpsertViewModel model)
         {
             if (id != model.UserID) return NotFound();
@@ -106,6 +116,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var user = _repository.GetUserById(id);
@@ -115,6 +126,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repository.DeleteUser(id);

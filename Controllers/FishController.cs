@@ -1,5 +1,6 @@
 using FishingBuddy.Models;
 using FishingBuddy.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,17 +15,20 @@ namespace FishingBuddy.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_repository.Fish);
         }
 
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Manage()
         {
             return View(_repository.Fish.OrderBy(f => f.SpeciesName).ToList());
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Search(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -45,6 +49,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Autocomplete(string? term)
         {
             var normalized = term?.Trim() ?? string.Empty;
@@ -63,6 +68,7 @@ namespace FishingBuddy.Controllers
             return Json(results);
         }
 
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var fish = _repository.GetFishById(id);
@@ -78,6 +84,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create()
         {
             ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName");
@@ -87,6 +94,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(Fish fish)
         {
             ValidateRelatedEntities(fish);
@@ -102,6 +110,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id)
         {
             var fish = _repository.GetFishById(id);
@@ -113,6 +122,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Edit(int id, Fish fish)
         {
             if (id != fish.FishID) return NotFound();
@@ -130,6 +140,7 @@ namespace FishingBuddy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var fish = _repository.GetFishById(id);
@@ -139,6 +150,7 @@ namespace FishingBuddy.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repository.DeleteFish(id);
