@@ -29,11 +29,8 @@
 
                 <div class="col-12 col-md-6">
                     <label asp-for="BaitType" class="form-label">Tip mamca</label>
-                    <select asp-for="BaitType" class="form-select">
+                    <select asp-for="BaitType" asp-items="Html.GetEnumSelectList<FishingBuddy.Models.BaitType>()" class="form-select">
                         <option value="">-- Odaberite tip --</option>
-                        <option value="Live">Živi</option>
-                        <option value="Dead">Mrtvi</option>
-                        <option value="Artificial">Umjetni</option>
                     </select>
                     <span asp-validation-for="BaitType" class="text-danger small"></span>
                 </div>

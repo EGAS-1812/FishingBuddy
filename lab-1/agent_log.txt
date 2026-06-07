@@ -1721,3 +1721,38 @@ Return:
 - short summary of what was added in each file.
 [2026-05-21 17:40:46Z] are your todos now complete?
 [2026-05-21 17:41:47Z] Yes run it
+[2026-06-07 23:48:51Z] Also my professor told me that we should not store values in HTML because then it's not really scalable when wanting to add more of them. I think it was regarding the <option value> in Baits Create view and any similar sort of saving values in a view. How can we change that? I'm not sure if I remember correctly but I think he had something to say about that.
+[2026-06-07 23:49:21Z] Modify Razor view markup in the current workspace to remove hardcoded enum option values from form selects and use ASP.NET Core enum-backed select lists instead. Scope only these files:
+- Views/Bait/Create.cshtml
+- Views/Bait/Edit.cshtml
+- Views/Fish/Create.cshtml
+- Views/Fish/Edit.cshtml
+
+Required changes:
+1) For BaitType selects, replace manual <option value="Live|Dead|Artificial"> with tag-helper enum options:
+<select asp-for="BaitType" asp-items="Html.GetEnumSelectList<FishingBuddy.Models.BaitType>()" class="form-select">
+    <option value="">-- Odaberite tip --</option>
+</select>
+2) For CatchSeason selects, use Html.GetEnumSelectList<FishingBuddy.Models.Season>() with existing placeholder text.
+3) For FleshColor selects, use Html.GetEnumSelectList<FishingBuddy.Models.FishFlesh>() with existing placeholder text.
+4) Preserve current labels, validation spans, Bootstrap classes, layout, and other content unchanged.
+5) Do not modify controllers or other files.
+
+Return a concise summary of exact edits made.
+[2026-06-07 23:49:21Z] [FishingStylist_SPAWNED] Modify Razor view markup in the current workspace to remove hardcoded enum option values from form selects and use ASP.NET Core enum-backed select lists instead. Scope only these files:
+- Views/Bait/Create.cshtml
+- Views/Bait/Edit.cshtml
+- Views/Fish/Create.cshtml
+- Views/Fish/Edit.cshtml
+
+Required changes:
+1) For BaitType selects, replace manual <option value="Live|Dead|Artificial"> with tag-helper enum options:
+<select asp-for="BaitType" asp-items="Html.GetEnumSelectList<FishingBuddy.Models.BaitType>()" class="form-select">
+    <option value="">-- Odaberite tip --</option>
+</select>
+2) For CatchSeason selects, use Html.GetEnumSelectList<FishingBuddy.Models.Season>() with existing placeholder text.
+3) For FleshColor selects, use Html.GetEnumSelectList<FishingBuddy.Models.FishFlesh>() with existing placeholder text.
+4) Preserve current labels, validation spans, Bootstrap classes, layout, and other content unchanged.
+5) Do not modify controllers or other files.
+
+Return a concise summary of exact edits made.

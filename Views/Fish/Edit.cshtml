@@ -36,23 +36,16 @@
 
                 <div class="col-12 col-md-6">
                     <label asp-for="CatchSeason" class="form-label">Sezona lova</label>
-                    <select asp-for="CatchSeason" class="form-select">
+                    <select asp-for="CatchSeason" asp-items="Html.GetEnumSelectList<FishingBuddy.Models.Season>()" class="form-select">
                         <option value="">-- Odaberite sezonu --</option>
-                        <option value="Spring">Proljeće</option>
-                        <option value="Summer">Ljeto</option>
-                        <option value="Autumn">Jesen</option>
-                        <option value="Winter">Zima</option>
                     </select>
                     <span asp-validation-for="CatchSeason" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12 col-md-6">
                     <label asp-for="FleshColor" class="form-label">Boja mesa</label>
-                    <select asp-for="FleshColor" class="form-select">
+                    <select asp-for="FleshColor" asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FishFlesh>()" class="form-select">
                         <option value="">-- Odaberite boju --</option>
-                        <option value="Blue">Plavo</option>
-                        <option value="Red">Crveno</option>
-                        <option value="White">Bijelo</option>
                     </select>
                     <span asp-validation-for="FleshColor" class="text-danger small"></span>
                 </div>
