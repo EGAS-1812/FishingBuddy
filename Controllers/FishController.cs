@@ -89,6 +89,7 @@ namespace FishingBuddy.Controllers
         {
             ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName");
             ViewBag.Techniques = new SelectList(_repository.Techniques, "TechniqueID", "TechniqueName");
+            ViewData["PreferredMethodLabel"] = string.Empty;
             return View(new Fish());
         }
 
@@ -97,12 +98,14 @@ namespace FishingBuddy.Controllers
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(Fish fish)
         {
+            TryResolvePreferredMethodFromDisplayName(fish);
             ValidateRelatedEntities(fish);
 
             if (!ModelState.IsValid)
             {
                 ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName");
                 ViewBag.Techniques = new SelectList(_repository.Techniques, "TechniqueID", "TechniqueName");
+                ViewData["PreferredMethodLabel"] = Request.Form[$"{nameof(Fish.PreferredMethodID)}Display"].ToString();
                 return View(fish);
             }
             _repository.AddFish(fish);
@@ -117,6 +120,7 @@ namespace FishingBuddy.Controllers
             if (fish == null) return NotFound();
             ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName", fish.FavouriteBaitID);
             ViewBag.Techniques = new SelectList(_repository.Techniques, "TechniqueID", "TechniqueName", fish.PreferredMethodID);
+            ViewData["PreferredMethodLabel"] = fish.PreferredMethod?.TechniqueName ?? string.Empty;
             return View(fish);
         }
 
@@ -127,12 +131,14 @@ namespace FishingBuddy.Controllers
         {
             if (id != fish.FishID) return NotFound();
 
+            TryResolvePreferredMethodFromDisplayName(fish);
             ValidateRelatedEntities(fish);
 
             if (!ModelState.IsValid)
             {
                 ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName", fish.FavouriteBaitID);
                 ViewBag.Techniques = new SelectList(_repository.Techniques, "TechniqueID", "TechniqueName", fish.PreferredMethodID);
+                ViewData["PreferredMethodLabel"] = Request.Form[$"{nameof(Fish.PreferredMethodID)}Display"].ToString();
                 return View(fish);
             }
             _repository.UpdateFish(fish);
@@ -167,6 +173,28 @@ namespace FishingBuddy.Controllers
             if (_repository.GetTechniqueById(fish.PreferredMethodID) == null)
             {
                 ModelState.AddModelError(nameof(Fish.PreferredMethodID), "Selected technique is not valid.");
+            }
+        }
+
+        private void TryResolvePreferredMethodFromDisplayName(Fish fish)
+        {
+            if (fish.PreferredMethodID > 0)
+            {
+                return;
+            }
+
+            var displayName = Request.Form[$"{nameof(Fish.PreferredMethodID)}Display"].ToString().Trim();
+            if (string.IsNullOrWhiteSpace(displayName))
+            {
+                return;
+            }
+
+            var technique = _repository.Techniques.FirstOrDefault(t =>
+                string.Equals(t.TechniqueName, displayName, StringComparison.OrdinalIgnoreCase));
+
+            if (technique != null)
+            {
+                fish.PreferredMethodID = technique.TechniqueID;
             }
         }
     }

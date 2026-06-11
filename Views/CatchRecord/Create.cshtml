@@ -1,6 +1,8 @@
 @model FishingBuddy.Models.CatchRecord
 @{
     ViewData["Title"] = "Novi ulov";
+    var selectedUserLabel = ViewData["SelectedUserLabel"] as string ?? string.Empty;
+    var selectedFishLabel = ViewData["SelectedFishLabel"] as string ?? string.Empty;
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
     {
         ("Početna", "/"),
@@ -17,7 +19,7 @@
             <p class="text-muted mb-0">Dodajte novi zapis o ulovu s datumom, težinom i lokacijom.</p>
         </div>
 
-        <form asp-action="Create" method="post" novalidate>
+        <form asp-action="Create" method="post" enctype="multipart/form-data" novalidate>
             <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
 
             <div class="row g-3">
@@ -29,7 +31,7 @@
                         ["Label"] = "Ribar",
                         ["Endpoint"] = Url.Action("Autocomplete", "User"),
                         ["SelectedValue"] = Model.UserID > 0 ? Model.UserID.ToString() : string.Empty,
-                        ["SelectedLabel"] = string.Empty,
+                        ["SelectedLabel"] = selectedUserLabel,
                         ["Placeholder"] = "Upisite ime ribara"
                     })
                     <span asp-validation-for="UserID" class="text-danger small"></span>
@@ -43,7 +45,7 @@
                         ["Label"] = "Vrsta ribe",
                         ["Endpoint"] = Url.Action("Autocomplete", "Fish"),
                         ["SelectedValue"] = Model.FishID > 0 ? Model.FishID.ToString() : string.Empty,
-                        ["SelectedLabel"] = string.Empty,
+                        ["SelectedLabel"] = selectedFishLabel,
                         ["Placeholder"] = "Upisite vrstu ribe"
                     })
                     <span asp-validation-for="FishID" class="text-danger small"></span>
@@ -77,6 +79,13 @@
                     <label asp-for="LengthCm" class="form-label">Duljina (cm)</label>
                     <input asp-for="LengthCm" class="form-control" type="number" step="0.1" min="0" />
                     <span asp-validation-for="LengthCm" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label" for="catchImage">Slika ulova (opcionalno)</label>
+                    <input type="file" id="catchImage" name="catchImage" class="form-control" accept="image/*" />
+                    <div class="form-text">Dodajte fotografiju ulovljene ribe ako je imate.</div>
+                    @Html.ValidationMessage("catchImage", null, new { @class = "text-danger small d-block" })
                 </div>
             </div>
 

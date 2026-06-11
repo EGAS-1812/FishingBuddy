@@ -1,6 +1,8 @@
 @model FishingBuddy.Models.Fish
 @{
     ViewData["Title"] = "Nova vrsta ribe";
+    var baitOptions = ViewBag.Baits as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
+    var preferredMethodLabel = ViewData["PreferredMethodLabel"] as string ?? string.Empty;
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
     {
         ("Početna", "/"),
@@ -14,7 +16,7 @@
     <div class="card-body">
         <div class="mb-4">
             <h1 class="h2 mb-1">Nova vrsta ribe</h1>
-            <p class="text-muted mb-0">Dodajte novu vrstu ribe sa sezonom, bojom mesa i preferiranom opremom.</p>
+            <p class="text-muted mb-0">Dodajte novu vrstu ribe sa sezonom, bojom mesa i odabirom mamca i tehnike iz popisa.</p>
         </div>
 
         <form asp-action="Create" method="post" novalidate>
@@ -44,16 +46,10 @@
                 </div>
 
                 <div class="col-12 col-md-6">
-                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
-                    {
-                        ["FieldName"] = nameof(Model.FavouriteBaitID),
-                        ["FieldId"] = nameof(Model.FavouriteBaitID),
-                        ["Label"] = "Omiljeni mamac",
-                        ["Endpoint"] = Url.Action("Autocomplete", "Bait"),
-                        ["SelectedValue"] = Model.FavouriteBaitID > 0 ? Model.FavouriteBaitID.ToString() : string.Empty,
-                        ["SelectedLabel"] = string.Empty,
-                        ["Placeholder"] = "Upisite naziv mamca"
-                    })
+                    <label asp-for="FavouriteBaitID" class="form-label">Omiljeni mamac</label>
+                    <select asp-for="FavouriteBaitID" asp-items="baitOptions" class="form-select">
+                        <option value="">-- Odaberite mamac --</option>
+                    </select>
                     <span asp-validation-for="FavouriteBaitID" class="text-danger small"></span>
                 </div>
 
@@ -65,7 +61,7 @@
                         ["Label"] = "Preferirana tehnika",
                         ["Endpoint"] = Url.Action("Autocomplete", "Technique"),
                         ["SelectedValue"] = Model.PreferredMethodID > 0 ? Model.PreferredMethodID.ToString() : string.Empty,
-                        ["SelectedLabel"] = string.Empty,
+                        ["SelectedLabel"] = preferredMethodLabel,
                         ["Placeholder"] = "Upisite naziv tehnike"
                     })
                     <span asp-validation-for="PreferredMethodID" class="text-danger small"></span>

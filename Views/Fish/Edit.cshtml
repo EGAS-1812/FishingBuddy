@@ -2,9 +2,7 @@
 @using System.Linq
 @{
     var baitOptions = ViewBag.Baits as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
-    var techniqueOptions = ViewBag.Techniques as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
-    var selectedBaitLabel = baitOptions.FirstOrDefault(x => x.Value == Model.FavouriteBaitID.ToString())?.Text ?? string.Empty;
-    var selectedTechniqueLabel = techniqueOptions.FirstOrDefault(x => x.Value == Model.PreferredMethodID.ToString())?.Text ?? string.Empty;
+    var preferredMethodLabel = ViewData["PreferredMethodLabel"] as string ?? string.Empty;
 
     ViewData["Title"] = "Uredi vrstu ribe";
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
@@ -20,7 +18,7 @@
     <div class="card-body">
         <div class="mb-4">
             <h1 class="h2 mb-1">Uredi vrstu ribe</h1>
-            <p class="text-muted mb-0">Ažurirajte podatke o vrsti ribe.</p>
+            <p class="text-muted mb-0">Ažurirajte podatke o vrsti ribe i odaberite mamac i tehniku iz popisa.</p>
         </div>
 
         <form asp-action="Edit" method="post" novalidate>
@@ -51,16 +49,10 @@
                 </div>
 
                 <div class="col-12 col-md-6">
-                    @await Html.PartialAsync("_AutocompleteDropdown", null, new ViewDataDictionary(ViewData)
-                    {
-                        ["FieldName"] = nameof(Model.FavouriteBaitID),
-                        ["FieldId"] = nameof(Model.FavouriteBaitID),
-                        ["Label"] = "Omiljeni mamac",
-                        ["Endpoint"] = Url.Action("Autocomplete", "Bait"),
-                        ["SelectedValue"] = Model.FavouriteBaitID.ToString(),
-                        ["SelectedLabel"] = selectedBaitLabel,
-                        ["Placeholder"] = "Upisite naziv mamca"
-                    })
+                    <label asp-for="FavouriteBaitID" class="form-label">Omiljeni mamac</label>
+                    <select asp-for="FavouriteBaitID" asp-items="baitOptions" class="form-select">
+                        <option value="">-- Odaberite mamac --</option>
+                    </select>
                     <span asp-validation-for="FavouriteBaitID" class="text-danger small"></span>
                 </div>
 
@@ -72,7 +64,7 @@
                         ["Label"] = "Preferirana tehnika",
                         ["Endpoint"] = Url.Action("Autocomplete", "Technique"),
                         ["SelectedValue"] = Model.PreferredMethodID.ToString(),
-                        ["SelectedLabel"] = selectedTechniqueLabel,
+                        ["SelectedLabel"] = preferredMethodLabel,
                         ["Placeholder"] = "Upisite naziv tehnike"
                     })
                     <span asp-validation-for="PreferredMethodID" class="text-danger small"></span>

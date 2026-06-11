@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace FishingBuddy.Models;
 
@@ -24,11 +25,14 @@ public class CatchRecord
     public string Location { get; set; } = string.Empty;
 
     [ForeignKey(nameof(UserID))]
+    [ValidateNever]
     public virtual User User { get; set; } = null!;
 
     [ForeignKey(nameof(FishID))]
+    [ValidateNever]
     public virtual Fish Fish { get; set; } = null!;
 
+    [ValidateNever]
     public virtual ICollection<Attachment> Attachments { get; set; } = new HashSet<Attachment>();
 
     public CatchRecord() { }

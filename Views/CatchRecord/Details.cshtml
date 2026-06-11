@@ -11,30 +11,70 @@
 
     var fish = ViewBag.Fish as Fish;
     var user = ViewBag.User as User;
+    var featuredAttachment = ViewBag.FeaturedAttachment as Attachment;
 }
 
-<section class="card fb-white-pill-card shadow-sm border-0 mb-3">
-    <div class="card-body">
-        <h1 class="h2 mb-3">Detalji ulova</h1>
-        <dl class="row mb-0">
-            <dt class="col-sm-3">Datum ulova</dt>
-            <dd class="col-sm-9">@Model.CatchDate.ToString("dd.MM.yyyy")</dd>
+<section class="row g-3">
+    <div class="col-12 col-xl-7">
+        <div class="card fb-white-pill-card fb-catch-details-card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h1 class="h2 mb-3">Detalji ulova</h1>
+                <dl class="fb-catch-meta-grid mb-0">
+                    <div class="fb-catch-meta-item">
+                        <dt>Datum ulova</dt>
+                        <dd>@Model.CatchDate.ToString("dd.MM.yyyy")</dd>
+                    </div>
 
-            <dt class="col-sm-3">Ribar</dt>
-            <dd class="col-sm-9">@(user?.Username ?? "(nepoznato)")</dd>
+                    <div class="fb-catch-meta-item">
+                        <dt>Ribar</dt>
+                        <dd>@(user?.Username ?? "(nepoznato)")</dd>
+                    </div>
 
-            <dt class="col-sm-3">Riba</dt>
-            <dd class="col-sm-9">@(fish?.SpeciesName ?? "(nepoznato)")</dd>
+                    <div class="fb-catch-meta-item">
+                        <dt>Riba</dt>
+                        <dd>@(fish?.SpeciesName ?? "(nepoznato)")</dd>
+                    </div>
 
-            <dt class="col-sm-3">Težina</dt>
-            <dd class="col-sm-9">@Model.Weight.ToString("0.##") kg</dd>
+                    <div class="fb-catch-meta-item">
+                        <dt>Težina</dt>
+                        <dd>@Model.Weight.ToString("0.##") kg</dd>
+                    </div>
 
-            <dt class="col-sm-3">Dužina</dt>
-            <dd class="col-sm-9">@Model.LengthCm.ToString("0.#") cm</dd>
+                    <div class="fb-catch-meta-item">
+                        <dt>Dužina</dt>
+                        <dd>@Model.LengthCm.ToString("0.#") cm</dd>
+                    </div>
 
-            <dt class="col-sm-3">Lokacija</dt>
-            <dd class="col-sm-9">@Model.Location</dd>
-        </dl>
+                    <div class="fb-catch-meta-item">
+                        <dt>Lokacija</dt>
+                        <dd>@Model.Location</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-5">
+        <div class="card fb-white-pill-card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Slika ulova</h2>
+
+                @if (featuredAttachment != null)
+                {
+                    <a href="@featuredAttachment.FilePath" target="_blank" rel="noopener noreferrer" class="fb-catch-image-frame d-block">
+                        <img src="@featuredAttachment.FilePath"
+                             alt="Fotografija ulova: @(fish?.SpeciesName ?? "Riba") od @Model.CatchDate.ToString("dd.MM.yyyy")"
+                             class="fb-catch-image-preview"
+                             loading="lazy" />
+                    </a>
+                    <div class="text-muted small mt-2">Kliknite sliku za prikaz u punoj veličini.</div>
+                }
+                else
+                {
+                    <div class="alert alert-info py-2 mb-0">Nema dodane slike za ovaj ulov.</div>
+                }
+            </div>
+        </div>
     </div>
 </section>
 

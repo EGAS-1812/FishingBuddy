@@ -3,8 +3,9 @@
 @{
     var userOptions = ViewBag.Users as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
     var fishOptions = ViewBag.Fish as IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
-    var selectedUserLabel = userOptions.FirstOrDefault(x => x.Value == Model.UserID.ToString())?.Text ?? string.Empty;
-    var selectedFishLabel = fishOptions.FirstOrDefault(x => x.Value == Model.FishID.ToString())?.Text ?? string.Empty;
+    var selectedUserLabel = ViewData["SelectedUserLabel"] as string ?? userOptions.FirstOrDefault(x => x.Value == Model.UserID.ToString())?.Text ?? string.Empty;
+    var selectedFishLabel = ViewData["SelectedFishLabel"] as string ?? fishOptions.FirstOrDefault(x => x.Value == Model.FishID.ToString())?.Text ?? string.Empty;
+    var featuredAttachment = ViewBag.FeaturedAttachment as FishingBuddy.Models.Attachment;
 
     ViewData["Title"] = "Uredi zapis o ulovu";
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
@@ -24,7 +25,7 @@
         </div>
         <div class="row g-4 align-items-start">
             <div class="col-12 col-xl-7">
-                <form asp-action="Edit" method="post" novalidate>
+                <form asp-action="Edit" method="post" enctype="multipart/form-data" novalidate>
                     <input asp-for="CatchID" type="hidden" />
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
 
@@ -86,6 +87,13 @@
                             <input asp-for="LengthCm" class="form-control" type="number" step="0.1" min="0" />
                             <span asp-validation-for="LengthCm" class="text-danger small"></span>
                         </div>
+
+                        <div class="col-12">
+                            <label class="form-label" for="catchImage">Slika ulova (opcionalno)</label>
+                            <input type="file" id="catchImage" name="catchImage" class="form-control" accept="image/*" />
+                            <div class="form-text">Dodajte fotografiju ulovljene ribe ako je imate.</div>
+                            @Html.ValidationMessage("catchImage", null, new { @class = "text-danger small d-block" })
+                        </div>
                     </div>
 
                     <div class="d-flex flex-wrap gap-2 mt-4">
@@ -99,20 +107,20 @@
                 <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body">
                         <h2 class="h5 mb-3">Privitci ulova</h2>
-                        <p class="text-muted small mb-3">Povucite datoteke ili kliknite za odabir.</p>
 
-                        <form id="attachmentDz"
-                              class="dropzone border rounded bg-light"
-                              asp-controller="CatchRecord"
-                              asp-action="UploadAttachment"
-                              asp-route-catchRecordId="@Model.CatchID"
-                              method="post"
-                              enctype="multipart/form-data">
-                            <div class="dz-message m-0">
-                                <strong>Dodajte privitke</strong><br />
-                                <span class="text-muted small">Podržani su svi uobičajeni formati datoteka.</span>
+                        @if (featuredAttachment != null)
+                        {
+                            <div class="mb-3">
+                                <a href="@featuredAttachment.FilePath" target="_blank" rel="noopener noreferrer" class="fb-catch-image-frame d-block">
+                                    <img src="@featuredAttachment.FilePath"
+                                         alt="Postojeća fotografija ulova"
+                                         class="fb-catch-image-preview"
+                                         loading="lazy" />
+                                </a>
                             </div>
-                        </form>
+                        }
+
+                        <p class="text-muted small mb-3">Ovdje su prikazane postojeće učitane slike i privitci za ovaj ulov.</p>
 
                         <div id="attachmentList" class="mt-4"></div>
                     </div>
@@ -123,12 +131,8 @@
 </section>
 
 @section Scripts {
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" />
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
     <script>
-        Dropzone.autoDiscover = false;
-
         function loadAttachmentList() {
             $.get('@Url.Action("GetAttachments", "CatchRecord")', { catchRecordId: @Model.CatchID })
                 .done(function (html) {
@@ -151,24 +155,6 @@
 
         $(function () {
             loadAttachmentList();
-
-            new Dropzone('#attachmentDz', {
-                paramName: 'file',
-                maxFilesize: 25,
-                timeout: 0,
-                addRemoveLinks: false,
-                init: function () {
-                    this.on('success', function () {
-                        loadAttachmentList();
-                    });
-
-                    this.on('error', function (file, message) {
-                        const text = typeof message === 'string' ? message : 'Upload nije uspio.';
-                        alert(text);
-                        this.removeFile(file);
-                    });
-                }
-            });
         });
     </script>
 }

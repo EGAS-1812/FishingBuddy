@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace FishingBuddy.Models;
 
@@ -21,15 +22,21 @@ public class Fish
     public int PreferredMethodID { get; set; }
 
     [ForeignKey(nameof(FavouriteBaitID))]
+    [ValidateNever]
     public virtual Bait? FavouriteBait { get; set; }
 
     [ForeignKey(nameof(PreferredMethodID))]
+    [ValidateNever]
     public virtual Technique PreferredMethod { get; set; } = null!;
 
+    [ValidateNever]
     public Equipment Equipment { get; set; } = new Equipment();
 
+    [ValidateNever]
     public virtual ICollection<CatchRecord> CatchRecords { get; set; } = new HashSet<CatchRecord>();
+    [ValidateNever]
     public virtual ICollection<User> FavoritedByUsers { get; set; } = new HashSet<User>();
+    [ValidateNever]
     public virtual ICollection<FishingSpot> PossibleSpots { get; set; } = new HashSet<FishingSpot>();
 
     public Fish() { }

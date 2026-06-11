@@ -1756,3 +1756,275 @@ Required changes:
 5) Do not modify controllers or other files.
 
 Return a concise summary of exact edits made.
+[2026-06-10 13:17:11Z] Can you tell me what have implemented from the initial request. Which tasks are complete?
+[2026-06-10 13:18:31Z] what is DTO?
+[2026-06-10 13:33:23Z] Finish todos please
+[2026-06-11 15:04:16Z] Walk me through what we did for the implementation of complete API support for all entities (CRUD and DTO).
+What and where did you add in code and why. Explain to me please and then I'll ask questions.
+[2026-06-11 15:53:52Z] can we define what full REST CRUD DTO support even means? please. I am struggling a bit with understand what API is even let alone DTO
+[2026-06-11 16:04:20Z] so basically DTOs are copies of entity classes but in some cases with modified fields to customize what we want to present vs how the object is actually stored?
+and API is like a channel of communication between my client app and my database setting rules and protocols for how to deliver data from the database to my client app?
+[2026-06-11 16:09:37Z] okay. so we have the first point of the inital request covered. We'll talk later about examples.
+How did we provide local account authentication and authorization in code? I know I created some accounts and features on Facebook and Google, added the localhost URI. I need that explained a little better. Why even add that URI there. How are we doing it?
+
+[2026-06-11 16:17:41Z] I don't think I understand authorization and authentication in code quite well for now but I'll get back to you later today. 
+Can you tell me what are we doing with file upload, where and how we did that? 
+[2026-06-11 16:22:23Z] I registered as eamongas@gmail.com I want to make that account have full access to all actions. How do I do that? I don't see any file upload options right now and CRUD operations are denied.
+[2026-06-11 16:25:54Z] This will work even on another PC?
+
+[2026-06-11 16:28:06Z] I will need you to add a button on the marked area in the pasted image that says "File Upload", because right now I can't find where you put the file upload option on my web apk.
+Put file upload option there please.
+[2026-06-11 16:28:06Z] [FishingStylist_SPAWNED] I will need you to add a button on the marked area in the pasted image that says "File Upload", because right now I can't find where you put the file upload option on my web apk.
+Put file upload option there please.
+[2026-06-11 16:28:39Z] Edit Razor UI in the current workspace to add a visible 'File Upload' button in the CatchRecord Index header controls (same row as CRUD and count badge), matching existing Bootstrap style.
+
+Requirements:
+1) File: Views/CatchRecord/Index.cshtml
+- In the top-right controls next to CRUD/count, add a button:
+  - text: "File Upload"
+  - class: btn btn-outline-primary
+  - route: asp-controller="CatchRecord" asp-action="Manage"
+  - include title attribute: "Open Manage, then Edit a record to upload attachments"
+- Keep existing CRUD dropdown and badge.
+- Keep current layout style and spacing (use same d-flex gap style).
+
+2) Optional clarity improvement (do this too): File Views/CatchRecord/Manage.cshtml
+- In the same top-right control row, add the same "File Upload" button that links to Manage (self), but append a short helper text under title paragraph OR near controls saying upload is in Edit page.
+- Keep style consistent with current page.
+
+Do not modify controllers or backend logic. Only Razor markup/UI text changes.
+
+Return exact files changed and concise summary.
+[2026-06-11 16:28:39Z] [FishingStylist_SPAWNED] Edit Razor UI in the current workspace to add a visible 'File Upload' button in the CatchRecord Index header controls (same row as CRUD and count badge), matching existing Bootstrap style.
+
+Requirements:
+1) File: Views/CatchRecord/Index.cshtml
+- In the top-right controls next to CRUD/count, add a button:
+  - text: "File Upload"
+  - class: btn btn-outline-primary
+  - route: asp-controller="CatchRecord" asp-action="Manage"
+  - include title attribute: "Open Manage, then Edit a record to upload attachments"
+- Keep existing CRUD dropdown and badge.
+- Keep current layout style and spacing (use same d-flex gap style).
+
+2) Optional clarity improvement (do this too): File Views/CatchRecord/Manage.cshtml
+- In the same top-right control row, add the same "File Upload" button that links to Manage (self), but append a short helper text under title paragraph OR near controls saying upload is in Edit page.
+- Keep style consistent with current page.
+
+Do not modify controllers or backend logic. Only Razor markup/UI text changes.
+
+Return exact files changed and concise summary.
+[2026-06-11 16:33:38Z] okay let's remove the "File Upload" button it really doesn't make sense to have it on the "Evidencija Ulova" page. Can we set it up so that every catch record can have an optional image uploaded and mapped to that catch record? So if you go to "Uredi" button on a particular record you're prompted to upload an image of the caught fish. Also we should add that on the Create and Edit pages of "CatchRecord" but make it optional, it's not mandatory for the creation of catch record.
+[2026-06-11 16:33:38Z] [FishingStylist_SPAWNED] okay let's remove the "File Upload" button it really doesn't make sense to have it on the "Evidencija Ulova" page. Can we set it up so that every catch record can have an optional image uploaded and mapped to that catch record? So if you go to "Uredi" button on a particular record you're prompted to upload an image of the caught fish. Also we should add that on the Create and Edit pages of "CatchRecord" but make it optional, it's not mandatory for the creation of catch record.
+[2026-06-11 16:34:49Z] Update CatchRecord Razor views to match this UX behavior:
+- Remove "File Upload" button from CatchRecord Index/Manage header controls.
+- Add optional image upload input directly on CatchRecord Create and Edit forms.
+- Keep UI style aligned with existing Bootstrap card/forms.
+
+Files and required changes:
+
+1) Views/CatchRecord/Index.cshtml
+- Remove the 'File Upload' button that was added near CRUD controls.
+- Keep CRUD dropdown and count badge intact.
+
+2) Views/CatchRecord/Manage.cshtml
+- Remove the 'File Upload' button from header controls.
+- Remove helper text about upload from heading area.
+- Keep existing badge + CRUD dropdown layout intact.
+
+3) Views/CatchRecord/Create.cshtml
+- Update form tag to support file uploads: enctype="multipart/form-data".
+- Add a new optional field block in the form grid for image upload:
+  - Label text: "Slika ulova (opcionalno)"
+  - Input: <input type="file" name="catchImage" class="form-control" accept="image/*" />
+  - Helper text: "Dodajte fotografiju ulovljene ribe ako je imate."
+  - Validation message for key catchImage (non-model key), styled as small text-danger.
+- Keep existing fields and buttons.
+
+4) Views/CatchRecord/Edit.cshtml
+- Update main edit form tag to enctype="multipart/form-data".
+- Add same optional image input block in the form grid with same label/helper/validation style and name="catchImage".
+- Keep attachment list panel visible, but remove Dropzone upload form from the right panel to avoid duplicate upload mechanisms.
+- In right panel, keep heading and attachment list container; change explanatory text to indicate existing uploaded images are listed there.
+- Remove Dropzone CSS/JS includes and Dropzone init code from Scripts section.
+- Keep loadAttachmentList + deleteAttachment JS functions so list and delete still work.
+
+Do not modify controllers or C# backend code. Return a concise summary and exact files changed.
+[2026-06-11 16:34:49Z] [FishingStylist_SPAWNED] Update CatchRecord Razor views to match this UX behavior:
+- Remove "File Upload" button from CatchRecord Index/Manage header controls.
+- Add optional image upload input directly on CatchRecord Create and Edit forms.
+- Keep UI style aligned with existing Bootstrap card/forms.
+
+Files and required changes:
+
+1) Views/CatchRecord/Index.cshtml
+- Remove the 'File Upload' button that was added near CRUD controls.
+- Keep CRUD dropdown and count badge intact.
+
+2) Views/CatchRecord/Manage.cshtml
+- Remove the 'File Upload' button from header controls.
+- Remove helper text about upload from heading area.
+- Keep existing badge + CRUD dropdown layout intact.
+
+3) Views/CatchRecord/Create.cshtml
+- Update form tag to support file uploads: enctype="multipart/form-data".
+- Add a new optional field block in the form grid for image upload:
+  - Label text: "Slika ulova (opcionalno)"
+  - Input: <input type="file" name="catchImage" class="form-control" accept="image/*" />
+  - Helper text: "Dodajte fotografiju ulovljene ribe ako je imate."
+  - Validation message for key catchImage (non-model key), styled as small text-danger.
+- Keep existing fields and buttons.
+
+4) Views/CatchRecord/Edit.cshtml
+- Update main edit form tag to enctype="multipart/form-data".
+- Add same optional image input block in the form grid with same label/helper/validation style and name="catchImage".
+- Keep attachment list panel visible, but remove Dropzone upload form from the right panel to avoid duplicate upload mechanisms.
+- In right panel, keep heading and attachment list container; change explanatory text to indicate existing uploaded images are listed there.
+- Remove Dropzone CSS/JS includes and Dropzone init code from Scripts section.
+- Keep loadAttachmentList + deleteAttachment JS functions so list and delete still work.
+
+Do not modify controllers or C# backend code. Return a concise summary and exact files changed.
+[2026-06-11 16:42:52Z] I just noticed while trying to create a catch record that adding a Fish does not work properly. Creating a new fish doesn't work. I tried entering Zubatac and all associated properties saving and it just doesn't show up on the list. Not even after app restart. Can you look into that please
+[2026-06-11 16:45:07Z] Update the Fish create/edit Razor views to use explicit dropdowns for FavouriteBaitID and PreferredMethodID instead of autocomplete inputs. This is to make selecting the related fish properties reliable and reduce failed creates.
+
+Files to edit:
+- Views/Fish/Create.cshtml
+- Views/Fish/Edit.cshtml
+
+Requirements:
+1) Replace each _AutocompleteDropdown partial for FavouriteBaitID and PreferredMethodID with a standard <select> using the ViewBag lists already supplied by FishController:
+   - ViewBag.Baits -> Bait select list
+   - ViewBag.Techniques -> Technique select list
+2) Add a placeholder option at the top of each dropdown:
+   - Bait: "-- Odaberite mamac --"
+   - Technique: "-- Odaberite tehniku --"
+3) Preserve existing labels, validation spans, Bootstrap grid/layout, and submit buttons.
+4) Keep Season and FleshColor enum dropdowns as they already are.
+5) Edit page should preserve selected values using the ViewBag select lists.
+6) Do not change controllers or backend logic.
+
+Also make sure the form text clearly indicates the user must select a bait and technique from the list, not type freeform text.
+
+Return a concise summary of changes made.
+[2026-06-11 16:45:07Z] [FishingStylist_SPAWNED] Update the Fish create/edit Razor views to use explicit dropdowns for FavouriteBaitID and PreferredMethodID instead of autocomplete inputs. This is to make selecting the related fish properties reliable and reduce failed creates.
+
+Files to edit:
+- Views/Fish/Create.cshtml
+- Views/Fish/Edit.cshtml
+
+Requirements:
+1) Replace each _AutocompleteDropdown partial for FavouriteBaitID and PreferredMethodID with a standard <select> using the ViewBag lists already supplied by FishController:
+   - ViewBag.Baits -> Bait select list
+   - ViewBag.Techniques -> Technique select list
+2) Add a placeholder option at the top of each dropdown:
+   - Bait: "-- Odaberite mamac --"
+   - Technique: "-- Odaberite tehniku --"
+3) Preserve existing labels, validation spans, Bootstrap grid/layout, and submit buttons.
+4) Keep Season and FleshColor enum dropdowns as they already are.
+5) Edit page should preserve selected values using the ViewBag select lists.
+6) Do not change controllers or backend logic.
+
+Also make sure the form text clearly indicates the user must select a bait and technique from the list, not type freeform text.
+
+Return a concise summary of changes made.
+[2026-06-11 16:48:11Z] Nope still not working. When I click "Stvori ribu" nothing happens, page does not reload. Also you just changed how the Favourite technique dropdown looks like and I really like the one prior where there's a small faded description under technique name. Could you revert that to the previous state and try to fix Creating a fish
+[2026-06-11 16:50:28Z] the fish is not saving still. no Zubatac added.
+[2026-06-11 16:54:34Z] Still not working. I tried both typing and selecting from dropdowns... Please fix it 
+[2026-06-11 17:00:37Z] Now I can not create a catch record using Zubatac and myself as a fisherman and adding a picture. It's not working. maybe the same issue?
+[2026-06-11 17:01:52Z] Also I want the image to be displayed if there is one attachted to the catch record on the side of it. 
+Also may I enter imaginary locations of catch?
+[2026-06-11 17:07:28Z] Can you please make the border around the image a bit prettier? and always scale the image to the same size. This size looks perfect, and I like the feature to preview it in full size. Also can you make the catch details a bit nicer to display, add some sort of decoration around the border, maybe clear out some whitespace
+[2026-06-11 17:07:46Z] Refine the CatchRecord details/edit visual styling in this workspace with these goals:
+- Prettier border around image preview
+- Keep image preview always rendered at a consistent size (same as current perceived good size)
+- Preserve click-to-open full-size image behavior
+- Improve Catch details card visual hierarchy and reduce awkward whitespace
+
+Files to update:
+1) Views/CatchRecord/Details.cshtml
+2) Views/CatchRecord/Edit.cshtml (only side image preview styling area)
+3) wwwroot/css/site.css (add scoped classes used by these views)
+
+Design requirements:
+- Use a decorative but clean frame around images (subtle gradient/border/shadow, rounded corners).
+- Keep fixed preview block sizing so images appear uniform regardless of source dimensions.
+- Use object-fit: cover and center image.
+- Keep accessibility: meaningful alt text and no reduced contrast text.
+- Do NOT change behavior routes/actions.
+- Keep full-size preview by clicking image link.
+
+Implementation guidance:
+- Introduce scoped classes like:
+  - fb-catch-details-card
+  - fb-catch-image-frame
+  - fb-catch-image-preview
+  - fb-catch-meta-grid
+- In Details page, slightly tighten spacing and improve information grouping (e.g., badge-like labels or tidy key/value rhythm), avoiding layout bloat.
+- In Edit page side preview, reuse same frame/preview classes for visual consistency.
+
+Do not touch backend/controller logic.
+Return concise summary of exact edits.
+[2026-06-11 17:07:46Z] [FishingStylist_SPAWNED] Refine the CatchRecord details/edit visual styling in this workspace with these goals:
+- Prettier border around image preview
+- Keep image preview always rendered at a consistent size (same as current perceived good size)
+- Preserve click-to-open full-size image behavior
+- Improve Catch details card visual hierarchy and reduce awkward whitespace
+
+Files to update:
+1) Views/CatchRecord/Details.cshtml
+2) Views/CatchRecord/Edit.cshtml (only side image preview styling area)
+3) wwwroot/css/site.css (add scoped classes used by these views)
+
+Design requirements:
+- Use a decorative but clean frame around images (subtle gradient/border/shadow, rounded corners).
+- Keep fixed preview block sizing so images appear uniform regardless of source dimensions.
+- Use object-fit: cover and center image.
+- Keep accessibility: meaningful alt text and no reduced contrast text.
+- Do NOT change behavior routes/actions.
+- Keep full-size preview by clicking image link.
+
+Implementation guidance:
+- Introduce scoped classes like:
+  - fb-catch-details-card
+  - fb-catch-image-frame
+  - fb-catch-image-preview
+  - fb-catch-meta-grid
+- In Details page, slightly tighten spacing and improve information grouping (e.g., badge-like labels or tidy key/value rhythm), avoiding layout bloat.
+- In Edit page side preview, reuse same frame/preview classes for visual consistency.
+
+Do not touch backend/controller logic.
+Return concise summary of exact edits.
+[2026-06-11 17:11:15Z] Great job, could you add a JavaScript animation to the image when hovered over I want small blue sea waves circulating around the edges of the image? 
+[2026-06-11 17:11:15Z] [FishingStylist_SPAWNED] Great job, could you add a JavaScript animation to the image when hovered over I want small blue sea waves circulating around the edges of the image? 
+[2026-06-11 17:13:30Z] There is literally 0 hover animation when hovering over the picture. I want blue animated waves going around the edges of the image.
+[2026-06-11 17:13:30Z] [FishingStylist_SPAWNED] There is literally 0 hover animation when hovering over the picture. I want blue animated waves going around the edges of the image.
+[2026-06-11 17:15:33Z] I see it now but #1 it doesn't look like waves and #2 nothing is moving, I want it circulating, like waves moving. Waves like on the pasted image, but animated and moving around the edges of the image
+[2026-06-11 17:16:16Z] You are designing CSS only for FishingBuddy. Goal: update existing .fb-catch-image-frame wave hover effect so it looks like actual illustrated waves (similar to repeated wave glyphs) and clearly moves around image edges in a circulating loop. Constraints: keep existing HTML unchanged; only CSS edits in wwwroot/css/site.css; preserve class names .fb-catch-image-frame, ::before, ::after and selector support for :hover, :focus-visible, and .is-wave-active. Provide a concrete replacement CSS block for the existing wave section and keyframes. Technical idea preferred: use SVG data URI repeating wave patterns on top/bottom and left/right strips, animate background positions so motion appears clockwise (top->right, right->down, bottom->left, left->up). Keep center transparent and image visible. Must remain reasonably performant and include reduced-motion fallback compatibility with existing media query. Return only the final CSS snippet and where to place it (between which selectors).
+[2026-06-11 17:16:16Z] [FishingStylist_SPAWNED] You are designing CSS only for FishingBuddy. Goal: update existing .fb-catch-image-frame wave hover effect so it looks like actual illustrated waves (similar to repeated wave glyphs) and clearly moves around image edges in a circulating loop. Constraints: keep existing HTML unchanged; only CSS edits in wwwroot/css/site.css; preserve class names .fb-catch-image-frame, ::before, ::after and selector support for :hover, :focus-visible, and .is-wave-active. Provide a concrete replacement CSS block for the existing wave section and keyframes. Technical idea preferred: use SVG data URI repeating wave patterns on top/bottom and left/right strips, animate background positions so motion appears clockwise (top->right, right->down, bottom->left, left->up). Keep center transparent and image visible. Must remain reasonably performant and include reduced-motion fallback compatibility with existing media query. Return only the final CSS snippet and where to place it (between which selectors).
+[2026-06-11 17:18:21Z] Add skill to FishingStylist for advanced JavaScript animations.
+[2026-06-11 17:18:21Z] [FishingStylist_SPAWNED] Add skill to FishingStylist for advanced JavaScript animations.
+[2026-06-11 17:20:04Z] I can see the blue waves around the image, but they're not moving at all.
+Also can you please confirm that we have implemented integration tests for API endpoints, how and where we did it, and with that concluding our initial list of Todos for my 5th lab assignment. Confirm we have implemented everything on the initial list and try to fix the waves one more time with advanced JS animation.
+[2026-06-11 17:20:04Z] [FishingStylist_SPAWNED] I can see the blue waves around the image, but they're not moving at all.
+Also can you please confirm that we have implemented integration tests for API endpoints, how and where we did it, and with that concluding our initial list of Todos for my 5th lab assignment. Confirm we have implemented everything on the initial list and try to fix the waves one more time with advanced JS animation.
+[2026-06-11 17:20:51Z] Implement an advanced JS animation for existing catch image wave border in FishingBuddy so waves visibly move around edges. You must provide concrete code edits for both wwwroot/css/site.css and wwwroot/js/site.js. Keep existing class .fb-catch-image-frame and pseudo-elements. Requirement: waves should circulate clockwise around all edges and be clearly moving, matching repeated wave motif style. Avoid changing HTML markup.
+
+Current CSS uses .fb-catch-image-frame::before and ::after with wave SVG backgrounds and keyframes fb-sea-wave-ring / fb-sea-wave-ring-alt, but user reports static appearance. Proposed fix: drive background positions via CSS custom properties updated by requestAnimationFrame in JS while active. 
+
+Deliverables:
+1) CSS changes: remove/avoid dependency on CSS animation properties for movement; set background-position for pseudo-elements using vars like --fb-wave-top-x, --fb-wave-bottom-x, --fb-wave-left-y, --fb-wave-right-y. Keep hover/focus opacity reveal and frame lift.
+2) JS changes: rewrite initCatchImageWaveEffect() to start RAF loop on mouseenter/focusin and stop on mouseleave/focusout; continuously update the 4 CSS vars so movement is clockwise: top +x, right +y, bottom -x, left -y. Include cleanup and prevent multiple loops. Keep performant and simple.
+3) Mention where to replace in each file.
+
+Return a compact patch-style snippet for both files only (no prose).
+[2026-06-11 17:20:51Z] [FishingStylist_SPAWNED] Implement an advanced JS animation for existing catch image wave border in FishingBuddy so waves visibly move around edges. You must provide concrete code edits for both wwwroot/css/site.css and wwwroot/js/site.js. Keep existing class .fb-catch-image-frame and pseudo-elements. Requirement: waves should circulate clockwise around all edges and be clearly moving, matching repeated wave motif style. Avoid changing HTML markup.
+
+Current CSS uses .fb-catch-image-frame::before and ::after with wave SVG backgrounds and keyframes fb-sea-wave-ring / fb-sea-wave-ring-alt, but user reports static appearance. Proposed fix: drive background positions via CSS custom properties updated by requestAnimationFrame in JS while active. 
+
+Deliverables:
+1) CSS changes: remove/avoid dependency on CSS animation properties for movement; set background-position for pseudo-elements using vars like --fb-wave-top-x, --fb-wave-bottom-x, --fb-wave-left-y, --fb-wave-right-y. Keep hover/focus opacity reveal and frame lift.
+2) JS changes: rewrite initCatchImageWaveEffect() to start RAF loop on mouseenter/focusin and stop on mouseleave/focusout; continuously update the 4 CSS vars so movement is clockwise: top +x, right +y, bottom -x, left -y. Include cleanup and prevent multiple loops. Keep performant and simple.
+3) Mention where to replace in each file.
+
+Return a compact patch-style snippet for both files only (no prose).
+[2026-06-11 17:27:49Z] Great, now they're actually moving. Thank you. I will now submit my work to the professor, I've fixed things he said are bad in my code and tomorrow before live oral exam we'll try to prepare a bit more. Honestly these lessons have been a bit more complicated, I think I kinda grasped API and DTOs but we still need to go over authentication and authorization, both local and via FB/Google, and also you need to explain what these integration test are to me. Right now thanks and we'll talk tomorrow. Bye
