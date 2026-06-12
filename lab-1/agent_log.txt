@@ -2028,3 +2028,5 @@ Deliverables:
 
 Return a compact patch-style snippet for both files only (no prose).
 [2026-06-11 17:27:49Z] Great, now they're actually moving. Thank you. I will now submit my work to the professor, I've fixed things he said are bad in my code and tomorrow before live oral exam we'll try to prepare a bit more. Honestly these lessons have been a bit more complicated, I think I kinda grasped API and DTOs but we still need to go over authentication and authorization, both local and via FB/Google, and also you need to explain what these integration test are to me. Right now thanks and we'll talk tomorrow. Bye
+[2026-06-12 12:23:56Z] Okay so can you please walk me through authroization and authentication files line by line and dumb it down for me please. I need to know what every line in there does roughly
+[2026-06-12 12:27:51Z] Can you please repeat with links to these methods to where they're defined? 
