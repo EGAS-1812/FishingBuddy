@@ -429,6 +429,7 @@
 
 	function initDateTimeInputs() {
 		var controls = document.querySelectorAll("[data-datetime-control]");
+		var hasFlatpickr = typeof window.flatpickr === "function";
 
 		controls.forEach(function (control) {
 			var hidden = control.querySelector("[data-datetime-value]");
@@ -452,6 +453,40 @@
 				}
 			}
 
+			if (hasFlatpickr) {
+				text.readOnly = true;
+				var initialDate = hidden.value ? new Date(hidden.value) : null;
+				var hasInitialDate = initialDate && !Number.isNaN(initialDate.getTime());
+
+				window.flatpickr(text, {
+					enableTime: true,
+					time_24hr: true,
+					allowInput: false,
+					dateFormat: "d.m.Y H:i",
+					defaultDate: hasInitialDate ? initialDate : null,
+					onChange: function (selectedDates) {
+						var selectedDate = selectedDates[0];
+						if (!selectedDate || Number.isNaN(selectedDate.getTime())) {
+							hidden.value = "";
+							control.classList.add("has-error");
+							return;
+						}
+
+						control.classList.remove("has-error");
+						hidden.value = toLocalIsoString(selectedDate);
+
+						if (window.jQuery && window.jQuery.validator) {
+							window.jQuery(hidden).valid();
+						}
+					}
+				});
+
+				if (!hasInitialDate) {
+					text.value = "";
+				}
+				return;
+			}
+
 			syncDisplayFromHidden();
 
 			text.addEventListener("blur", function () {
@@ -470,6 +505,37 @@
 					window.jQuery(hidden).valid();
 				}
 			});
+		});
+	}
+
+	function initNavbarCollapseEffects() {
+		var navbarCollapse = document.getElementById("mainNav");
+		if (!navbarCollapse) {
+			return;
+		}
+
+		var navbar = navbarCollapse.closest(".fb-navbar");
+		if (!navbar) {
+			return;
+		}
+
+		navbarCollapse.addEventListener("show.bs.collapse", function () {
+			navbar.classList.remove("is-closing");
+			navbar.classList.add("is-opening");
+		});
+
+		navbarCollapse.addEventListener("shown.bs.collapse", function () {
+			navbar.classList.remove("is-opening");
+			navbar.classList.add("is-open");
+		});
+
+		navbarCollapse.addEventListener("hide.bs.collapse", function () {
+			navbar.classList.remove("is-open", "is-opening");
+			navbar.classList.add("is-closing");
+		});
+
+		navbarCollapse.addEventListener("hidden.bs.collapse", function () {
+			navbar.classList.remove("is-closing");
 		});
 	}
 
@@ -652,6 +718,7 @@
 		initAjaxSearchTables();
 		initAutocompleteDropdowns();
 		initDateTimeInputs();
+		initNavbarCollapseEffects();
 		initValidationOnBlur();
 		initCrudDropdownAnimations();
 		initCatchImageWaveEffect();

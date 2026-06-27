@@ -9,15 +9,26 @@
 
 <section class="card shadow-sm border-0">
     <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="h2 mb-0">Vrste riba</h1>
-            <div class="d-flex align-items-center gap-2">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3 fb-page-header">
+            <div class="fb-page-mobile-titlebar d-md-none">
+                <h1 class="h2 mb-0">Vrste riba</h1>
                 <div class="dropdown fb-crud-dropdown">
                     <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
                     <ul class="dropdown-menu fb-crud-menu">
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="Fish" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
-                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Fish" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
-                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Fish" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Fish" asp-action="Manage" asp-route-mode="edit"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Fish" asp-action="Manage" asp-route-mode="delete"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <h1 class="h2 mb-0 d-none d-md-block">Vrste riba</h1>
+            <div class="d-flex align-items-center gap-2 fb-list-toolbar-actions">
+                <div class="dropdown fb-crud-dropdown d-none d-md-block">
+                    <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu fb-crud-menu">
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="Fish" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Fish" asp-action="Manage" asp-route-mode="edit"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Fish" asp-action="Manage" asp-route-mode="delete"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>
                 </div>
                 <span class="badge bg-primary">@Model.Count vrsta</span>

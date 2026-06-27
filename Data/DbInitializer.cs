@@ -6,6 +6,23 @@ namespace FishingBuddy.Data;
 
 public static class DbInitializer
 {
+    public static void SeedIfEmpty(FishingBuddyDbContext dbContext)
+    {
+        var hasDomainData = dbContext.Techniques.Any()
+            || dbContext.Baits.Any()
+            || dbContext.Fish.Any()
+            || dbContext.Users.Any()
+            || dbContext.CatchRecords.Any()
+            || dbContext.FishingSpots.Any();
+
+        if (hasDomainData)
+        {
+            return;
+        }
+
+        Seed(dbContext);
+    }
+
     public static void Seed(FishingBuddyDbContext dbContext)
     {
         var mockRepository = new MockFishingRepository();

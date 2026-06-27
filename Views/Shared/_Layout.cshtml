@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - FishingBuddy</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FishingBuddy.styles.css" asp-append-version="true" />
 </head>
@@ -14,12 +15,44 @@
     <div class="fb-site-layer">
         <header>
             <nav class="navbar navbar-expand-lg fb-navbar border-bottom box-shadow">
-                <div class="container-fluid">
-                    <a class="navbar-brand fb-brand" asp-area="" asp-controller="Home" asp-action="Index">FishingBuddy</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                <div class="container-fluid fb-navbar-shell">
+                    <form class="fb-navbar-search fb-navbar-search-mobile d-lg-none"
+                          asp-controller="Search"
+                          asp-action="Index"
+                          method="get"
+                          role="search"
+                          aria-label="Global search">
+                        <label class="visually-hidden" for="navGlobalSearchMobile">Global search</label>
+                        <div class="input-group input-group-sm">
+                            <input id="navGlobalSearchMobile"
+                                   name="q"
+                                   type="search"
+                                   class="form-control"
+                                   placeholder="Global search..."
+                                   value="@(Context.Request.Query["q"] )" />
+                            <button type="submit" class="btn btn-outline-light">Search</button>
+                        </div>
+                    </form>
+                    <div class="fb-navbar-topbar d-lg-none">
+                        <a class="fb-brand-mark" asp-area="" asp-controller="Home" asp-action="Index" aria-label="FishingBuddy home">
+                            <span class="fb-brand-mark-icon" aria-hidden="true">
+                                <svg class="fb-brand-mark-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 12C6.6 8.3 10.1 6.5 14.6 6.5C17.4 6.5 19.7 7.2 21 8.1C19.6 9.5 18.9 11.1 18.9 12C18.9 12.9 19.6 14.5 21 15.9C19.7 16.8 17.4 17.5 14.6 17.5C10.1 17.5 6.6 15.7 4 12Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4 12L2.8 9.7L1.5 10.8L2.1 12L1.5 13.2L2.8 14.3L4 12Z" fill="currentColor"/>
+                                    <circle cx="14.1" cy="10.6" r="0.95" fill="currentColor"/>
+                                    <path d="M9.2 12.2C10.2 12.6 11.5 12.8 12.9 12.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                        </a>
+                        <a class="navbar-brand fb-brand fb-brand-wordmark" asp-area="" asp-controller="Home" asp-action="Index">
+                            <span class="fb-brand-text">FishingBuddy</span>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    <a class="navbar-brand fb-brand d-none d-lg-inline-flex" asp-area="" asp-controller="Home" asp-action="Index">FishingBuddy</a>
                     <div class="collapse navbar-collapse" id="mainNav">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
@@ -41,13 +74,13 @@
                                 <a class="nav-link fb-nav-link px-2" asp-area="" asp-controller="User" asp-action="Index">Ribari</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fb-nav-link px-2" asp-area="" asp-controller="Ai" asp-action="FishDraft">AI draft</a>
+                                <a class="nav-link fb-nav-link px-2" asp-area="" asp-controller="Ai" asp-action="FishDraft">AI Ribice</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link fb-nav-link px-2" asp-controller="Home" asp-action="Privacy">Privatnost</a>
                             </li>
                         </ul>
-                        <form class="fb-navbar-search d-flex my-3 my-lg-0 me-lg-3"
+                        <form class="fb-navbar-search d-none d-lg-flex my-3 my-lg-0 me-lg-3"
                               asp-controller="Search"
                               asp-action="Index"
                               method="get"
@@ -78,6 +111,7 @@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

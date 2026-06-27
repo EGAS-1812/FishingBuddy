@@ -30,3 +30,33 @@ FishingBuddy.dev.db | binary modified
 FishingBuddy.dev.db-shm | binary removed
 FishingBuddy.dev.db-wal | binary removed
 lab-1/agent_log.txt | 84 | 0
+
+Addendum - 2026-06-27 (continued)
+Format: file | added lines | removed/changed lines
+
+FishingBuddy.IntegrationTests/ApiEndpointCoverageTests.cs | 632 | 0
+Views/Shared/_Layout.cshtml | 42 | 8
+wwwroot/css/site.css | 248 | 9
+Views/Ai/FishDraft.cshtml | 94 | 29
+Views/Bait/Index.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/Bait/Manage.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/CatchRecord/Index.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/CatchRecord/Manage.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/Fish/Index.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/Fish/Manage.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/FishingSpot/Index.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/FishingSpot/Manage.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/Technique/Index.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/Technique/Manage.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/User/Index.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+Views/User/Manage.cshtml | mobile header pattern update | CRUD aligned with title on mobile
+tools/scripts/Start-MobileDemo.ps1 | 132 | 0
+tools/scripts/Stop-MobileDemo.ps1 | 55 | 0
+tools/scripts/Start-LanDemo.ps1 | 99 | 0
+
+API endpoint test verification status:
+- API controllers: 7
+- Endpoint actions discovered: 35
+- Endpoint coverage tests present in ApiCrudIntegrationTests + ApiEndpointCoverageTests
+- Validation run: dotnet test FishingBuddy.IntegrationTests/FishingBuddy.IntegrationTests.csproj
+- Result: 14 passed, 0 failed

@@ -2030,3 +2030,851 @@ Return a compact patch-style snippet for both files only (no prose).
 [2026-06-11 17:27:49Z] Great, now they're actually moving. Thank you. I will now submit my work to the professor, I've fixed things he said are bad in my code and tomorrow before live oral exam we'll try to prepare a bit more. Honestly these lessons have been a bit more complicated, I think I kinda grasped API and DTOs but we still need to go over authentication and authorization, both local and via FB/Google, and also you need to explain what these integration test are to me. Right now thanks and we'll talk tomorrow. Bye
 [2026-06-12 12:23:56Z] Okay so can you please walk me through authroization and authentication files line by line and dumb it down for me please. I need to know what every line in there does roughly
 [2026-06-12 12:27:51Z] Can you please repeat with links to these methods to where they're defined? 
+[2026-06-12 13:15:25Z] can you explain where exactly are DTOs used by APIs
+[2026-06-12 13:24:33Z] Okay, now please explain to me the INtegration test files. One by one, line by line, I see there's three of them. I have to know what they do, how they're doing it and why. Simplified please
+[2026-06-12 13:43:48Z] how did we fix the hard coded values that were in cshtml for enums 
+[2026-06-27 13:41:09Z] Can you tell me how complicated / easy would it be to add the following features, without adding them yet:
+- AI integration: data input via AI prompts to some model
+- Global search -> feature to search all menus, pages and data from one search
+- Responsive mobile web design
+- Logging mechanism in a file
+
+[2026-06-27 13:41:09Z] [FishingStylist_SPAWNED] Can you tell me how complicated / easy would it be to add the following features, without adding them yet:
+- AI integration: data input via AI prompts to some model
+- Global search -> feature to search all menus, pages and data from one search
+- Responsive mobile web design
+- Logging mechanism in a file
+
+[2026-06-27 13:58:35Z] which would you recommend we apply first? what's the easiest for you to do, and for me to understand how you did it? I suppose logging? or searching
+[2026-06-27 14:02:11Z] Do the logging please. Also if you can remember last lab exercise we kept track of changed files, number of added lines and a to study list in a .txt file. Keep track of today's session of adding these four concepts in the same way as well. 
+[2026-06-27 14:37:29Z] Yup do the next thing on the list. and finish all todos
+[2026-06-27 14:39:30Z] You are designing UX/UI code for the existing FishingBuddy ASP.NET MVC app. Keep current visual language from existing CSS classes (fb-* maritime style). Provide exact code blocks ready to paste for these files/changes:
+
+1) New view file Views/Search/Index.cshtml
+- Model: FishingBuddy.Models.Search.GlobalSearchViewModel
+- Page title: "Global Search"
+- Include a prominent search form (GET query parameter q), clear empty state, no-results state, and grouped result listing by Category.
+- Each result row should show Title, Subtitle, and a "Open" button linking to Url.
+- Must be responsive mobile-first and use bootstrap + fb classes.
+
+2) New view file Views/Ai/FishDraft.cshtml
+- Model: FishingBuddy.Models.Ai.AiFishDraftPageViewModel
+- Show explanation card that this creates draft values for Fish/Create.
+- Form posts to Ai/FishDraft with anti-forgery and textarea prompt.
+- If ErrorMessage exists, show alert.
+- If HasResult && Result != null, show result card with fields (species, season, flesh, bait, technique, source/model, notes).
+- Include button linking to Fish/Create with prefilled query params: speciesName, catchSeason, fleshColor, favouriteBaitId, preferredMethodId.
+- Must be responsive and accessible.
+
+3) Patch snippet for Views/Shared/_Layout.cshtml nav area
+- Add global search form in navbar collapse area (GET to Search/Index, input name q).
+- Add nav link to AI draft page (Ai/FishDraft).
+- Keep existing links and login partial.
+
+4) CSS additions to append in wwwroot/css/site.css
+- Styles for global search page cards/list rows and AI page cards.
+- Responsive tweaks for navbar search form and hero sections on <=992px and <=576px.
+- Keep style consistent with existing fb theme; no major redesign.
+
+Output format requirements:
+- Return concise sections with exact final code for each file/snippet.
+- Ensure code compiles in Razor.
+- Do not invent backend model properties beyond those listed.
+
+[2026-06-27 14:39:30Z] [FishingStylist_SPAWNED] You are designing UX/UI code for the existing FishingBuddy ASP.NET MVC app. Keep current visual language from existing CSS classes (fb-* maritime style). Provide exact code blocks ready to paste for these files/changes:
+
+1) New view file Views/Search/Index.cshtml
+- Model: FishingBuddy.Models.Search.GlobalSearchViewModel
+- Page title: "Global Search"
+- Include a prominent search form (GET query parameter q), clear empty state, no-results state, and grouped result listing by Category.
+- Each result row should show Title, Subtitle, and a "Open" button linking to Url.
+- Must be responsive mobile-first and use bootstrap + fb classes.
+
+2) New view file Views/Ai/FishDraft.cshtml
+- Model: FishingBuddy.Models.Ai.AiFishDraftPageViewModel
+- Show explanation card that this creates draft values for Fish/Create.
+- Form posts to Ai/FishDraft with anti-forgery and textarea prompt.
+- If ErrorMessage exists, show alert.
+- If HasResult && Result != null, show result card with fields (species, season, flesh, bait, technique, source/model, notes).
+- Include button linking to Fish/Create with prefilled query params: speciesName, catchSeason, fleshColor, favouriteBaitId, preferredMethodId.
+- Must be responsive and accessible.
+
+3) Patch snippet for Views/Shared/_Layout.cshtml nav area
+- Add global search form in navbar collapse area (GET to Search/Index, input name q).
+- Add nav link to AI draft page (Ai/FishDraft).
+- Keep existing links and login partial.
+
+4) CSS additions to append in wwwroot/css/site.css
+- Styles for global search page cards/list rows and AI page cards.
+- Responsive tweaks for navbar search form and hero sections on <=992px and <=576px.
+- Keep style consistent with existing fb theme; no major redesign.
+
+Output format requirements:
+- Return concise sections with exact final code for each file/snippet.
+- Ensure code compiles in Razor.
+- Do not invent backend model properties beyond those listed.
+
+[2026-06-27 15:44:40Z] Yes please, but keep it short 
+[2026-06-27 16:04:46Z] which AI model is used for the AI input
+[2026-06-27 16:12:58Z] {"timestamp":"2026-06-27T14:12:58.035Z","hook_event_name":"UserPromptSubmit","session_id":"8686c02e-4af9-49f2-a607-666171f10dbf","transcript_path":"c:\\Users\\Eamon\\AppData\\Roaming\\Code\\User\\workspaceStorage\\c75418910f497c39479da5a15bf230b8\\GitHub.copilot-chat\\transcripts\\8686c02e-4af9-49f2-a607-666171f10dbf.jsonl","prompt":"","cwd":"c:\\Users\\Eamon\\source\\repos\\FishingBuddy"}
+[2026-06-27 16:26:15Z] where is the log file?
+[2026-06-27 16:28:42Z] I can see. Can you tell me how my AI draft works? I don't really like it this way. I was thinking more in the lines of the user typing that he wants to add a fish for example, and he says for example "Swordfish" and the AI can go look up every other parameter needed to create said Swordfish (meat color, season of hunt and technique) can we make that happen?
+[2026-06-27 16:28:42Z] [FishingStylist_SPAWNED] I can see. Can you tell me how my AI draft works? I don't really like it this way. I was thinking more in the lines of the user typing that he wants to add a fish for example, and he says for example "Swordfish" and the AI can go look up every other parameter needed to create said Swordfish (meat color, season of hunt and technique) can we make that happen?
+[2026-06-27 16:51:12Z] let me check if it works now and I'll review with you later
+[2026-06-27 17:11:05Z] AI treba dodati -ìesta mjesta ulova i opremu (rola, +ítap najlon) za ribu
+[2026-06-27 17:15:50Z] You are working on the FishingBuddy ASP.NET MVC project (Bootstrap 5, Razor Views, Croatian language UI). Two view files need to be updated with new UI sections. Make all changes directly.
+
+---
+
+## TASK 1 GÇö Views/Ai/FishDraft.cshtml
+
+Add two new sections to the existing draft result card, and update the prefill link to include equipment query params.
+
+### Current prefill link (find it in the file):
+```razor
+<a class="btn btn-outline-primary"
+   asp-controller="Fish"
+   asp-action="Create"
+   asp-route-speciesName="@result.SpeciesName"
+   asp-route-catchSeason="@result.CatchSeason"
+   asp-route-fleshColor="@result.FleshColor"
+   asp-route-favouriteBaitId="@result.FavouriteBaitID"
+   asp-route-preferredMethodId="@result.PreferredMethodID">
+    Open Fish/Create with Prefill
+</a>
+```
+
+### Updated prefill link (replace the above with this GÇö add equipment params):
+```razor
+<a class="btn btn-outline-primary"
+   asp-controller="Fish"
+   asp-action="Create"
+   asp-route-speciesName="@result.SpeciesName"
+   asp-route-catchSeason="@result.CatchSeason"
+   asp-route-fleshColor="@result.FleshColor"
+   asp-route-favouriteBaitId="@result.FavouriteBaitID"
+   asp-route-preferredMethodId="@result.PreferredMethodID"
+   asp-route-reelType="@result.SuggestedReelType"
+   asp-route-reelSize="@result.SuggestedReelSize"
+   asp-route-rodAction="@result.SuggestedRodAction"
+   asp-route-rodLength="@result.SuggestedRodLengthMeters"
+   asp-route-rodMinWeight="@result.SuggestedRodMinWeightGrams"
+   asp-route-rodMaxWeight="@result.SuggestedRodMaxWeightGrams"
+   asp-route-lineType="@result.SuggestedLineType"
+   asp-route-lineThickness="@result.SuggestedLineThicknessMm">
+    Otvori Fish/Create s predpopunom
+</a>
+```
+
+### After the closing `</div>` of the existing 6-column grid (after Notes field), add an Equipment section:
+```razor
+<div class="col-12 mt-3">
+    <h3 class="h6 fw-semibold mb-2 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">Preporu-ìena oprema</h3>
+    <div class="row g-2">
+        <div class="col-12 col-sm-4">
+            <div class="fb-ai-draft-field">
+                <div class="small text-uppercase text-muted mb-1">Rola</div>
+                <div class="fw-semibold">
+                    @if (result.SuggestedReelType.HasValue)
+                    {
+                        @($"{result.SuggestedReelType} {result.SuggestedReelSize?.ToString() ?? ""}")
+                    }
+                    else { <span class="text-muted">N/A</span> }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="fb-ai-draft-field">
+                <div class="small text-uppercase text-muted mb-1">+átap</div>
+                <div class="fw-semibold">
+                    @if (result.SuggestedRodAction.HasValue)
+                    {
+                        @($"{result.SuggestedRodAction} -+ {result.SuggestedRodLengthMeters?.ToString("F1") ?? "?"}m -+ {result.SuggestedRodMinWeightGrams}GÇô{result.SuggestedRodMaxWeightGrams}g")
+                    }
+                    else { <span class="text-muted">N/A</span> }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="fb-ai-draft-field">
+                <div class="small text-uppercase text-muted mb-1">Najlon</div>
+                <div class="fw-semibold">
+                    @if (result.SuggestedLineType.HasValue)
+                    {
+                        @($"{result.SuggestedLineType} -+ {result.SuggestedLineThicknessMm?.ToString("F2") ?? "?"}mm")
+                    }
+                    else { <span class="text-muted">N/A</span> }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+### After the Equipment section, add a Fishing Spots section (only when spots exist):
+```razor
+@if (result.SuggestedSpotNames.Count > 0)
+{
+    <div class="col-12 mt-2">
+        <h3 class="h6 fw-semibold mb-2 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">-îesta mjesta ulova</h3>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var spot in result.SuggestedSpotNames)
+            {
+                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-normal px-3 py-2">@spot</span>
+            }
+        </div>
+    </div>
+}
+```
+
+---
+
+## TASK 2 GÇö Views/Fish/Create.cshtml
+
+Add an equipment form section after the existing 5-field row grid, before the submit button row. The Fish model already has an `Equipment` owned entity (FReel, FRod, FLine), all bound as `Equipment.FReel.Type`, `Equipment.FReel.Size`, etc.
+
+Insert this section just before the `<div class="d-flex flex-wrap gap-2 mt-4">` button row:
+
+```razor
+<div class="col-12 mt-3">
+    <h2 class="h6 fw-semibold mb-3 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">Oprema</h2>
+    <div class="row g-3">
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FReel.Type" class="form-label">Tip role</label>
+            <select asp-for="Equipment.FReel.Type"
+                    asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FReelType>()"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FReel.Size" class="form-label">Veli-ìina role</label>
+            <input asp-for="Equipment.FReel.Size" class="form-control" type="number" min="500" max="20000" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.Action" class="form-label">Akcija +ítapa</label>
+            <select asp-for="Equipment.FRod.Action"
+                    asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FRodAction>()"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.LengthMeters" class="form-label">Du++ina +ítapa (m)</label>
+            <input asp-for="Equipment.FRod.LengthMeters" class="form-control" type="number" step="0.1" min="1" max="5" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.MinWeightRatingGrams" class="form-label">Min. te++ina (g)</label>
+            <input asp-for="Equipment.FRod.MinWeightRatingGrams" class="form-control" type="number" min="1" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.MaxWeightRatingGrams" class="form-label">Max. te++ina (g)</label>
+            <input asp-for="Equipment.FRod.MaxWeightRatingGrams" class="form-control" type="number" min="1" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FLine.Type" class="form-label">Tip najlona</label>
+            <select asp-for="Equipment.FLine.Type"
+                    asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FLineType>()"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FLine.ThicknessMm" class="form-label">Debljina najlona (mm)</label>
+            <input asp-for="Equipment.FLine.ThicknessMm" class="form-control" type="number" step="0.01" min="0.05" max="1" />
+        </div>
+    </div>
+</div>
+```
+
+---
+
+The project is at: c:\Users\Eamon\source\repos\FishingBuddy
+
+Read both files before editing them so you make precise targeted changes. Do not rewrite entire files; use apply_patch for surgical changes. Do not add CSS or modify any other file. Do not create documentation files.
+[2026-06-27 17:15:50Z] [FishingStylist_SPAWNED] You are working on the FishingBuddy ASP.NET MVC project (Bootstrap 5, Razor Views, Croatian language UI). Two view files need to be updated with new UI sections. Make all changes directly.
+
+---
+
+## TASK 1 GÇö Views/Ai/FishDraft.cshtml
+
+Add two new sections to the existing draft result card, and update the prefill link to include equipment query params.
+
+### Current prefill link (find it in the file):
+```razor
+<a class="btn btn-outline-primary"
+   asp-controller="Fish"
+   asp-action="Create"
+   asp-route-speciesName="@result.SpeciesName"
+   asp-route-catchSeason="@result.CatchSeason"
+   asp-route-fleshColor="@result.FleshColor"
+   asp-route-favouriteBaitId="@result.FavouriteBaitID"
+   asp-route-preferredMethodId="@result.PreferredMethodID">
+    Open Fish/Create with Prefill
+</a>
+```
+
+### Updated prefill link (replace the above with this GÇö add equipment params):
+```razor
+<a class="btn btn-outline-primary"
+   asp-controller="Fish"
+   asp-action="Create"
+   asp-route-speciesName="@result.SpeciesName"
+   asp-route-catchSeason="@result.CatchSeason"
+   asp-route-fleshColor="@result.FleshColor"
+   asp-route-favouriteBaitId="@result.FavouriteBaitID"
+   asp-route-preferredMethodId="@result.PreferredMethodID"
+   asp-route-reelType="@result.SuggestedReelType"
+   asp-route-reelSize="@result.SuggestedReelSize"
+   asp-route-rodAction="@result.SuggestedRodAction"
+   asp-route-rodLength="@result.SuggestedRodLengthMeters"
+   asp-route-rodMinWeight="@result.SuggestedRodMinWeightGrams"
+   asp-route-rodMaxWeight="@result.SuggestedRodMaxWeightGrams"
+   asp-route-lineType="@result.SuggestedLineType"
+   asp-route-lineThickness="@result.SuggestedLineThicknessMm">
+    Otvori Fish/Create s predpopunom
+</a>
+```
+
+### After the closing `</div>` of the existing 6-column grid (after Notes field), add an Equipment section:
+```razor
+<div class="col-12 mt-3">
+    <h3 class="h6 fw-semibold mb-2 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">Preporu-ìena oprema</h3>
+    <div class="row g-2">
+        <div class="col-12 col-sm-4">
+            <div class="fb-ai-draft-field">
+                <div class="small text-uppercase text-muted mb-1">Rola</div>
+                <div class="fw-semibold">
+                    @if (result.SuggestedReelType.HasValue)
+                    {
+                        @($"{result.SuggestedReelType} {result.SuggestedReelSize?.ToString() ?? ""}")
+                    }
+                    else { <span class="text-muted">N/A</span> }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="fb-ai-draft-field">
+                <div class="small text-uppercase text-muted mb-1">+átap</div>
+                <div class="fw-semibold">
+                    @if (result.SuggestedRodAction.HasValue)
+                    {
+                        @($"{result.SuggestedRodAction} -+ {result.SuggestedRodLengthMeters?.ToString("F1") ?? "?"}m -+ {result.SuggestedRodMinWeightGrams}GÇô{result.SuggestedRodMaxWeightGrams}g")
+                    }
+                    else { <span class="text-muted">N/A</span> }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="fb-ai-draft-field">
+                <div class="small text-uppercase text-muted mb-1">Najlon</div>
+                <div class="fw-semibold">
+                    @if (result.SuggestedLineType.HasValue)
+                    {
+                        @($"{result.SuggestedLineType} -+ {result.SuggestedLineThicknessMm?.ToString("F2") ?? "?"}mm")
+                    }
+                    else { <span class="text-muted">N/A</span> }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+### After the Equipment section, add a Fishing Spots section (only when spots exist):
+```razor
+@if (result.SuggestedSpotNames.Count > 0)
+{
+    <div class="col-12 mt-2">
+        <h3 class="h6 fw-semibold mb-2 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">-îesta mjesta ulova</h3>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var spot in result.SuggestedSpotNames)
+            {
+                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-normal px-3 py-2">@spot</span>
+            }
+        </div>
+    </div>
+}
+```
+
+---
+
+## TASK 2 GÇö Views/Fish/Create.cshtml
+
+Add an equipment form section after the existing 5-field row grid, before the submit button row. The Fish model already has an `Equipment` owned entity (FReel, FRod, FLine), all bound as `Equipment.FReel.Type`, `Equipment.FReel.Size`, etc.
+
+Insert this section just before the `<div class="d-flex flex-wrap gap-2 mt-4">` button row:
+
+```razor
+<div class="col-12 mt-3">
+    <h2 class="h6 fw-semibold mb-3 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">Oprema</h2>
+    <div class="row g-3">
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FReel.Type" class="form-label">Tip role</label>
+            <select asp-for="Equipment.FReel.Type"
+                    asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FReelType>()"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FReel.Size" class="form-label">Veli-ìina role</label>
+            <input asp-for="Equipment.FReel.Size" class="form-control" type="number" min="500" max="20000" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.Action" class="form-label">Akcija +ítapa</label>
+            <select asp-for="Equipment.FRod.Action"
+                    asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FRodAction>()"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.LengthMeters" class="form-label">Du++ina +ítapa (m)</label>
+            <input asp-for="Equipment.FRod.LengthMeters" class="form-control" type="number" step="0.1" min="1" max="5" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.MinWeightRatingGrams" class="form-label">Min. te++ina (g)</label>
+            <input asp-for="Equipment.FRod.MinWeightRatingGrams" class="form-control" type="number" min="1" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FRod.MaxWeightRatingGrams" class="form-label">Max. te++ina (g)</label>
+            <input asp-for="Equipment.FRod.MaxWeightRatingGrams" class="form-control" type="number" min="1" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FLine.Type" class="form-label">Tip najlona</label>
+            <select asp-for="Equipment.FLine.Type"
+                    asp-items="Html.GetEnumSelectList<FishingBuddy.Models.FLineType>()"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-12 col-md-4">
+            <label asp-for="Equipment.FLine.ThicknessMm" class="form-label">Debljina najlona (mm)</label>
+            <input asp-for="Equipment.FLine.ThicknessMm" class="form-control" type="number" step="0.01" min="0.05" max="1" />
+        </div>
+    </div>
+</div>
+```
+
+---
+
+The project is at: c:\Users\Eamon\source\repos\FishingBuddy
+
+Read both files before editing them so you make precise targeted changes. Do not rewrite entire files; use apply_patch for surgical changes. Do not add CSS or modify any other file. Do not create documentation files.
+[2026-06-27 17:28:34Z] 1. Date input anywhere on app needs to be a JS DATEPICKER not a text field input that needs a specific format
+2. Create Technique has a field for inputting a link to the tutorial video, make it optional not required for creation
+3. DELETE CRUD option for Techniques is not working, there's only Uredi and Detalji options. Also, in other views including this, when selected UPDATE or DELETE in CRUD menu, you're presented with a view that gives you the option to both UREDI and OBRI+áI on both UPDATE and DELETE views, I want the ooption OBRI+áI to only be when clicked on DELETE CRUD option and the option UREDI to be on UPDATE CRUD option view. Prompt me to make sure you understood this assignment
+4. Mobile view needs polishing, things are out of bounds, stretching over, JS animations are poor and need polishing such as hamburger menus, hovering over options etc.
+
+[2026-06-27 17:28:34Z] [FishingStylist_SPAWNED] 1. Date input anywhere on app needs to be a JS DATEPICKER not a text field input that needs a specific format
+2. Create Technique has a field for inputting a link to the tutorial video, make it optional not required for creation
+3. DELETE CRUD option for Techniques is not working, there's only Uredi and Detalji options. Also, in other views including this, when selected UPDATE or DELETE in CRUD menu, you're presented with a view that gives you the option to both UREDI and OBRI+áI on both UPDATE and DELETE views, I want the ooption OBRI+áI to only be when clicked on DELETE CRUD option and the option UREDI to be on UPDATE CRUD option view. Prompt me to make sure you understood this assignment
+4. Mobile view needs polishing, things are out of bounds, stretching over, JS animations are poor and need polishing such as hamburger menus, hovering over options etc.
+
+[2026-06-27 17:32:32Z] Apply a focused UI/UX patch in FishingBuddy to satisfy these requirements:
+
+1) Every date input in the app must use a JS datepicker (not free text format typing).
+2) CRUD mode separation: when user picks UPDATE from CRUD menu, list should show only Uredi action; when DELETE selected, list should show only Obri+íi action.
+3) Technique delete must work from UI (delete action visible in delete mode).
+4) Mobile polish: fix overflow/stretching issues and improve navbar/hamburger/dropdown/table behavior + subtle animation quality.
+
+Project path: c:\Users\Eamon\source\repos\FishingBuddy
+
+Constraints:
+- Edit only UI/frontend files (Views, wwwroot/js/site.js, wwwroot/css/site.css).
+- Use apply_patch style surgical edits.
+- Keep Croatian text style already used.
+- Do not modify backend C# controllers/models.
+
+Implement these exact changes:
+
+A) Datepicker (global for all existing datetime partial usages)
+Files:
+- Views/Shared/_Layout.cshtml
+- Views/Shared/_DateTimeInput.cshtml
+- wwwroot/js/site.js
+- wwwroot/css/site.css (if needed for polish)
+
+Do:
+- Add Flatpickr CSS + JS includes in _Layout (CDN is fine).
+- Keep hidden ISO field binding pattern in _DateTimeInput (hidden real value + display input), but change placeholder to indicate picker usage.
+- In site.js, replace/augment initDateTimeInputs so controls using [data-datetime-control] initialize Flatpickr on display input.
+- When date selected, write hidden value in local ISO format yyyy-MM-ddTHH:mm:ss (use existing toLocalIsoString helper).
+- On load, if hidden value exists, show it in picker.
+- If Flatpickr unavailable, retain graceful fallback to current blur parse.
+
+B) CRUD mode separation across all list/manage views
+Affected entity folders:
+- Views/Bait
+- Views/CatchRecord
+- Views/Fish
+- Views/FishingSpot
+- Views/Technique
+- Views/User
+
+For each Manage.cshtml and Index.cshtml that has CRUD menu:
+- Update Update link to: asp-route-mode="edit"
+- Update Delete link to: asp-route-mode="delete"
+- In Manage.cshtml add mode resolution at top (default to edit), e.g. currentMode from query.
+- Set data-search-mode to currentMode so ajax search preserves mode.
+- Pass currentMode to row partial via ViewData key (e.g. ["CrudMode"] = currentMode).
+
+For each _*Rows.cshtml partial in those folders:
+- Read crudMode from ViewData or query.
+- In manage rows:
+  - if crudMode == "delete": show only Obri+íi button.
+  - else (edit/default): show only Uredi button.
+- Keep Details behavior for non-manage (index) as-is.
+- Ensure Technique manage rows include delete button in delete mode (this fixes missing delete flow).
+
+C) Mobile polish and animation quality
+Files:
+- wwwroot/css/site.css
+- wwwroot/js/site.js
+- optionally Views/Shared/_Layout.cshtml classes only if needed
+
+Do practical fixes without redesigning whole app:
+- Prevent horizontal overflow on small screens for CRUD toolbars/search/table wrappers.
+- Improve navbar collapse/hamburger interaction (smooth open/close class toggling via bootstrap collapse events; no jank).
+- Improve dropdown motion timing and hover/focus states for touch/mobile compatibility.
+- Ensure long button groups in row actions wrap cleanly on narrow widths.
+- Keep animations subtle and respectful of prefers-reduced-motion.
+
+After edits, return a concise list of changed files and exact behaviors changed.
+[2026-06-27 17:32:32Z] [FishingStylist_SPAWNED] Apply a focused UI/UX patch in FishingBuddy to satisfy these requirements:
+
+1) Every date input in the app must use a JS datepicker (not free text format typing).
+2) CRUD mode separation: when user picks UPDATE from CRUD menu, list should show only Uredi action; when DELETE selected, list should show only Obri+íi action.
+3) Technique delete must work from UI (delete action visible in delete mode).
+4) Mobile polish: fix overflow/stretching issues and improve navbar/hamburger/dropdown/table behavior + subtle animation quality.
+
+Project path: c:\Users\Eamon\source\repos\FishingBuddy
+
+Constraints:
+- Edit only UI/frontend files (Views, wwwroot/js/site.js, wwwroot/css/site.css).
+- Use apply_patch style surgical edits.
+- Keep Croatian text style already used.
+- Do not modify backend C# controllers/models.
+
+Implement these exact changes:
+
+A) Datepicker (global for all existing datetime partial usages)
+Files:
+- Views/Shared/_Layout.cshtml
+- Views/Shared/_DateTimeInput.cshtml
+- wwwroot/js/site.js
+- wwwroot/css/site.css (if needed for polish)
+
+Do:
+- Add Flatpickr CSS + JS includes in _Layout (CDN is fine).
+- Keep hidden ISO field binding pattern in _DateTimeInput (hidden real value + display input), but change placeholder to indicate picker usage.
+- In site.js, replace/augment initDateTimeInputs so controls using [data-datetime-control] initialize Flatpickr on display input.
+- When date selected, write hidden value in local ISO format yyyy-MM-ddTHH:mm:ss (use existing toLocalIsoString helper).
+- On load, if hidden value exists, show it in picker.
+- If Flatpickr unavailable, retain graceful fallback to current blur parse.
+
+B) CRUD mode separation across all list/manage views
+Affected entity folders:
+- Views/Bait
+- Views/CatchRecord
+- Views/Fish
+- Views/FishingSpot
+- Views/Technique
+- Views/User
+
+For each Manage.cshtml and Index.cshtml that has CRUD menu:
+- Update Update link to: asp-route-mode="edit"
+- Update Delete link to: asp-route-mode="delete"
+- In Manage.cshtml add mode resolution at top (default to edit), e.g. currentMode from query.
+- Set data-search-mode to currentMode so ajax search preserves mode.
+- Pass currentMode to row partial via ViewData key (e.g. ["CrudMode"] = currentMode).
+
+For each _*Rows.cshtml partial in those folders:
+- Read crudMode from ViewData or query.
+- In manage rows:
+  - if crudMode == "delete": show only Obri+íi button.
+  - else (edit/default): show only Uredi button.
+- Keep Details behavior for non-manage (index) as-is.
+- Ensure Technique manage rows include delete button in delete mode (this fixes missing delete flow).
+
+C) Mobile polish and animation quality
+Files:
+- wwwroot/css/site.css
+- wwwroot/js/site.js
+- optionally Views/Shared/_Layout.cshtml classes only if needed
+
+Do practical fixes without redesigning whole app:
+- Prevent horizontal overflow on small screens for CRUD toolbars/search/table wrappers.
+- Improve navbar collapse/hamburger interaction (smooth open/close class toggling via bootstrap collapse events; no jank).
+- Improve dropdown motion timing and hover/focus states for touch/mobile compatibility.
+- Ensure long button groups in row actions wrap cleanly on narrow widths.
+- Keep animations subtle and respectful of prefers-reduced-motion.
+
+After edits, return a concise list of changed files and exact behaviors changed.
+[2026-06-27 18:10:28Z] When I update a Fisherman's name for example, and restart the app the changes aren't saved. I need CRUD operations to work flawlessly 
+[2026-06-27 19:13:27Z] Are we able to deploy the web apk on some cloud, for example (Google Cloud) and get a link from which my professor can access it
+[2026-06-27 19:15:23Z] What would you recommend, my ultimate end goal for this app is to post it publicly on Google Store, but right now I'm having a short demo in front of my professor in 2 days and I just need something to show it can work deployed on cloud. Is it smart to make the conversion to the more optimal database now if my goal is public deployment on mobile stores OR do you think it's too big of a process now and just do the demo stuff
+[2026-06-27 19:17:04Z] okay, I agree. let's do the deployment as is and provide me with a public link. Will I be able to access it from phoen as wel?
+[2026-06-27 19:22:10Z] On first glance, it works. Can we alter the sole link, I would like it to contain fishingbuddy-eamongas
+[2026-06-27 19:23:15Z] we'll keep it like this for now. I will be testing the functionalities now, are the changes I make on the phone altered in my DB? If I send the link to my father is he able to make changes to the databases? I'm guessing no because only eamongasjob@gmail.com is admin accoutn
+[2026-06-27 19:34:14Z] it has build errors now on PC.
+also on mobile Google and Facebook one click sign on auth don't work
+[2026-06-27 19:35:47Z] [Terminal 02ec16d5-4e82-4834-9ee5-3fcbce6eb726 notification: command completed with exit code 1. The terminal has been cleaned up.]
+Terminal output:
+PS C:\Users\Eamon\source\repos\FishingBuddy> dotnet run --launch-profile http
+Using launch settings from C:\Users\Eamon\source\repos\FishingBuddy\Properties\launchSettings.json...
+Building...
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(120,43): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(142,43): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(155,31): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(177,35): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(199,35): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(212,35): warning CS8601: Possible null reference assignment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[2026-06-27 19:38:00Z] Still has build errors I can't run the app in Visual Studio on PC
+[2026-06-27 19:38:00Z] [FishingStylist_SPAWNED] Still has build errors I can't run the app in Visual Studio on PC
+[2026-06-27 19:39:21Z] Does this mean my mobile running app interrupts running it on PC? 
+[2026-06-27 19:42:45Z] I'm getting Error 1033 on mobile now.
+[2026-06-27 19:47:47Z] if a person registeres on a mobile link I give them, will their acc be in my db? 
+also wdym by keep both terminals alive I didn't shut down cloudflare
+[2026-06-27 20:43:38Z] I just want to avoid errors like this when starting app
+[2026-06-27 20:44:22Z] [Terminal f89161ee-6f6e-49d5-bd78-fc4542037703 notification: command completed with exit code 1. The terminal has been cleaned up.]
+Terminal output:
+PS C:\Users\Eamon\source\repos\FishingBuddy> .\tools\cloudflared\cloudflared.exe tunnel --url http://localhost:5142 --no-autoupdate
+2026-06-27T17:43:39Z INF Thank you for trying Cloudflare Tunnel. Doing so, without a Cloudflare account, is a quick way to experiment and try it out. However, be aware that these account-less Tunnels have no uptime guarantee, are subject to the Cloudflare Online Services Terms of Use (https://www.cloudflare.com/website-terms/), and Cloudflare reserves the right to investigate your use of Tunnels for violations of such terms. If you intend to use Tunnels in production you should use a pre-created named tunnel by following: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps
+2026-06-27T17:43:39Z INF Requesting new quick Tunnel on trycloudflare.com...
+2026-06-27T17:43:44Z INF +--------------------------------------------------------------------------------------------+
+2026-06-27T17:43:44Z INF |  Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):  |
+2026-06-27T17:43:44Z INF |  https://explicit-thru-upgrading-face.trycloudflare.com                                    |
+2026-06-27T17:43:44Z INF +--------------------------------------------------------------------------------------------+
+2026-06-27T17:43:44Z INF Cannot determine default configuration path. No file [config.yml config.yaml] in [~/.cloudflared ~/.cloudflare-warp ~/cloudflare-warp]
+2026-06-27T17:43:44Z INF Version 2026.6.1 (Checksum 5253e66f1f493c4e13539749f1aa86fd0c61e3072900fec29a44ba046a6d97e2)
+2026-06-27T17:43:44Z INF GOOS: windows, GOVersion: go1.26.4, GoArch: amd64
+2026-06-27T17:43:44Z INF Settings: map[ha-connections:1 no-autoupdate:true protocol:quic url:http://localhost:5142]
+2026-06-27T17:43:44Z INF cloudflared will not automatically update on Windows systems.
+2026-06-27T17:43:44Z INF Generated Connector ID: 6e89f3b0-9a9b-415e-8a47-dcbe77124687
+2026-06-27T17:43:44Z INF Initial protocol quic
+2026-06-27T17:43:44Z INF ICMP proxy will use 192.168.0.15 as source for IPv4
+2026-06-27T17:43:44Z INF ICMP proxy will use 2a05:4f44:30c:2b00::6 in zone Ethernet as source for IPv6
+2026-06-27T17:43:44Z INF cloudflared does not support loading the system root certificate pool on Windows. Please use --origin-ca-pool <PATH> to specify the path to the certificate pool
+2026-06-27T17:43:44Z INF ICMP proxy will use 192.168.0.15 as source for IPv4
+2026-06-27T17:43:44Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=2606:4700:a8::3
+2026-06-27T17:43:44Z INF ICMP proxy will use 2a05:4f44:30c:2b00::6 in zone Ethernet as source for IPv6
+2026-06-27T17:43:44Z INF Starting metrics server on 127.0.0.1:20241/metrics
+2026-06-27T17:43:45Z INF +-------------------------------------------------------------------------------------+
+2026-06-27T17:43:45Z INF |                               CONNECTIVITY PRE-CHECKS                               |
+2026-06-27T17:43:45Z INF +-------------------------------------------------------------------------------------+
+2026-06-27T17:43:45Z INF |  COMPONENT         TARGET                     STATUS  DETAILS                       |
+2026-06-27T17:43:45Z INF |  DNS Resolution    region1.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-06-27T17:43:45Z INF |  DNS Resolution    region2.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-06-27T17:43:45Z INF |  UDP Connectivity  region1.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-06-27T17:43:45Z INF |  UDP Connectivity  region2.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-06-27T17:43:45Z INF |  TCP Connectivity  region1.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-06-27T17:43:45Z INF |  TCP Connectivity  region2.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-06-27T17:43:45Z INF |  Cloudflare API    api.cloudflare.com:443     PASS    API is reachable              |
+2026-06-27T17:43:45Z INF |                                                                                     |
+2026-06-27T17:43:45Z INF |  SUMMARY: Environment is healthy. cloudflared will use 'quic' as primary protocol.  |
+2026-06-27T17:43:45Z INF +-------------------------------------------------------------------------------------+
+2026-06-27T17:43:45Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=region1.v2.argotunnel.com
+2026-06-27T17:43:45Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=region2.v2.argotunnel.com
+2026-06-27T17:43:45Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=region1.v2.argotunnel.com
+2026-06-27T17:43:45Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=region2.v2.argotunnel.com
+2026-06-27T17:43:45Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=region1.v2.argotunnel.com
+2026-06-27T17:43:45Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=region2.v2.argotunnel.com
+2026-06-27T17:43:45Z INF precheck component="Cloudflare API" details="API is reachable" run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa status=pass target=api.cloudflare.com:443
+2026-06-27T17:43:45Z INF precheck complete hard_fail=false run_id=aa25adc9-c7ea-4e98-a3f2-60fff147a7aa suggested_protocol=quic
+2026-06-27T17:43:45Z INF Registered tunnel connection connIndex=0 connection=c3990d54-7055-4976-9a52-e66830fc1f9f event=0 ip=2606:4700:a8::3 location=vie06 protocol=quic
+
+
+[Terminal 6068ec79-bf9c-405e-8445-006596422fe8 notification: command completed with exit code 1. The terminal has been cleaned up.]
+Terminal output:
+PS C:\Users\Eamon\source\repos\FishingBuddy> dotnet run --project FishingBuddy.csproj --urls http://localhost:5142
+Using launch settings from Properties\launchSettings.json...
+Building...
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(120,43): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(142,43): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(155,31): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(177,35): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(199,35): warning CS8601: Possible null reference assignment.
+C:\Users\Eamon\source\repos\FishingBuddy\Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs(212,35): warning CS8601: Possible null reference assignment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[2026-06-27 20:48:03Z] Have you kept track of all the new concepts we've added today?
+[2026-06-27 20:56:57Z] I was interested if we could work on the mobile view a little. It doesnt really look polished. 
+Also please change the AI Draft page title into AI Ribice and make the suggested text in the field in Croatian and it should say: "Pitaj AI da ubaci neku vrstu ribe."
+Also I'm getting the same error 1033  again and I don't want it to happen on my demo 
+[2026-06-27 20:57:24Z] You are styling FishingBuddy UI. I need focused UX/UI guidance for one existing Razor page and a small navbar label change. Do not redesign the whole app. Work within the existing visual language: maritime blue/teal, Bootstrap 5, Razor view, site.css.
+
+User requests:
+1. Improve mobile polish for the AI draft page because it looks unrefined on phones.
+2. Change page title from 'AI Fish Draft' to 'AI Ribice'.
+3. Change the prompt placeholder text to Croatian: 'Pitaj AI da ubaci neku vrstu ribe.'
+4. Ideally also align the hero/body copy and CTA labels to Croatian where sensible, but keep changes minimal and coherent.
+
+Existing view structure summary:
+- Views/Ai/FishDraft.cshtml
+- Hero card with class fb-ai-draft-hero inside section fb-ai-draft-page
+- A second card contains form with a textarea and submit button
+- A result card shows field tiles using class fb-ai-draft-field
+- Existing AI-specific CSS lives in wwwroot/css/site.css around .fb-ai-draft-page .fb-ai-draft-hero, .fb-ai-draft-result, .fb-ai-draft-field, plus mobile media queries
+
+Existing text examples in the page:
+- Title/Breadcrumb/H1: 'AI Fish Draft'
+- Hero paragraph: 'This tool generates draft values for the Fish/Create form. Review results before creating a new fish entry.'
+- Form section heading: 'Generate draft'
+- Label: 'Prompt'
+- Placeholder: 'Example: Create a draft for sea bass with autumn season, white flesh, and spinning technique.'
+- Submit button: 'Generate Draft'
+- Result heading: 'Draft result'
+- CTA button: 'Otvori Fish/Create s predpopunom'
+
+Existing CSS summary:
+- Hero uses dark blue/teal gradient and white text
+- Result fields use soft blue surface and border radius
+- Mobile tweaks are minimal: reduced hero padding, textarea min-height, field padding
+
+Please return:
+1. A concise design recommendation for mobile polish in this page only.
+2. Specific copy replacements in Croatian.
+3. Concrete code-level suggestions for minimal markup/CSS changes, especially around spacing, button stacking, textarea feel, result card density, chip layout, and mobile readability.
+4. Keep it implementable with small localized edits to the existing view and site.css.
+[2026-06-27 20:57:24Z] [FishingStylist_SPAWNED] You are styling FishingBuddy UI. I need focused UX/UI guidance for one existing Razor page and a small navbar label change. Do not redesign the whole app. Work within the existing visual language: maritime blue/teal, Bootstrap 5, Razor view, site.css.
+
+User requests:
+1. Improve mobile polish for the AI draft page because it looks unrefined on phones.
+2. Change page title from 'AI Fish Draft' to 'AI Ribice'.
+3. Change the prompt placeholder text to Croatian: 'Pitaj AI da ubaci neku vrstu ribe.'
+4. Ideally also align the hero/body copy and CTA labels to Croatian where sensible, but keep changes minimal and coherent.
+
+Existing view structure summary:
+- Views/Ai/FishDraft.cshtml
+- Hero card with class fb-ai-draft-hero inside section fb-ai-draft-page
+- A second card contains form with a textarea and submit button
+- A result card shows field tiles using class fb-ai-draft-field
+- Existing AI-specific CSS lives in wwwroot/css/site.css around .fb-ai-draft-page .fb-ai-draft-hero, .fb-ai-draft-result, .fb-ai-draft-field, plus mobile media queries
+
+Existing text examples in the page:
+- Title/Breadcrumb/H1: 'AI Fish Draft'
+- Hero paragraph: 'This tool generates draft values for the Fish/Create form. Review results before creating a new fish entry.'
+- Form section heading: 'Generate draft'
+- Label: 'Prompt'
+- Placeholder: 'Example: Create a draft for sea bass with autumn season, white flesh, and spinning technique.'
+- Submit button: 'Generate Draft'
+- Result heading: 'Draft result'
+- CTA button: 'Otvori Fish/Create s predpopunom'
+
+Existing CSS summary:
+- Hero uses dark blue/teal gradient and white text
+- Result fields use soft blue surface and border radius
+- Mobile tweaks are minimal: reduced hero padding, textarea min-height, field padding
+
+Please return:
+1. A concise design recommendation for mobile polish in this page only.
+2. Specific copy replacements in Croatian.
+3. Concrete code-level suggestions for minimal markup/CSS changes, especially around spacing, button stacking, textarea feel, result card density, chip layout, and mobile readability.
+4. Keep it implementable with small localized edits to the existing view and site.css.
+[2026-06-27 21:00:18Z] I want to send a link to my professor via email / teams and he needs to open it successfully no matter what I do prior to that? Is that possible?
+[2026-06-27 21:03:59Z] 1. On mobile view place global search bar on top of the hamburger menu 
+2. On mobile view position CRUD operations menu next to the view title, example: Tehnike - and on the right of it CRUD menu button, also make it centered on the screen width wise but in line with the title of the view
+3.  I want an Icon logo of a fish in top left corner on mobile view and FISHINGBUDDY centered in between the hamburger menu and the logo icon
+[2026-06-27 21:03:59Z] [FishingStylist_SPAWNED] 1. On mobile view place global search bar on top of the hamburger menu 
+2. On mobile view position CRUD operations menu next to the view title, example: Tehnike - and on the right of it CRUD menu button, also make it centered on the screen width wise but in line with the title of the view
+3.  I want an Icon logo of a fish in top left corner on mobile view and FISHINGBUDDY centered in between the hamburger menu and the logo icon
+[2026-06-27 21:04:14Z] You are styling FishingBuddy UI. I need a focused implementation plan for mobile-only layout changes across the shared navbar and repeated list/manage page headers in an ASP.NET MVC Razor app using Bootstrap 5 and site.css.
+
+User requests:
+1. On mobile view place the global search bar on top of the hamburger menu.
+2. On mobile view position CRUD operations menu next to the view title, example 'Tehnike' with CRUD menu button on its right, and make that title+button composition centered across the screen width while staying in one line.
+3. On mobile view add a fish icon logo in the top-left corner and center the FISHINGBUDDY brand text between the logo icon and the hamburger menu.
+
+Current shared navbar markup in Views/Shared/_Layout.cshtml:
+- container-fluid inside nav
+- brand anchor currently plain text 'FishingBuddy'
+- navbar-toggler button
+- collapse contains nav links, global search form, login partial
+- search form currently appears after nav links in the collapse
+
+Current repeated list page header pattern in multiple files like Views/Technique/Index.cshtml and Views/Fish/Index.cshtml:
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+    <h1 class="h2 mb-0">Tehnike</h1>
+    <div class="d-flex align-items-center gap-2 fb-list-toolbar-actions">
+        <div class="dropdown fb-crud-dropdown">...</div>
+        <span class="badge bg-primary">count</span>
+    </div>
+</div>
+
+Existing CSS notes:
+- .fb-navbar has dark blue gradient
+- .fb-brand is uppercase white text
+- .fb-navbar-search has responsive behavior under 991.98px
+- .fb-list-toolbar-actions width becomes 100% on mobile currently and justify-content flex-start
+
+I need from you:
+1. A minimal, concrete markup pattern for the navbar and for list-page header blocks.
+2. Exact CSS class ideas for mobile-only behavior that will center the brand between icon and toggler and move search visually above the hamburger/collapsed nav area.
+3. A practical pattern for the repeated list/manage page headers so I can patch several files consistently without redesigning desktop.
+4. Keep this localized and compatible with existing Bootstrap structure and app style.
+[2026-06-27 21:04:14Z] [FishingStylist_SPAWNED] You are styling FishingBuddy UI. I need a focused implementation plan for mobile-only layout changes across the shared navbar and repeated list/manage page headers in an ASP.NET MVC Razor app using Bootstrap 5 and site.css.
+
+User requests:
+1. On mobile view place the global search bar on top of the hamburger menu.
+2. On mobile view position CRUD operations menu next to the view title, example 'Tehnike' with CRUD menu button on its right, and make that title+button composition centered across the screen width while staying in one line.
+3. On mobile view add a fish icon logo in the top-left corner and center the FISHINGBUDDY brand text between the logo icon and the hamburger menu.
+
+Current shared navbar markup in Views/Shared/_Layout.cshtml:
+- container-fluid inside nav
+- brand anchor currently plain text 'FishingBuddy'
+- navbar-toggler button
+- collapse contains nav links, global search form, login partial
+- search form currently appears after nav links in the collapse
+
+Current repeated list page header pattern in multiple files like Views/Technique/Index.cshtml and Views/Fish/Index.cshtml:
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+    <h1 class="h2 mb-0">Tehnike</h1>
+    <div class="d-flex align-items-center gap-2 fb-list-toolbar-actions">
+        <div class="dropdown fb-crud-dropdown">...</div>
+        <span class="badge bg-primary">count</span>
+    </div>
+</div>
+
+Existing CSS notes:
+- .fb-navbar has dark blue gradient
+- .fb-brand is uppercase white text
+- .fb-navbar-search has responsive behavior under 991.98px
+- .fb-list-toolbar-actions width becomes 100% on mobile currently and justify-content flex-start
+
+I need from you:
+1. A minimal, concrete markup pattern for the navbar and for list-page header blocks.
+2. Exact CSS class ideas for mobile-only behavior that will center the brand between icon and toggler and move search visually above the hamburger/collapsed nav area.
+3. A practical pattern for the repeated list/manage page headers so I can patch several files consistently without redesigning desktop.
+4. Keep this localized and compatible with existing Bootstrap structure and app style.
+[2026-06-27 21:37:34Z] what would it take to create tests for every and all API endpoints? How would that look and how much added code is that?
+[2026-06-27 21:56:42Z] Okay. 
+Implement tests for all API endpoints and mark it in my changes file.
+[2026-06-27 21:58:08Z] Try Again
+[2026-06-27 21:58:26Z] Implement tests for all API endpoints and mark it in my changes file.
+[2026-06-27 21:58:39Z] yes do that
+[2026-06-27 21:59:29Z] I want you to create test for every API endpoint like we talked previously
+[2026-06-27 22:27:06Z] Okay did you add this to the file with changes?
+[2026-06-27 22:37:54Z] Can you check now if I have all API endpoint tests and give me a consolidated report on all changes we've made today in bullet points and update my changes file accordingly?
+[2026-06-27 23:06:02Z] We'll talk tomorrow about these changes. I need to understand them and the whole project prior to them for the day after tomorrow.

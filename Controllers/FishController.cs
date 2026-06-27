@@ -85,7 +85,12 @@ namespace FishingBuddy.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
-        public IActionResult Create(string? speciesName, Season? catchSeason, FishFlesh? fleshColor, int? favouriteBaitId, int? preferredMethodId)
+        public IActionResult Create(
+            string? speciesName, Season? catchSeason, FishFlesh? fleshColor,
+            int? favouriteBaitId, int? preferredMethodId,
+            FReelType? reelType, int? reelSize,
+            FRodAction? rodAction, decimal? rodLength, int? rodMinWeight, int? rodMaxWeight,
+            FLineType? lineType, decimal? lineThickness)
         {
             ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName");
             ViewBag.Techniques = new SelectList(_repository.Techniques, "TechniqueID", "TechniqueName");
@@ -98,6 +103,14 @@ namespace FishingBuddy.Controllers
                 FavouriteBaitID = favouriteBaitId ?? 0,
                 PreferredMethodID = preferredMethodId ?? 0
             };
+
+            if (reelType.HasValue || rodAction.HasValue || lineType.HasValue)
+            {
+                model.Equipment = new Equipment(
+                    new FReel(reelSize ?? 2000, reelType ?? FReelType.Spinning),
+                    new FRod(rodLength ?? 2.1m, rodAction ?? FRodAction.Medium, rodMinWeight ?? 10, rodMaxWeight ?? 35),
+                    new FLine(lineType ?? FLineType.Nylon, lineThickness ?? 0.20m));
+            }
 
             var preferredMethodLabel = model.PreferredMethodID > 0
                 ? _repository.GetTechniqueById(model.PreferredMethodID)?.TechniqueName ?? string.Empty

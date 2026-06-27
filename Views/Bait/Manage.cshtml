@@ -1,5 +1,7 @@
 @model IReadOnlyList<FishingBuddy.Models.Bait>
 @{
+    var requestMode = Context.Request.Query["mode"].ToString();
+    var currentMode = string.Equals(requestMode, "delete", StringComparison.OrdinalIgnoreCase) ? "delete" : "edit";
     ViewData["Title"] = "Upravljanje mamcima";
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
     {
@@ -11,19 +13,31 @@
 
 <section class="card shadow-sm border-0">
     <div class="card-body">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
-            <div>
-                <h1 class="h2 mb-1">Upravljanje mamcima</h1>
-                <p class="text-muted mb-0">Administrirajte mamce, vrste i prosječne cijene.</p>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-primary">@Model.Count mamaca</span>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3 fb-page-header">
+            <div class="fb-page-mobile-titlebar d-md-none">
+                <h1 class="h2 mb-0">Upravljanje mamcima</h1>
                 <div class="dropdown fb-crud-dropdown">
                     <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
                     <ul class="dropdown-menu fb-crud-menu">
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="Bait" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
-                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Bait" asp-action="Manage"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
-                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Bait" asp-action="Manage"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Bait" asp-action="Manage" asp-route-mode="edit"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Bait" asp-action="Manage" asp-route-mode="delete"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-muted mb-0 d-md-none fb-page-mobile-subtitle">Administrirajte mamce, vrste i prosječne cijene.</p>
+            <div class="d-none d-md-block">
+                <h1 class="h2 mb-1">Upravljanje mamcima</h1>
+                <p class="text-muted mb-0">Administrirajte mamce, vrste i prosječne cijene.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2 fb-list-toolbar-actions">
+                <span class="badge bg-primary">@Model.Count mamaca</span>
+                <div class="dropdown fb-crud-dropdown d-none d-md-block">
+                    <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+                    <ul class="dropdown-menu fb-crud-menu">
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="Bait" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="Bait" asp-action="Manage" asp-route-mode="edit"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="Bait" asp-action="Manage" asp-route-mode="delete"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -32,7 +46,7 @@
         <div class="fb-list-search"
              data-ajax-search
              data-search-endpoint="@Url.Action("Search", "Bait")"
-             data-search-mode="manage"
+             data-search-mode="@currentMode"
              data-empty-colspan="4"
              data-empty-message="Nema trazenih mamaca.">
             <label class="form-label" for="baitManageSearch">Pretrazi mamce</label>
@@ -50,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody data-search-target>
-                    @await Html.PartialAsync("_BaitRows", Model, new ViewDataDictionary(ViewData) { ["ManageMode"] = true })
+                    @await Html.PartialAsync("_BaitRows", Model, new ViewDataDictionary(ViewData) { ["ManageMode"] = true, ["CrudMode"] = currentMode })
                 </tbody>
             </table>
         </div>

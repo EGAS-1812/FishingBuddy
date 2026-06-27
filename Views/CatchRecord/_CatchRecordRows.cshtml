@@ -1,7 +1,9 @@
 @inject FishingBuddy.Repositories.IFishingRepository Repository
 @model IReadOnlyList<FishingBuddy.Models.CatchRecord>
 @{
-    var isManage = (ViewData["ManageMode"] as bool?) ?? string.Equals(Context.Request.Query["mode"], "manage", StringComparison.OrdinalIgnoreCase);
+    var requestMode = Context.Request.Query["mode"].ToString();
+    var isManage = (ViewData["ManageMode"] as bool?) ?? !string.Equals(requestMode, "index", StringComparison.OrdinalIgnoreCase);
+    var crudMode = ((ViewData["CrudMode"] as string) ?? requestMode).ToLowerInvariant();
 }
 
 @if (Model.Count == 0)
@@ -23,9 +25,15 @@ else
                 <td>@record.Weight.ToString("F2")</td>
                 <td>@record.LengthCm.ToString("F1")</td>
                 <td class="text-end">
-                    <div class="d-inline-flex gap-2">
-                        <a class="btn btn-sm btn-outline-secondary" asp-controller="CatchRecord" asp-action="Edit" asp-route-id="@record.CatchID">Uredi</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-controller="CatchRecord" asp-action="Delete" asp-route-id="@record.CatchID">Obrisi</a>
+                    <div class="fb-row-actions">
+                        @if (crudMode == "delete")
+                        {
+                            <a class="btn btn-sm btn-outline-danger" asp-controller="CatchRecord" asp-action="Delete" asp-route-id="@record.CatchID">Obrisi</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-outline-secondary" asp-controller="CatchRecord" asp-action="Edit" asp-route-id="@record.CatchID">Uredi</a>
+                        }
                     </div>
                 </td>
             }

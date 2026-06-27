@@ -1,40 +1,40 @@
 @model FishingBuddy.Models.Ai.AiFishDraftPageViewModel
 @{
-    ViewData["Title"] = "AI Fish Draft";
+    ViewData["Title"] = "AI Ribice";
     ViewData["BreadcrumbItems"] = new List<(string, string?)>
     {
-        ("AI Fish Draft", null)
+        ("AI Ribice", null)
     };
 }
 
 <section class="fb-ai-draft-page">
     <div class="card fb-white-pill-card border-0 shadow-sm mb-4 fb-ai-draft-hero">
         <div class="card-body p-4 p-lg-5">
-            <h1 class="h2 mb-2">AI Fish Draft</h1>
-            <p class="text-muted mb-0">
-                This tool generates draft values for the Fish/Create form. Review results before creating a new fish entry.
+            <h1 class="h2 mb-2">AI Ribice</h1>
+            <p class="mb-0 fb-ai-draft-lead">
+                Ovaj alat generira prijedlog vrijednosti za Fish/Create obrazac. Prije spremanja pregledaj rezultat i po potrebi ga doradi.
             </p>
         </div>
     </div>
 
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body p-4">
-            <h2 class="h5 mb-3">Generate draft</h2>
+            <h2 class="h5 mb-3">Generiraj prijedlog</h2>
 
             <form asp-controller="Ai" asp-action="FishDraft" method="post" class="row g-3">
                 @Html.AntiForgeryToken()
 
                 <div class="col-12">
-                    <label asp-for="Prompt" class="form-label fw-semibold">Prompt</label>
+                    <label asp-for="Prompt" class="form-label fw-semibold">Upit</label>
                     <textarea asp-for="Prompt"
-                              class="form-control"
+                              class="form-control fb-ai-draft-textarea"
                               rows="6"
-                              placeholder="Example: Create a draft for sea bass with autumn season, white flesh, and spinning technique."></textarea>
+                              placeholder="Pitaj AI da ubaci neku vrstu ribe."></textarea>
                     <span asp-validation-for="Prompt" class="text-danger"></span>
                 </div>
 
-                <div class="col-12 d-grid d-sm-flex gap-2">
-                    <button type="submit" class="btn btn-primary px-4">Generate Draft</button>
+                <div class="col-12 d-grid d-sm-flex gap-2 fb-ai-draft-actions">
+                    <button type="submit" class="btn btn-primary px-4">Generiraj prijedlog</button>
                 </div>
             </form>
         </div>
@@ -54,41 +54,51 @@
         <section class="card border-0 shadow-sm fb-ai-draft-result" aria-labelledby="ai-result-heading">
             <div class="card-body p-4">
                 <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-3">
-                    <h2 id="ai-result-heading" class="h5 mb-0">Draft result</h2>
-                    <a class="btn btn-outline-primary"
-                       asp-controller="Fish"
-                       asp-action="Create"
-                       asp-route-speciesName="@result.SpeciesName"
-                       asp-route-catchSeason="@result.CatchSeason"
-                       asp-route-fleshColor="@result.FleshColor"
-                       asp-route-favouriteBaitId="@result.FavouriteBaitID"
-                       asp-route-preferredMethodId="@result.PreferredMethodID">
-                        Open Fish/Create with Prefill
-                    </a>
+                    <h2 id="ai-result-heading" class="h5 mb-0">Rezultat prijedloga</h2>
+                    <div class="fb-ai-draft-result-cta d-grid d-sm-block">
+                        <a class="btn btn-outline-primary"
+                           asp-controller="Fish"
+                           asp-action="Create"
+                           asp-route-speciesName="@result.SpeciesName"
+                           asp-route-catchSeason="@result.CatchSeason"
+                           asp-route-fleshColor="@result.FleshColor"
+                           asp-route-favouriteBaitId="@result.FavouriteBaitID"
+                           asp-route-preferredMethodId="@result.PreferredMethodID"
+                           asp-route-reelType="@result.SuggestedReelType"
+                           asp-route-reelSize="@result.SuggestedReelSize"
+                           asp-route-rodAction="@result.SuggestedRodAction"
+                           asp-route-rodLength="@result.SuggestedRodLengthMeters"
+                           asp-route-rodMinWeight="@result.SuggestedRodMinWeightGrams"
+                           asp-route-rodMaxWeight="@result.SuggestedRodMaxWeightGrams"
+                           asp-route-lineType="@result.SuggestedLineType"
+                           asp-route-lineThickness="@result.SuggestedLineThicknessMm">
+                            Otvori Fish/Create s predpopunjenim podacima
+                        </a>
+                    </div>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-12 col-md-6">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Species</div>
+                            <div class="small text-uppercase text-muted mb-1">Vrsta</div>
                             <div class="fw-semibold">@result.SpeciesName</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Season</div>
+                            <div class="small text-uppercase text-muted mb-1">Sezona</div>
                             <div class="fw-semibold">@((result.CatchSeason?.ToString()) ?? "N/A")</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Flesh</div>
+                            <div class="small text-uppercase text-muted mb-1">Meso</div>
                             <div class="fw-semibold">@((result.FleshColor?.ToString()) ?? "N/A")</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Bait</div>
+                            <div class="small text-uppercase text-muted mb-1">Mamac</div>
                             <div class="fw-semibold">
                                 @result.SuggestedBaitName
                                 @if (result.FavouriteBaitID.HasValue)
@@ -100,7 +110,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Technique</div>
+                            <div class="small text-uppercase text-muted mb-1">Tehnika</div>
                             <div class="fw-semibold">
                                 @result.SuggestedTechniqueName
                                 @if (result.PreferredMethodID.HasValue)
@@ -112,16 +122,71 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Source / Model</div>
+                            <div class="small text-uppercase text-muted mb-1">Izvor / Model</div>
                             <div class="fw-semibold">@result.Source / @result.Model</div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="fb-ai-draft-field">
-                            <div class="small text-uppercase text-muted mb-1">Notes</div>
+                            <div class="small text-uppercase text-muted mb-1">Biljeske</div>
                             <p class="mb-0">@result.Notes</p>
                         </div>
                     </div>
+
+                    <div class="col-12 mt-3">
+                        <h3 class="h6 fw-semibold mb-2 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">Preporučena oprema</h3>
+                        <div class="row g-2">
+                            <div class="col-12 col-sm-4">
+                                <div class="fb-ai-draft-field">
+                                    <div class="small text-uppercase text-muted mb-1">Rola</div>
+                                    <div class="fw-semibold">
+                                        @if (result.SuggestedReelType.HasValue)
+                                        {
+                                            @($"{result.SuggestedReelType} {result.SuggestedReelSize?.ToString() ?? ""}")
+                                        }
+                                        else { <span class="text-muted">N/A</span> }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="fb-ai-draft-field">
+                                    <div class="small text-uppercase text-muted mb-1">Štap</div>
+                                    <div class="fw-semibold">
+                                        @if (result.SuggestedRodAction.HasValue)
+                                        {
+                                            @($"{result.SuggestedRodAction} · {result.SuggestedRodLengthMeters?.ToString("F1") ?? "?"}m · {result.SuggestedRodMinWeightGrams}–{result.SuggestedRodMaxWeightGrams}g")
+                                        }
+                                        else { <span class="text-muted">N/A</span> }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="fb-ai-draft-field">
+                                    <div class="small text-uppercase text-muted mb-1">Najlon</div>
+                                    <div class="fw-semibold">
+                                        @if (result.SuggestedLineType.HasValue)
+                                        {
+                                            @($"{result.SuggestedLineType} · {result.SuggestedLineThicknessMm?.ToString("F2") ?? "?"}mm")
+                                        }
+                                        else { <span class="text-muted">N/A</span> }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (result.SuggestedSpotNames.Count > 0)
+                    {
+                        <div class="col-12 mt-2">
+                            <h3 class="h6 fw-semibold mb-2 text-muted text-uppercase" style="font-size:.72rem;letter-spacing:.08em;">Česta mjesta ulova</h3>
+                            <div class="d-flex flex-wrap gap-2 fb-ai-draft-chip-list">
+                                @foreach (var spot in result.SuggestedSpotNames)
+                                {
+                                    <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-normal px-3 py-2">@spot</span>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </section>

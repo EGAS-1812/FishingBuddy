@@ -2,7 +2,7 @@
     var fieldName = ViewData["FieldName"] as string ?? string.Empty;
     var fieldId = ViewData["FieldId"] as string ?? fieldName;
     var label = ViewData["Label"] as string ?? fieldName;
-    var placeholder = ViewData["Placeholder"] as string ?? "dd.mm.yyyy hh:mm";
+    var placeholder = ViewData["Placeholder"] as string ?? "Odaberite datum i vrijeme";
     var value = ViewData["Value"] as DateTime?;
     var initialValue = value.HasValue ? value.Value.ToString("yyyy-MM-ddTHH:mm:ss") : string.Empty;
 }
@@ -17,5 +17,5 @@
         placeholder="@placeholder"
         autocomplete="off"
         data-datetime-display />
-    <div class="form-text">Unesite datum i vrijeme prema lokalnom formatu preglednika.</div>
+    <div class="form-text">Odaberite datum i vrijeme iz kalendara.</div>
 </div>

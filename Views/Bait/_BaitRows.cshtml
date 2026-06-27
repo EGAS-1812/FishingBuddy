@@ -1,6 +1,8 @@
 @model IReadOnlyList<FishingBuddy.Models.Bait>
 @{
-    var isManage = (ViewData["ManageMode"] as bool?) ?? string.Equals(Context.Request.Query["mode"], "manage", StringComparison.OrdinalIgnoreCase);
+    var requestMode = Context.Request.Query["mode"].ToString();
+    var isManage = (ViewData["ManageMode"] as bool?) ?? !string.Equals(requestMode, "index", StringComparison.OrdinalIgnoreCase);
+    var crudMode = ((ViewData["CrudMode"] as string) ?? requestMode).ToLowerInvariant();
 }
 
 @if (Model.Count == 0)
@@ -20,9 +22,15 @@ else
             {
                 <td>@bait.AveragePriceEur.ToString("F2")</td>
                 <td class="text-end">
-                    <div class="d-inline-flex gap-2">
-                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Bait" asp-action="Edit" asp-route-id="@bait.BaitID">Uredi</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-controller="Bait" asp-action="Delete" asp-route-id="@bait.BaitID">Obrisi</a>
+                    <div class="fb-row-actions">
+                        @if (crudMode == "delete")
+                        {
+                            <a class="btn btn-sm btn-outline-danger" asp-controller="Bait" asp-action="Delete" asp-route-id="@bait.BaitID">Obrisi</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Bait" asp-action="Edit" asp-route-id="@bait.BaitID">Uredi</a>
+                        }
                     </div>
                 </td>
             }

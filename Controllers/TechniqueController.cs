@@ -89,6 +89,8 @@ namespace FishingBuddy.Controllers
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create(Technique technique)
         {
+            NormalizeOptionalTutorialUrl(technique);
+
             if (!ModelState.IsValid)
             {
                 return View(technique);
@@ -118,6 +120,8 @@ namespace FishingBuddy.Controllers
                 return NotFound();
             }
 
+            NormalizeOptionalTutorialUrl(technique);
+
             if (!ModelState.IsValid)
             {
                 return View(technique);
@@ -143,6 +147,15 @@ namespace FishingBuddy.Controllers
         {
             _repository.DeleteTechnique(id);
             return RedirectToAction(nameof(Manage));
+        }
+
+        private void NormalizeOptionalTutorialUrl(Technique technique)
+        {
+            if (string.IsNullOrWhiteSpace(technique.TutorialUrl))
+            {
+                technique.TutorialUrl = string.Empty;
+                ModelState.Remove(nameof(Technique.TutorialUrl));
+            }
         }
     }
 }

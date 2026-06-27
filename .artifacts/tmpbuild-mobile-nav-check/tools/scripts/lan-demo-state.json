@@ -1,0 +1,10 @@
+﻿{
+    "startedAt":  "2026-06-27T20:59:06.3336277+02:00",
+    "appUrl":  "http://0.0.0.0:5142",
+    "appPid":  14932,
+    "lanUrls":  [
+                    "http://192.168.0.15:5142"
+                ],
+    "appOutLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\lan-demo-app.out.log",
+    "appErrLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\lan-demo-app.err.log"
+}

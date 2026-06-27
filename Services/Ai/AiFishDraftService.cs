@@ -15,6 +15,18 @@ public class AiFishDraftService(
     IFishingRepository repository,
     ILogger<AiFishDraftService> logger) : IAiFishDraftService
 {
+    private static readonly Dictionary<string, SpeciesProfile> SpeciesProfiles =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["swordfish"] = new(Season.Summer, FishFlesh.Red, "Trolling", "Srdela", FReelType.Troll, FRodAction.Heavy, FLineType.Braided),
+            ["iglun"] = new(Season.Summer, FishFlesh.Red, "Trolling", "Srdela", FReelType.Troll, FRodAction.Heavy, FLineType.Braided),
+            ["sea bass"] = new(Season.Winter, FishFlesh.White, "Spinning", "Crv", FReelType.Spinning, FRodAction.Medium, FLineType.Braided),
+            ["brancin"] = new(Season.Winter, FishFlesh.White, "Spinning", "Crv", FReelType.Spinning, FRodAction.Medium, FLineType.Braided),
+            ["tuna"] = new(Season.Summer, FishFlesh.Red, "Trolling", "Varalica", FReelType.Troll, FRodAction.Heavy, FLineType.Braided),
+            ["skuša"] = new(Season.Summer, FishFlesh.Blue, "Spinning", "Srdela", FReelType.Spinning, FRodAction.MediumLight, FLineType.Nylon),
+            ["mackerel"] = new(Season.Summer, FishFlesh.Blue, "Spinning", "Srdela", FReelType.Spinning, FRodAction.MediumLight, FLineType.Nylon)
+        };
+
     public async Task<AiFishDraftResultViewModel> BuildDraftAsync(string prompt, CancellationToken cancellationToken = default)
     {
         var normalizedPrompt = (prompt ?? string.Empty).Trim();
@@ -27,19 +39,28 @@ public class AiFishDraftService(
         }
 
         var apiKey = configuration["Ai:OpenAi:ApiKey"];
+        var speciesHint = ExtractSpeciesFromPrompt(normalizedPrompt);
         if (string.IsNullOrWhiteSpace(apiKey))
         {
-            return BuildHeuristicDraft(normalizedPrompt);
+            return BuildHeuristicDraft(normalizedPrompt, speciesHint);
         }
 
         try
         {
-            return await BuildModelDraftAsync(normalizedPrompt, apiKey, cancellationToken);
+            var modelDraft = await BuildModelDraftAsync(normalizedPrompt, apiKey, cancellationToken);
+            if (!string.IsNullOrWhiteSpace(speciesHint) && string.IsNullOrWhiteSpace(modelDraft.SpeciesName))
+            {
+                modelDraft.SpeciesName = speciesHint;
+            }
+
+            EnrichWithSpeciesKnowledge(modelDraft);
+            EnsureRequiredDefaults(modelDraft);
+            return modelDraft;
         }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "OpenAI draft request failed. Falling back to local heuristic parser.");
-            var fallback = BuildHeuristicDraft(normalizedPrompt);
+            var fallback = BuildHeuristicDraft(normalizedPrompt, speciesHint);
             fallback.Notes = string.IsNullOrWhiteSpace(fallback.Notes)
                 ? "Model request failed, local heuristic parser was used."
                 : $"{fallback.Notes} Model request failed, local heuristic parser was used.";
@@ -118,17 +139,18 @@ public class AiFishDraftService(
 
         if (string.IsNullOrWhiteSpace(result.SpeciesName))
         {
-            result.SpeciesName = BuildHeuristicDraft(prompt).SpeciesName;
+            var speciesHint = ExtractSpeciesFromPrompt(prompt);
+            result.SpeciesName = BuildHeuristicDraft(prompt, speciesHint).SpeciesName;
         }
 
         return result;
     }
 
-    private AiFishDraftResultViewModel BuildHeuristicDraft(string prompt)
+    private AiFishDraftResultViewModel BuildHeuristicDraft(string prompt, string speciesHint)
     {
         var result = new AiFishDraftResultViewModel
         {
-            SpeciesName = GuessSpecies(prompt),
+            SpeciesName = !string.IsNullOrWhiteSpace(speciesHint) ? speciesHint : GuessSpecies(prompt),
             CatchSeason = ParseSeason(prompt),
             FleshColor = ParseFlesh(prompt),
             Source = "heuristic",
@@ -151,12 +173,191 @@ public class AiFishDraftService(
             result.SuggestedTechniqueName = technique.TechniqueName;
         }
 
+        EnrichWithSpeciesKnowledge(result);
+        EnsureRequiredDefaults(result);
+
         if (string.IsNullOrWhiteSpace(result.Notes))
         {
-            result.Notes = "Draft generated from local parser. Review values before saving.";
+            result.Notes = "Draft generated from local parser and species knowledge. Review values before saving.";
         }
 
         return result;
+    }
+
+    private void EnrichWithSpeciesKnowledge(AiFishDraftResultViewModel result)
+    {
+        if (string.IsNullOrWhiteSpace(result.SpeciesName))
+        {
+            return;
+        }
+
+        var fromRepository = repository.Fish.FirstOrDefault(f =>
+            string.Equals(f.SpeciesName, result.SpeciesName, StringComparison.OrdinalIgnoreCase))
+            ?? repository.Fish.FirstOrDefault(f =>
+                f.SpeciesName.Contains(result.SpeciesName, StringComparison.OrdinalIgnoreCase)
+                || result.SpeciesName.Contains(f.SpeciesName, StringComparison.OrdinalIgnoreCase));
+
+        if (fromRepository != null)
+        {
+            result.SpeciesName = fromRepository.SpeciesName;
+            result.CatchSeason ??= fromRepository.CatchSeason;
+            result.FleshColor ??= fromRepository.FleshColor;
+
+            if (!result.FavouriteBaitID.HasValue)
+            {
+                result.FavouriteBaitID = fromRepository.FavouriteBaitID;
+                var bait = repository.GetBaitById(fromRepository.FavouriteBaitID);
+                if (bait != null)
+                {
+                    result.SuggestedBaitName = bait.BaitName;
+                }
+            }
+
+            if (!result.PreferredMethodID.HasValue)
+            {
+                result.PreferredMethodID = fromRepository.PreferredMethodID;
+                var technique = repository.GetTechniqueById(fromRepository.PreferredMethodID);
+                if (technique != null)
+                {
+                    result.SuggestedTechniqueName = technique.TechniqueName;
+                }
+            }
+
+            // Equipment from this fish
+            result.SuggestedReelType ??= fromRepository.Equipment.FReel.Type;
+            result.SuggestedReelSize ??= fromRepository.Equipment.FReel.Size;
+            result.SuggestedRodAction ??= fromRepository.Equipment.FRod.Action;
+            result.SuggestedRodLengthMeters ??= fromRepository.Equipment.FRod.LengthMeters;
+            result.SuggestedRodMinWeightGrams ??= fromRepository.Equipment.FRod.MinWeightRatingGrams;
+            result.SuggestedRodMaxWeightGrams ??= fromRepository.Equipment.FRod.MaxWeightRatingGrams;
+            result.SuggestedLineType ??= fromRepository.Equipment.FLine.Type;
+            result.SuggestedLineThicknessMm ??= fromRepository.Equipment.FLine.ThicknessMm;
+
+            // Fishing spots where this species can be caught
+            if (result.SuggestedSpotNames.Count == 0)
+            {
+                result.SuggestedSpotNames = repository.FishingSpots
+                    .Where(s => s.MostLikelyCatch.Any(f => f.FishID == fromRepository.FishID))
+                    .Take(3)
+                    .Select(s => s.SpotName)
+                    .ToList();
+            }
+
+            return;
+        }
+
+        if (TryGetSpeciesProfile(result.SpeciesName, out var profile))
+        {
+            result.CatchSeason ??= profile.CatchSeason;
+            result.FleshColor ??= profile.FleshColor;
+
+            if (string.IsNullOrWhiteSpace(result.SuggestedTechniqueName))
+            {
+                result.SuggestedTechniqueName = profile.TechniqueName;
+            }
+
+            if (string.IsNullOrWhiteSpace(result.SuggestedBaitName))
+            {
+                result.SuggestedBaitName = profile.BaitName;
+            }
+
+            MatchRelatedEntityIds(result);
+
+            // Equipment: find a repo fish that uses this technique, copy its gear
+            if (result.PreferredMethodID.HasValue)
+            {
+                var sampleFish = repository.Fish
+                    .FirstOrDefault(f => f.PreferredMethodID == result.PreferredMethodID.Value);
+                if (sampleFish != null)
+                {
+                    result.SuggestedReelType ??= sampleFish.Equipment.FReel.Type;
+                    result.SuggestedReelSize ??= sampleFish.Equipment.FReel.Size;
+                    result.SuggestedRodAction ??= sampleFish.Equipment.FRod.Action;
+                    result.SuggestedRodLengthMeters ??= sampleFish.Equipment.FRod.LengthMeters;
+                    result.SuggestedRodMinWeightGrams ??= sampleFish.Equipment.FRod.MinWeightRatingGrams;
+                    result.SuggestedRodMaxWeightGrams ??= sampleFish.Equipment.FRod.MaxWeightRatingGrams;
+                    result.SuggestedLineType ??= sampleFish.Equipment.FLine.Type;
+                    result.SuggestedLineThicknessMm ??= sampleFish.Equipment.FLine.ThicknessMm;
+                }
+            }
+        }
+    }
+
+    private void EnsureRequiredDefaults(AiFishDraftResultViewModel result)
+    {
+        if (!result.CatchSeason.HasValue)
+        {
+            result.CatchSeason = Season.Summer;
+        }
+
+        if (!result.FleshColor.HasValue)
+        {
+            result.FleshColor = FishFlesh.White;
+        }
+
+        if (!result.FavouriteBaitID.HasValue)
+        {
+            var bait = repository.Baits
+                .OrderBy(b => b.BaitID)
+                .FirstOrDefault();
+            if (bait != null)
+            {
+                result.FavouriteBaitID = bait.BaitID;
+                result.SuggestedBaitName = bait.BaitName;
+            }
+        }
+
+        if (!result.PreferredMethodID.HasValue)
+        {
+            var technique = repository.Techniques
+                .OrderBy(t => t.TechniqueID)
+                .FirstOrDefault();
+            if (technique != null)
+            {
+                result.PreferredMethodID = technique.TechniqueID;
+                result.SuggestedTechniqueName = technique.TechniqueName;
+            }
+        }
+
+        if (!result.SuggestedReelType.HasValue)
+        {
+            var sampleFish = result.PreferredMethodID.HasValue
+                ? repository.Fish.FirstOrDefault(f => f.PreferredMethodID == result.PreferredMethodID.Value)
+                : repository.Fish.FirstOrDefault();
+            if (sampleFish != null)
+            {
+                result.SuggestedReelType ??= sampleFish.Equipment.FReel.Type;
+                result.SuggestedReelSize ??= sampleFish.Equipment.FReel.Size;
+                result.SuggestedRodAction ??= sampleFish.Equipment.FRod.Action;
+                result.SuggestedRodLengthMeters ??= sampleFish.Equipment.FRod.LengthMeters;
+                result.SuggestedRodMinWeightGrams ??= sampleFish.Equipment.FRod.MinWeightRatingGrams;
+                result.SuggestedRodMaxWeightGrams ??= sampleFish.Equipment.FRod.MaxWeightRatingGrams;
+                result.SuggestedLineType ??= sampleFish.Equipment.FLine.Type;
+                result.SuggestedLineThicknessMm ??= sampleFish.Equipment.FLine.ThicknessMm;
+            }
+        }
+    }
+
+    private static bool TryGetSpeciesProfile(string speciesName, out SpeciesProfile profile)
+    {
+        var normalized = speciesName.Trim();
+        if (SpeciesProfiles.TryGetValue(normalized, out profile))
+        {
+            return true;
+        }
+
+        foreach (var pair in SpeciesProfiles)
+        {
+            if (normalized.Contains(pair.Key, StringComparison.OrdinalIgnoreCase)
+                || pair.Key.Contains(normalized, StringComparison.OrdinalIgnoreCase))
+            {
+                profile = pair.Value;
+                return true;
+            }
+        }
+
+        profile = default;
+        return false;
     }
 
     private void MatchRelatedEntityIds(AiFishDraftResultViewModel result)
@@ -260,6 +461,12 @@ public class AiFishDraftService(
 
     private string GuessSpecies(string prompt)
     {
+        var explicitSpecies = ExtractSpeciesFromPrompt(prompt);
+        if (!string.IsNullOrWhiteSpace(explicitSpecies))
+        {
+            return explicitSpecies;
+        }
+
         var fromKnownFish = repository.Fish.FirstOrDefault(f =>
             prompt.Contains(f.SpeciesName, StringComparison.OrdinalIgnoreCase));
 
@@ -282,6 +489,61 @@ public class AiFishDraftService(
         return string.Join(' ', words.Take(2).Select(Capitalize));
     }
 
+    private static string ExtractSpeciesFromPrompt(string prompt)
+    {
+        if (string.IsNullOrWhiteSpace(prompt))
+        {
+            return string.Empty;
+        }
+
+        var trimmed = prompt.Trim();
+
+        var quotedMatch = System.Text.RegularExpressions.Regex.Match(trimmed, "[\"'](?<name>[^\"']{2,60})[\"']");
+        if (quotedMatch.Success)
+        {
+            return quotedMatch.Groups["name"].Value.Trim();
+        }
+
+        var markers = new[]
+        {
+            "for ", "fish ", "species ", "vrstu ", "ribu "
+        };
+
+        foreach (var marker in markers)
+        {
+            var index = trimmed.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+            if (index < 0)
+            {
+                continue;
+            }
+
+            var after = trimmed[(index + marker.Length)..].Trim();
+            if (string.IsNullOrWhiteSpace(after))
+            {
+                continue;
+            }
+
+            var stopWords = new[] { " with ", " and ", ",", ".", " using ", " u ", " sa " };
+            var stopIndex = after.Length;
+            foreach (var stopWord in stopWords)
+            {
+                var matchIndex = after.IndexOf(stopWord, StringComparison.OrdinalIgnoreCase);
+                if (matchIndex >= 0)
+                {
+                    stopIndex = Math.Min(stopIndex, matchIndex);
+                }
+            }
+
+            var candidate = after[..stopIndex].Trim();
+            if (!string.IsNullOrWhiteSpace(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return string.Empty;
+    }
+
     private static string Capitalize(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -292,4 +554,13 @@ public class AiFishDraftService(
         var lower = value.ToLowerInvariant();
         return char.ToUpperInvariant(lower[0]) + lower[1..];
     }
+
+    private readonly record struct SpeciesProfile(
+        Season CatchSeason,
+        FishFlesh FleshColor,
+        string TechniqueName,
+        string BaitName,
+        FReelType ReelType = FReelType.Spinning,
+        FRodAction RodAction = FRodAction.Medium,
+        FLineType LineType = FLineType.Nylon);
 }

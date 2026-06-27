@@ -3,6 +3,7 @@ using FishingBuddy.Models;
 using FishingBuddy.Repositories;
 using FishingBuddy.Services.Ai;
 using FishingBuddy.Services.Search;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,16 @@ public partial class FBuddy
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddRazorPages();
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                | ForwardedHeaders.XForwardedProto
+                | ForwardedHeaders.XForwardedHost;
+
+            // Demo tunnels and cloud proxies are not known at compile time.
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
         builder.Services.AddDbContext<FishingBuddyDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("FishingBuddyDb")));
 
@@ -69,6 +80,7 @@ public partial class FBuddy
             app.UseHsts();
         }
 
+        app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -90,7 +102,7 @@ public partial class FBuddy
 
             if (builder.Configuration.GetValue("SeedData", true))
             {
-                DbInitializer.Seed(dbContext);
+                DbInitializer.SeedIfEmpty(dbContext);
             }
 
             IdentitySeeder.SeedRoles(scope.ServiceProvider).GetAwaiter().GetResult();

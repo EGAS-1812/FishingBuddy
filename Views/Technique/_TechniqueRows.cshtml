@@ -1,6 +1,8 @@
 @model IReadOnlyList<FishingBuddy.Models.Technique>
 @{
-    var isManage = (ViewData["ManageMode"] as bool?) ?? string.Equals(Context.Request.Query["mode"], "manage", StringComparison.OrdinalIgnoreCase);
+    var requestMode = Context.Request.Query["mode"].ToString();
+    var isManage = (ViewData["ManageMode"] as bool?) ?? !string.Equals(requestMode, "index", StringComparison.OrdinalIgnoreCase);
+    var crudMode = ((ViewData["CrudMode"] as string) ?? requestMode).ToLowerInvariant();
 }
 
 @if (Model.Count == 0)
@@ -29,9 +31,15 @@ else
                 </td>
                 <td class="text-center">@(technique.FishUsingTechnique?.Count ?? 0)</td>
                 <td class="text-end">
-                    <div class="d-inline-flex gap-2">
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="Technique" asp-action="Details" asp-route-id="@technique.TechniqueID">Detalji</a>
-                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
+                    <div class="fb-row-actions">
+                        @if (crudMode == "delete")
+                        {
+                            <a class="btn btn-sm btn-outline-danger" asp-controller="Technique" asp-action="Delete" asp-route-id="@technique.TechniqueID">Obrisi</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Technique" asp-action="Edit" asp-route-id="@technique.TechniqueID">Uredi</a>
+                        }
                     </div>
                 </td>
             }

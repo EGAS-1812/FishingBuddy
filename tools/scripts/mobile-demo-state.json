@@ -1,0 +1,11 @@
+﻿{
+    "startedAt":  "2026-06-27T20:45:57.6870529+02:00",
+    "appUrl":  "http://localhost:5142",
+    "publicUrl":  "https://semi-antiques-exam-bikini.trycloudflare.com",
+    "appPid":  18672,
+    "tunnelPid":  20340,
+    "appOutLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-app.out.log",
+    "appErrLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-app.err.log",
+    "tunnelOutLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-tunnel.out.log",
+    "tunnelErrLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-tunnel.err.log"
+}
