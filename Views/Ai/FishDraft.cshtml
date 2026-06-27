@@ -1,0 +1,129 @@
+@model FishingBuddy.Models.Ai.AiFishDraftPageViewModel
+@{
+    ViewData["Title"] = "AI Fish Draft";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("AI Fish Draft", null)
+    };
+}
+
+<section class="fb-ai-draft-page">
+    <div class="card fb-white-pill-card border-0 shadow-sm mb-4 fb-ai-draft-hero">
+        <div class="card-body p-4 p-lg-5">
+            <h1 class="h2 mb-2">AI Fish Draft</h1>
+            <p class="text-muted mb-0">
+                This tool generates draft values for the Fish/Create form. Review results before creating a new fish entry.
+            </p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <h2 class="h5 mb-3">Generate draft</h2>
+
+            <form asp-controller="Ai" asp-action="FishDraft" method="post" class="row g-3">
+                @Html.AntiForgeryToken()
+
+                <div class="col-12">
+                    <label asp-for="Prompt" class="form-label fw-semibold">Prompt</label>
+                    <textarea asp-for="Prompt"
+                              class="form-control"
+                              rows="6"
+                              placeholder="Example: Create a draft for sea bass with autumn season, white flesh, and spinning technique."></textarea>
+                    <span asp-validation-for="Prompt" class="text-danger"></span>
+                </div>
+
+                <div class="col-12 d-grid d-sm-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">Generate Draft</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert" aria-live="assertive">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    @if (Model.HasResult && Model.Result is not null)
+    {
+        var result = Model.Result;
+
+        <section class="card border-0 shadow-sm fb-ai-draft-result" aria-labelledby="ai-result-heading">
+            <div class="card-body p-4">
+                <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-3">
+                    <h2 id="ai-result-heading" class="h5 mb-0">Draft result</h2>
+                    <a class="btn btn-outline-primary"
+                       asp-controller="Fish"
+                       asp-action="Create"
+                       asp-route-speciesName="@result.SpeciesName"
+                       asp-route-catchSeason="@result.CatchSeason"
+                       asp-route-fleshColor="@result.FleshColor"
+                       asp-route-favouriteBaitId="@result.FavouriteBaitID"
+                       asp-route-preferredMethodId="@result.PreferredMethodID">
+                        Open Fish/Create with Prefill
+                    </a>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Species</div>
+                            <div class="fw-semibold">@result.SpeciesName</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Season</div>
+                            <div class="fw-semibold">@((result.CatchSeason?.ToString()) ?? "N/A")</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Flesh</div>
+                            <div class="fw-semibold">@((result.FleshColor?.ToString()) ?? "N/A")</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Bait</div>
+                            <div class="fw-semibold">
+                                @result.SuggestedBaitName
+                                @if (result.FavouriteBaitID.HasValue)
+                                {
+                                    <span class="text-muted">(ID: @result.FavouriteBaitID.Value)</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Technique</div>
+                            <div class="fw-semibold">
+                                @result.SuggestedTechniqueName
+                                @if (result.PreferredMethodID.HasValue)
+                                {
+                                    <span class="text-muted">(ID: @result.PreferredMethodID.Value)</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Source / Model</div>
+                            <div class="fw-semibold">@result.Source / @result.Model</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="fb-ai-draft-field">
+                            <div class="small text-uppercase text-muted mb-1">Notes</div>
+                            <p class="mb-0">@result.Notes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+</section>

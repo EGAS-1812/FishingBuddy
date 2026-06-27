@@ -1,15 +1,23 @@
 using FishingBuddy.Data;
 using FishingBuddy.Models;
 using FishingBuddy.Repositories;
+using FishingBuddy.Services.Ai;
+using FishingBuddy.Services.Search;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 public partial class FBuddy
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Host.UseSerilog((context, services, configuration) => configuration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext());
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddRazorPages();
@@ -49,6 +57,8 @@ public partial class FBuddy
         }
 
         builder.Services.AddScoped<IFishingRepository, EfFishingRepository>();
+        builder.Services.AddScoped<IGlobalSearchService, GlobalSearchService>();
+        builder.Services.AddHttpClient<IAiFishDraftService, AiFishDraftService>();
         builder.Services.AddSingleton<IEmailSender, FishingBuddy.Data.NoOpEmailSender>();
 
         var app = builder.Build();
@@ -59,6 +69,7 @@ public partial class FBuddy
             app.UseHsts();
         }
 
+        app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();

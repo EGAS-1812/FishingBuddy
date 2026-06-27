@@ -1,0 +1,107 @@
+@model FishingBuddy.Models.Search.GlobalSearchViewModel
+@using System.Linq
+@{
+    ViewData["Title"] = "Global Search";
+    ViewData["BreadcrumbItems"] = new List<(string, string?)>
+    {
+        ("Global Search", null)
+    };
+
+    var groupedResults = Model.Results
+        .GroupBy(r => string.IsNullOrWhiteSpace(r.Category) ? "Other" : r.Category)
+        .OrderBy(g => g.Key)
+        .ToList();
+}
+
+<section class="fb-global-search-page">
+    <div class="card fb-white-pill-card border-0 shadow-sm mb-4 fb-global-search-hero">
+        <div class="card-body p-4 p-lg-5">
+            <h1 class="h2 mb-2">Global Search</h1>
+            <p class="text-muted mb-4">Search across FishingBuddy entities from one place.</p>
+
+            <form asp-controller="Search" asp-action="Index" method="get" role="search" aria-label="Global search form">
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-lg">
+                        <label for="q" class="form-label fw-semibold mb-1">Search term</label>
+                        <input id="q"
+                               name="q"
+                               type="search"
+                               class="form-control form-control-lg"
+                               placeholder="Fish, bait, spot, user..."
+                               value="@Model.Query"
+                               autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-lg-auto d-grid d-lg-block">
+                        <button type="submit" class="btn btn-primary btn-lg px-4">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-3 small text-muted" aria-live="polite">
+                @if (Model.SearchPerformed)
+                {
+                    <span>Results: <strong>@Model.TotalResults</strong></span>
+                    @if (!string.IsNullOrWhiteSpace(Model.Query))
+                    {
+                        <span> for <strong>@Model.Query</strong></span>
+                    }
+                }
+                else
+                {
+                    <span>Enter a term to start searching.</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.SearchPerformed)
+    {
+        <div class="card border-0 shadow-sm fb-global-search-state">
+            <div class="card-body p-4">
+                <h2 class="h5 mb-2">Nothing searched yet</h2>
+                <p class="text-muted mb-0">Use the search box above to find fish, spots, bait, techniques, catch records, and users.</p>
+            </div>
+        </div>
+    }
+    else if (Model.TotalResults == 0)
+    {
+        <div class="card border-0 shadow-sm fb-global-search-state">
+            <div class="card-body p-4">
+                <h2 class="h5 mb-2">No results found</h2>
+                <p class="text-muted mb-0">No matches were found for <strong>@Model.Query</strong>. Try a broader or shorter term.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="d-grid gap-3">
+            @foreach (var group in groupedResults)
+            {
+                var groupId = $"group-{group.Key.Replace(" ", "-").ToLowerInvariant()}";
+                <section class="card border-0 shadow-sm fb-global-search-group" aria-labelledby="@groupId">
+                    <div class="card-body p-0">
+                        <div class="px-4 py-3 border-bottom fb-global-search-group-head">
+                            <h2 id="@groupId" class="h6 mb-0 text-uppercase">@group.Key</h2>
+                        </div>
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var item in group)
+                            {
+                                <li class="fb-global-search-row">
+                                    <div class="px-4 py-3 d-flex flex-column flex-md-row align-items-md-center gap-3">
+                                        <div class="flex-grow-1 min-w-0">
+                                            <div class="fw-semibold text-break">@item.Title</div>
+                                            <div class="small text-muted text-break">@item.Subtitle</div>
+                                        </div>
+                                        <div class="ms-md-3 d-grid d-md-block">
+                                            <a href="@item.Url" class="btn btn-sm btn-outline-primary">Open</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </section>
+            }
+        </div>
+    }
+</section>

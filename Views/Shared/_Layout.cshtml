@@ -41,9 +41,29 @@
                                 <a class="nav-link fb-nav-link px-2" asp-area="" asp-controller="User" asp-action="Index">Ribari</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link fb-nav-link px-2" asp-area="" asp-controller="Ai" asp-action="FishDraft">AI draft</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link fb-nav-link px-2" asp-controller="Home" asp-action="Privacy">Privatnost</a>
                             </li>
                         </ul>
+                        <form class="fb-navbar-search d-flex my-3 my-lg-0 me-lg-3"
+                              asp-controller="Search"
+                              asp-action="Index"
+                              method="get"
+                              role="search"
+                              aria-label="Global search">
+                            <label class="visually-hidden" for="navGlobalSearch">Global search</label>
+                            <div class="input-group input-group-sm">
+                                <input id="navGlobalSearch"
+                                       name="q"
+                                       type="search"
+                                       class="form-control"
+                                       placeholder="Global search..."
+                                       value="@(Context.Request.Query["q"])" />
+                                <button type="submit" class="btn btn-outline-light">Search</button>
+                            </div>
+                        </form>
                         <partial name="_LoginPartial" />
                     </div>
                 </div>

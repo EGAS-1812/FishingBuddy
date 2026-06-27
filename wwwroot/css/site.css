@@ -1382,6 +1382,127 @@ button.accept-policy {
   }
 }
 
+/* Global Search page */
+.fb-global-search-page .fb-global-search-hero {
+  background: linear-gradient(130deg, rgba(22, 58, 99, 0.95), rgba(37, 91, 147, 0.88));
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.fb-global-search-page .fb-global-search-hero h1,
+.fb-global-search-page .fb-global-search-hero p,
+.fb-global-search-page .fb-global-search-hero .small {
+  color: #ffffff !important;
+}
+
+.fb-global-search-state {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.fb-global-search-group {
+  overflow: hidden;
+}
+
+.fb-global-search-group-head {
+  background: rgba(22, 58, 99, 0.06);
+}
+
+.fb-global-search-group-head h2 {
+  letter-spacing: 0.04em;
+  color: var(--fb-primary-deep);
+}
+
+.fb-global-search-row + .fb-global-search-row {
+  border-top: 1px solid rgba(22, 58, 99, 0.08);
+}
+
+.fb-global-search-row:hover {
+  background-color: rgba(220, 238, 253, 0.28);
+}
+
+/* AI Draft page */
+.fb-ai-draft-page .fb-ai-draft-hero {
+  background: linear-gradient(130deg, rgba(15, 41, 71, 0.95), rgba(47, 127, 120, 0.9));
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.fb-ai-draft-page .fb-ai-draft-hero h1,
+.fb-ai-draft-page .fb-ai-draft-hero p {
+  color: #ffffff !important;
+}
+
+.fb-ai-draft-result {
+  border-left: 4px solid rgba(22, 58, 99, 0.45);
+}
+
+.fb-ai-draft-field {
+  background: rgba(237, 244, 251, 0.6);
+  border: 1px solid rgba(22, 58, 99, 0.08);
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  height: 100%;
+}
+
+/* Navbar global search */
+.fb-navbar-search {
+  min-width: min(420px, 100%);
+}
+
+.fb-navbar-search .form-control {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.fb-navbar-search .btn {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Responsive tweaks */
+@media (max-width: 991.98px) {
+  .fb-navbar-search {
+    width: 100%;
+    margin-right: 0 !important;
+    margin-bottom: 0.75rem;
+  }
+
+  .fb-global-search-page .fb-global-search-hero,
+  .fb-ai-draft-page .fb-ai-draft-hero {
+    border-radius: 0.9rem;
+  }
+
+  .fb-global-search-page .fb-global-search-hero .card-body,
+  .fb-ai-draft-page .fb-ai-draft-hero .card-body {
+    padding: 1.1rem !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .fb-navbar-search .input-group {
+    flex-wrap: nowrap;
+  }
+
+  .fb-navbar-search .btn {
+    padding-inline: 0.8rem;
+  }
+
+  .fb-global-search-page .btn-lg {
+    width: 100%;
+  }
+
+  .fb-global-search-row .btn {
+    width: 100%;
+  }
+
+  .fb-ai-draft-page textarea.form-control {
+    min-height: 160px;
+  }
+
+  .fb-ai-draft-page .fb-ai-draft-field {
+    padding: 0.75rem 0.85rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fb-shell::after,
   .fb-search-status.is-loading,

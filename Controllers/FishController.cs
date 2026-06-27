@@ -85,12 +85,26 @@ namespace FishingBuddy.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
-        public IActionResult Create()
+        public IActionResult Create(string? speciesName, Season? catchSeason, FishFlesh? fleshColor, int? favouriteBaitId, int? preferredMethodId)
         {
             ViewBag.Baits = new SelectList(_repository.Baits, "BaitID", "BaitName");
             ViewBag.Techniques = new SelectList(_repository.Techniques, "TechniqueID", "TechniqueName");
-            ViewData["PreferredMethodLabel"] = string.Empty;
-            return View(new Fish());
+
+            var model = new Fish
+            {
+                SpeciesName = speciesName?.Trim() ?? string.Empty,
+                CatchSeason = catchSeason ?? Season.Spring,
+                FleshColor = fleshColor ?? FishFlesh.White,
+                FavouriteBaitID = favouriteBaitId ?? 0,
+                PreferredMethodID = preferredMethodId ?? 0
+            };
+
+            var preferredMethodLabel = model.PreferredMethodID > 0
+                ? _repository.GetTechniqueById(model.PreferredMethodID)?.TechniqueName ?? string.Empty
+                : string.Empty;
+
+            ViewData["PreferredMethodLabel"] = preferredMethodLabel;
+            return View(model);
         }
 
         [HttpPost]

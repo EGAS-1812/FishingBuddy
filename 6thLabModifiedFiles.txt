@@ -1,0 +1,32 @@
+6th Lab Modified Files Report
+Date: 2026-06-27
+Format: file | added lines | removed/changed lines
+
+Controllers/FishController.cs | 17 | 3
+FBuddy.cs | 11 | 0
+FishingBuddy.csproj | 2 | 0
+Views/Shared/_Layout.cshtml | 20 | 0
+appsettings.Development.json | 30 | 0
+appsettings.json | 30 | 0
+wwwroot/css/site.css | 121 | 0
+
+Controllers/AiController.cs | 33 | 0
+Controllers/SearchController.cs | 16 | 0
+Models/Ai/AiFishDraftPageViewModel.cs | 9 | 0
+Models/Ai/AiFishDraftResultViewModel.cs | 17 | 0
+Models/Search/GlobalSearchItemViewModel.cs | 10 | 0
+Models/Search/GlobalSearchViewModel.cs | 9 | 0
+Services/Ai/AiFishDraftService.cs | 295 | 0
+Services/Ai/IAiFishDraftService.cs | 8 | 0
+Services/Search/GlobalSearchService.cs | 129 | 0
+Services/Search/IGlobalSearchService.cs | 8 | 0
+Views/Ai/FishDraft.cshtml | 129 | 0
+Views/Search/Index.cshtml | 107 | 0
+6thLabModifiedFiles.txt | 30 | 0
+6thLabStudyList.txt | 109 | 0
+
+Auto-generated runtime side effects detected in workspace:
+FishingBuddy.dev.db | binary modified
+FishingBuddy.dev.db-shm | binary removed
+FishingBuddy.dev.db-wal | binary removed
+lab-1/agent_log.txt | 84 | 0

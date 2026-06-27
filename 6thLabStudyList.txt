@@ -1,0 +1,109 @@
+Lab 6 Study List - FishingBuddy
+Date: 2026-06-27
+
+Session objective:
+Track implementation of 4 requested concepts:
+1) AI integration (prompt-to-data input)
+2) Global search (menus/pages/data)
+3) Responsive mobile web design
+4) Logging mechanism in a file
+
+Current status:
+- Logging mechanism in a file: IMPLEMENTED (today)
+- Global search: IMPLEMENTED (today)
+- Responsive mobile web design: IMPLEMENTED (today)
+- AI integration prompt-to-data: IMPLEMENTED (today)
+
+What was implemented today (Logging):
+1) Serilog package integration
+- Added Serilog.AspNetCore package
+- Added Serilog.Sinks.File package
+
+2) Application startup wiring
+- Configured Serilog bootstrap logger from appsettings + environment
+- Registered Serilog as ASP.NET Core logging provider
+- Added request logging middleware
+- Added fatal exception capture + Log.CloseAndFlush()
+
+3) Configuration-based rolling file logs
+- appsettings.json: production rolling log configuration
+  - path: logs/fishingbuddy-.log
+  - rolling interval: day
+  - retention: 14 files
+- appsettings.Development.json: development rolling log configuration
+  - path: logs/fishingbuddy-dev-.log
+  - rolling interval: day
+  - retention: 7 files
+
+Study checklist for this lab:
+1) Logging fundamentals in ASP.NET Core
+- ILogger abstraction vs provider implementation
+- Why structured logging matters over plain text logs
+
+2) Serilog integration flow
+- Host.UseSerilog()
+- appsettings-driven sink configuration
+- Request logging middleware behavior
+
+3) File sink settings
+- rollingInterval
+- retainedFileCountLimit
+- outputTemplate
+- shared file writes
+
+4) Operational safety
+- Avoid logging sensitive data (passwords, tokens, PII)
+- Choose log levels correctly (Debug/Information/Warning/Error/Fatal)
+- Keep retention practical to avoid disk growth
+
+Planned next concept (recommended):
+- Global search MVP across data entities first, then menu/page index.
+
+What was implemented today (Global search):
+1) Unified search model + service
+- Added search view models for normalized result payload.
+- Added GlobalSearchService with ranking and category grouping.
+
+2) Global search MVC endpoint + page
+- Added SearchController Index action (q query parameter).
+- Added Views/Search/Index.cshtml with grouped result sections.
+
+3) Search coverage scope
+- Menu/pages included in searchable corpus.
+- Data entities included: Fish, Bait, Technique, User, FishingSpot, CatchRecord.
+
+What was implemented today (AI integration):
+1) AI service contract and implementation
+- Added IAiFishDraftService and AiFishDraftService.
+- Added OpenAI chat-completions integration path using appsettings keys.
+- Added safe fallback heuristic parser when API key is missing or request fails.
+
+2) AI draft endpoint + page
+- Added AiController FishDraft GET/POST actions.
+- Added Views/Ai/FishDraft.cshtml for prompt entry and draft review.
+
+3) Data transfer into existing CRUD flow
+- Added FishController Create prefill query support:
+  - speciesName
+  - catchSeason
+  - fleshColor
+  - favouriteBaitId
+  - preferredMethodId
+
+4) AI configuration placeholders
+- Added Ai:OpenAi settings to appsettings.json and appsettings.Development.json.
+
+What was implemented today (Responsive mobile web design):
+1) Navbar improvements
+- Added responsive global search form in main navbar.
+- Added AI draft link to top navigation.
+
+2) New page responsive layouts
+- Search and AI pages built mobile-first with Bootstrap grid and card patterns.
+- Added explicit <=992px and <=576px CSS adjustments for controls and content density.
+
+Final completion check for this lab session:
+- [x] Logging mechanism in a file
+- [x] Global search (menus/pages/data)
+- [x] Responsive mobile web design
+- [x] AI integration: prompt-to-data flow
