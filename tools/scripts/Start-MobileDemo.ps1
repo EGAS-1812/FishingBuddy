@@ -1,5 +1,6 @@
 param(
     [string]$AppUrl = "http://localhost:5142",
+    [string]$LaunchProfile = "https",
     [string]$CloudflaredPath = "tools/cloudflared/cloudflared.exe",
     [switch]$Restart
 )
@@ -48,7 +49,7 @@ if (Test-Path $urlFilePath) {
 }
 
 $appProc = Start-Process -FilePath "dotnet" `
-    -ArgumentList @("run", "--project", "FishingBuddy.csproj", "--urls", $AppUrl) `
+    -ArgumentList @("run", "--project", "FishingBuddy.csproj", "--launch-profile", $LaunchProfile) `
     -WorkingDirectory $repoRoot `
     -RedirectStandardOutput $appOutLogPath `
     -RedirectStandardError $appErrLogPath `
@@ -115,6 +116,7 @@ Set-Content -Path $urlFilePath -Value ("mobilelink: {0}" -f $url) -Encoding UTF8
 
 $state = [ordered]@{
     startedAt = (Get-Date).ToString("o")
+    launchProfile = $LaunchProfile
     appUrl = $AppUrl
     publicUrl = $url
     publicUrlFile = $urlFilePath

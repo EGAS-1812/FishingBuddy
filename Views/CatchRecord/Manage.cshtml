@@ -20,15 +20,14 @@
                     <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
                     <ul class="dropdown-menu fb-crud-menu">
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="CatchRecord" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--read" asp-controller="CatchRecord" asp-action="Index"><span class="badge bg-primary rounded-pill me-2">Read</span></a></li>
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="CatchRecord" asp-action="Manage" asp-route-mode="edit"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="CatchRecord" asp-action="Manage" asp-route-mode="delete"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>
                 </div>
             </div>
-            <p class="text-muted mb-0 d-md-none fb-page-mobile-subtitle">Administrirajte zapise o ulovima, ribarima i ribolovnim mjestima.</p>
             <div class="d-none d-md-block">
                 <h1 class="h2 mb-1">Upravljanje evidencijom ulova</h1>
-                <p class="text-muted mb-0">Administrirajte zapise o ulovima, ribarima i ribolovnim mjestima.</p>
             </div>
             <div class="d-flex align-items-center gap-2 fb-list-toolbar-actions">
                 <span class="badge bg-primary">@Model.Count zapisa</span>
@@ -36,6 +35,7 @@
                     <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
                     <ul class="dropdown-menu fb-crud-menu">
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--create" asp-controller="CatchRecord" asp-action="Create"><span class="badge bg-success rounded-pill me-2">Create</span></a></li>
+                        <li><a class="dropdown-item fb-crud-item fb-crud-item--read" asp-controller="CatchRecord" asp-action="Index"><span class="badge bg-primary rounded-pill me-2">Read</span></a></li>
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--update" asp-controller="CatchRecord" asp-action="Manage" asp-route-mode="edit"><span class="badge bg-warning text-dark rounded-pill me-2">Update</span></a></li>
                         <li><a class="dropdown-item fb-crud-item fb-crud-item--delete" asp-controller="CatchRecord" asp-action="Manage" asp-route-mode="delete"><span class="badge bg-danger rounded-pill me-2">Delete</span></a></li>
                     </ul>

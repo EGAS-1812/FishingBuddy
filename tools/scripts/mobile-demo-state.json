@@ -1,11 +1,13 @@
 ﻿{
-    "startedAt":  "2026-06-27T20:45:57.6870529+02:00",
+    "startedAt":  "2026-06-29T15:57:26.1533893+02:00",
+    "launchProfile":  "https",
     "appUrl":  "http://localhost:5142",
-    "publicUrl":  "https://semi-antiques-exam-bikini.trycloudflare.com",
-    "appPid":  18672,
-    "tunnelPid":  20340,
-    "appOutLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-app.out.log",
-    "appErrLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-app.err.log",
-    "tunnelOutLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-tunnel.out.log",
-    "tunnelErrLog":  "C:\\Users\\Eamon\\source\\repos\\FishingBuddy\\tools\\scripts\\mobile-demo-tunnel.err.log"
+    "publicUrl":  "https://tuner-jam-christine-jose.trycloudflare.com",
+    "publicUrlFile":  "C:\\Users\\EamonGas\\Desktop\\FishingBuddy\\URLMOBILE.txt",
+    "appPid":  21388,
+    "tunnelPid":  3464,
+    "appOutLog":  "C:\\Users\\EamonGas\\Desktop\\FishingBuddy\\tools\\scripts\\mobile-demo-app.out.log",
+    "appErrLog":  "C:\\Users\\EamonGas\\Desktop\\FishingBuddy\\tools\\scripts\\mobile-demo-app.err.log",
+    "tunnelOutLog":  "C:\\Users\\EamonGas\\Desktop\\FishingBuddy\\tools\\scripts\\mobile-demo-tunnel.out.log",
+    "tunnelErrLog":  "C:\\Users\\EamonGas\\Desktop\\FishingBuddy\\tools\\scripts\\mobile-demo-tunnel.err.log"
 }

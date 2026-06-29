@@ -3,28 +3,59 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
-<ul class="navbar-nav ms-lg-3">
-@if (SignInManager.IsSignedIn(User))
-{
-    var appUser = await UserManager.GetUserAsync(User);
-    var displayName = appUser?.Email ?? User.Identity?.Name ?? "Korisnik";
+<ul class="navbar-nav ms-lg-3 fb-auth-nav">
+    <li class="nav-item dropdown fb-auth-dropdown">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            var appUser = await UserManager.GetUserAsync(User);
+            var displayName = appUser?.Email ?? User.Identity?.Name ?? "Korisnik";
 
-    <li class="nav-item">
-        <span class="nav-link fb-nav-link px-2">@displayName</span>
+            <button class="nav-link fb-nav-link px-2 btn btn-link border-0 dropdown-toggle fb-auth-toggle"
+                    type="button"
+                    id="fbAuthDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    aria-label="Korisnicki izbornik">
+                <span class="fb-auth-toggle-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="1.8" />
+                        <path d="M4.6 18.8C6.2 15.9 8.8 14.4 12 14.4C15.2 14.4 17.8 15.9 19.4 18.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                </span>
+                <span class="fb-auth-label d-none d-xl-inline">Profil</span>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end fb-auth-menu" aria-labelledby="fbAuthDropdown">
+                <li><h6 class="dropdown-header text-truncate">@displayName</h6></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post">
+                        <button type="submit" class="dropdown-item">Odjava</button>
+                    </form>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <button class="nav-link fb-nav-link px-2 btn btn-link border-0 dropdown-toggle fb-auth-toggle"
+                    type="button"
+                    id="fbAuthDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    aria-label="Prijava i registracija">
+                <span class="fb-auth-toggle-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="1.8" />
+                        <path d="M4.6 18.8C6.2 15.9 8.8 14.4 12 14.4C15.2 14.4 17.8 15.9 19.4 18.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                </span>
+                <span class="fb-auth-label d-none d-xl-inline">Racun</span>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end fb-auth-menu" aria-labelledby="fbAuthDropdown">
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Registracija</a></li>
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Prijava</a></li>
+            </ul>
+        }
     </li>
-    <li class="nav-item">
-        <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post">
-            <button type="submit" class="nav-link fb-nav-link px-2 btn btn-link border-0">Odjava</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link fb-nav-link px-2" asp-area="Identity" asp-page="/Account/Register">Registracija</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link fb-nav-link px-2" asp-area="Identity" asp-page="/Account/Login">Prijava</a>
-    </li>
-}
 </ul>

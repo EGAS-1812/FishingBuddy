@@ -12,6 +12,12 @@
 
 <section class="card shadow-sm border-0">
     <div class="card-body">
+        @await Html.PartialAsync("_CrudOptionSwitcher", null, new ViewDataDictionary(ViewData)
+        {
+            ["CrudController"] = "Technique",
+            ["CrudMode"] = "delete"
+        })
+
         <h1 class="h2 mb-1 text-danger">Potvrda brisanja</h1>
         <p class="text-muted mb-4">Jeste li sigurni da želite obrisati ovu tehniku?</p>
 
@@ -35,7 +41,7 @@
         <form asp-action="Delete" method="post">
             <input asp-for="TechniqueID" type="hidden" />
             @Html.AntiForgeryToken()
-            <div class="d-flex gap-2">
+            <div class="d-flex flex-wrap gap-2 fb-crud-action-row">
                 <button type="submit" class="btn btn-danger">Obriši</button>
                 <a class="btn btn-outline-secondary" asp-controller="Technique" asp-action="Manage">Odustani</a>
             </div>

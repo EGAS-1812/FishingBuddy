@@ -1,0 +1,51 @@
+@{
+    var controller = ViewData["CrudController"] as string ?? string.Empty;
+    var mode = (ViewData["CrudMode"] as string ?? string.Empty).Trim().ToLowerInvariant();
+    var isCreate = mode == "create";
+    var isUpdate = mode == "edit" || mode == "update";
+    var isDelete = mode == "delete";
+}
+
+@if (!string.IsNullOrWhiteSpace(controller))
+{
+    <div class="fb-crud-switcher-block mb-4" role="navigation" aria-label="CRUD opcije">
+        <div class="dropdown fb-crud-dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle fb-crud-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">CRUD</button>
+            <ul class="dropdown-menu fb-crud-menu">
+                <li>
+                    <a class="dropdown-item fb-crud-item fb-crud-item--create@(isCreate ? " fb-crud-item--active" : string.Empty)"
+                       asp-controller="@controller"
+                       asp-action="Create"
+                       aria-current="@(isCreate ? "page" : null)">
+                        <span class="badge bg-success rounded-pill">Create</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item fb-crud-item fb-crud-item--read"
+                       asp-controller="@controller"
+                       asp-action="Index">
+                        <span class="badge bg-primary rounded-pill">Read</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item fb-crud-item fb-crud-item--update@(isUpdate ? " fb-crud-item--active" : string.Empty)"
+                       asp-controller="@controller"
+                       asp-action="Manage"
+                       asp-route-mode="edit"
+                       aria-current="@(isUpdate ? "page" : null)">
+                        <span class="badge bg-warning text-dark rounded-pill">Update</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item fb-crud-item fb-crud-item--delete@(isDelete ? " fb-crud-item--active" : string.Empty)"
+                       asp-controller="@controller"
+                       asp-action="Manage"
+                       asp-route-mode="delete"
+                       aria-current="@(isDelete ? "page" : null)">
+                        <span class="badge bg-danger rounded-pill">Delete</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+}

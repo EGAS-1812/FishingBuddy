@@ -99,6 +99,22 @@
 		return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 	}
 
+	function initLocalHttpsTypography() {
+		var host = (window.location.hostname || "").toLowerCase();
+		var isLocalHost = host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+		var isLocalHttps = window.location.protocol === "https:" && isLocalHost;
+
+		document.body.classList.toggle("fb-local-https", isLocalHttps);
+		document.documentElement.classList.toggle("fb-local-https", isLocalHttps);
+	}
+
+	function initCrudOptionPageClass() {
+		var path = (window.location.pathname || "").toLowerCase();
+		var isCrudOptionPage = /^\/(bait|fish|catchrecord|fishingspot|technique|user)\/(create|edit|delete)(\/|$)/.test(path);
+
+		document.body.classList.toggle("fb-crud-option-page", isCrudOptionPage);
+	}
+
 	function animateRows(rows) {
 		var reducedMotion = prefersReducedMotion();
 
@@ -539,6 +555,87 @@
 		});
 	}
 
+	function initAuthDropdownAnimations() {
+		var dropdowns = document.querySelectorAll(".fb-auth-dropdown");
+
+		dropdowns.forEach(function (dropdown) {
+			var toggle = dropdown.querySelector(".fb-auth-toggle");
+			var menu = dropdown.querySelector(".fb-auth-menu");
+			var skipHideAnimation = false;
+
+			if (!toggle || !menu || !window.bootstrap || !window.bootstrap.Dropdown) {
+				return;
+			}
+
+			dropdown.addEventListener("shown.bs.dropdown", function () {
+				if (prefersReducedMotion()) {
+					return;
+				}
+
+				menu.animate(
+					[
+						{ opacity: 0, transform: "translateY(-7px) scale(0.98)" },
+						{ opacity: 1, transform: "translateY(0) scale(1)" }
+					],
+					{
+						duration: 220,
+						easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+						fill: "both"
+					}
+				).onfinish = function () {
+					menu.style.opacity = "";
+					menu.style.transform = "";
+				};
+			});
+
+			dropdown.addEventListener("hide.bs.dropdown", function (event) {
+				if (skipHideAnimation || prefersReducedMotion()) {
+					skipHideAnimation = false;
+					return;
+				}
+
+				event.preventDefault();
+				var animation = menu.animate(
+					[
+						{ opacity: 1, transform: "translateY(0) scale(1)" },
+						{ opacity: 0, transform: "translateY(-6px) scale(0.985)" }
+					],
+					{
+						duration: 170,
+						easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)",
+						fill: "both"
+					}
+				);
+
+				animation.onfinish = function () {
+					skipHideAnimation = true;
+					window.bootstrap.Dropdown.getOrCreateInstance(toggle).hide();
+					menu.style.opacity = "";
+					menu.style.transform = "";
+				};
+			});
+
+			toggle.addEventListener("pointerdown", function () {
+				if (prefersReducedMotion()) {
+					return;
+				}
+
+				toggle.animate(
+					[
+						{ transform: "scale(1)" },
+						{ transform: "scale(0.94)" },
+						{ transform: "scale(1)" }
+					],
+					{
+						duration: 200,
+						easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+						fill: "none"
+					}
+				);
+			});
+		});
+	}
+
 	function initValidationOnBlur() {
 		if (!window.jQuery || !window.jQuery.validator) {
 			return;
@@ -714,11 +811,14 @@
 	}
 
 	document.addEventListener("DOMContentLoaded", function () {
+		initLocalHttpsTypography();
+		initCrudOptionPageClass();
 		initPageLoadReveal();
 		initAjaxSearchTables();
 		initAutocompleteDropdowns();
 		initDateTimeInputs();
 		initNavbarCollapseEffects();
+		initAuthDropdownAnimations();
 		initValidationOnBlur();
 		initCrudDropdownAnimations();
 		initCatchImageWaveEffect();

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using FishingBuddy.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -17,11 +18,13 @@ public class ExternalLoginModel : PageModel
     private readonly IUserEmailStore<AppUser> _emailStore;
     private readonly ILogger<ExternalLoginModel> _logger;
     private readonly IEmailSender _emailSender;
+    private readonly IConfiguration _configuration;
 
     public ExternalLoginModel(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
+        IConfiguration configuration,
         ILogger<ExternalLoginModel> logger,
         IEmailSender emailSender)
     {
@@ -29,6 +32,7 @@ public class ExternalLoginModel : PageModel
         _userManager = userManager;
         _userStore = userStore;
         _emailStore = GetEmailStore();
+        _configuration = configuration;
         _logger = logger;
         _emailSender = emailSender;
     }
@@ -146,6 +150,8 @@ public class ExternalLoginModel : PageModel
                 }
             }
 
+            await EnsureBootstrapRolesAsync(user);
+
             await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
             _logger.LogInformation("User signed in with {LoginProvider} and auto-provisioned local account.", info.LoginProvider);
             return LocalRedirect(returnUrl);
@@ -216,8 +222,35 @@ public class ExternalLoginModel : PageModel
 
         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
+        await EnsureBootstrapRolesAsync(user);
+
         await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
         return LocalRedirect(returnUrl);
+    }
+
+    private async Task EnsureBootstrapRolesAsync(AppUser user)
+    {
+        var bootstrapAdminEmails = _configuration
+            .GetSection("Authorization:BootstrapAdminEmails")
+            .Get<string[]>() ?? Array.Empty<string>();
+
+        var isBootstrapAdmin = bootstrapAdminEmails
+            .Any(email => string.Equals(email?.Trim(), user.Email, StringComparison.OrdinalIgnoreCase));
+
+        if (!isBootstrapAdmin)
+        {
+            return;
+        }
+
+        if (!await _userManager.IsInRoleAsync(user, "Admin"))
+        {
+            await _userManager.AddToRoleAsync(user, "Admin");
+        }
+
+        if (!await _userManager.IsInRoleAsync(user, "Manager"))
+        {
+            await _userManager.AddToRoleAsync(user, "Manager");
+        }
     }
 
     private IUserEmailStore<AppUser> GetEmailStore()

@@ -42,6 +42,11 @@ public static class IdentitySeeder
             {
                 await userManager.AddToRoleAsync(user, "Admin");
             }
+
+            if (!await userManager.IsInRoleAsync(user, "Manager"))
+            {
+                await userManager.AddToRoleAsync(user, "Manager");
+            }
         }
     }
 }

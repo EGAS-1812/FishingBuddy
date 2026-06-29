@@ -12,9 +12,19 @@
 
 <section class="card shadow-sm border-0">
     <div class="card-body">
-        <div class="mb-4">
-            <h1 class="h2 mb-1">Novi mamac</h1>
-            <p class="text-muted mb-0">Dodajte novi mamac s tipom, metodom pripreme i prosječnom cijenom.</p>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3 fb-page-header">
+            <div class="d-none d-md-block">
+                <h1 class="h2 mb-1">Novi mamac</h1>
+                <p class="text-muted mb-0">Dodajte novi mamac s tipom, metodom pripreme i prosječnom cijenom.</p>
+            </div>
+            <div class="fb-page-mobile-titlebar d-md-none">
+                <h1 class="h2 mb-0">Novi mamac</h1>
+            </div>
+            @await Html.PartialAsync("_CrudOptionSwitcher", null, new ViewDataDictionary(ViewData)
+            {
+                ["CrudController"] = "Bait",
+                ["CrudMode"] = "create"
+            })
         </div>
 
         <form asp-action="Create" method="post" novalidate>
@@ -48,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-wrap gap-2 mt-4">
+            <div class="d-flex flex-wrap gap-2 mt-4 fb-crud-action-row">
                 <button type="submit" class="btn btn-primary">Stvori mamac</button>
                 <a class="btn btn-outline-secondary" asp-controller="Bait" asp-action="Manage">Odustani</a>
             </div>

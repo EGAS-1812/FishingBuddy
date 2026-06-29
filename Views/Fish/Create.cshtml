@@ -14,9 +14,19 @@
 
 <section class="card shadow-sm border-0">
     <div class="card-body">
-        <div class="mb-4">
-            <h1 class="h2 mb-1">Nova vrsta ribe</h1>
-            <p class="text-muted mb-0">Dodajte novu vrstu ribe sa sezonom, bojom mesa i odabirom mamca i tehnike iz popisa.</p>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3 fb-page-header">
+            <div class="d-none d-md-block">
+                <h1 class="h2 mb-1">Nova vrsta ribe</h1>
+                <p class="text-muted mb-0">Dodajte novu vrstu ribe sa sezonom, bojom mesa i odabirom mamca i tehnike iz popisa.</p>
+            </div>
+            <div class="fb-page-mobile-titlebar d-md-none">
+                <h1 class="h2 mb-0">Nova vrsta ribe</h1>
+            </div>
+            @await Html.PartialAsync("_CrudOptionSwitcher", null, new ViewDataDictionary(ViewData)
+            {
+                ["CrudController"] = "Fish",
+                ["CrudMode"] = "create"
+            })
         </div>
 
         <form asp-action="Create" method="post" novalidate>
@@ -115,7 +125,7 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-wrap gap-2 mt-4">
+            <div class="d-flex flex-wrap gap-2 mt-4 fb-crud-action-row">
                 <button type="submit" class="btn btn-primary">Stvori vrstu</button>
                 <a class="btn btn-outline-secondary" asp-controller="Fish" asp-action="Manage">Odustani</a>
             </div>
