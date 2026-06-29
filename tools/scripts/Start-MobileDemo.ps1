@@ -9,6 +9,7 @@ $ErrorActionPreference = "Stop"
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = (Resolve-Path (Join-Path $scriptRoot "..\..")).Path
 $statePath = Join-Path $scriptRoot "mobile-demo-state.json"
+$urlFilePath = Join-Path $repoRoot "URLMOBILE.txt"
 $appOutLogPath = Join-Path $scriptRoot "mobile-demo-app.out.log"
 $appErrLogPath = Join-Path $scriptRoot "mobile-demo-app.err.log"
 $tunnelOutLogPath = Join-Path $scriptRoot "mobile-demo-tunnel.out.log"
@@ -42,6 +43,9 @@ if (Test-Path $appOutLogPath) { Remove-Item $appOutLogPath -Force }
 if (Test-Path $appErrLogPath) { Remove-Item $appErrLogPath -Force }
 if (Test-Path $tunnelOutLogPath) { Remove-Item $tunnelOutLogPath -Force }
 if (Test-Path $tunnelErrLogPath) { Remove-Item $tunnelErrLogPath -Force }
+if (Test-Path $urlFilePath) {
+    Set-Content -Path $urlFilePath -Value "mobilelink: (starting...)" -Encoding UTF8
+}
 
 $appProc = Start-Process -FilePath "dotnet" `
     -ArgumentList @("run", "--project", "FishingBuddy.csproj", "--urls", $AppUrl) `
@@ -107,10 +111,13 @@ if (-not $url) {
     throw "Could not find quick tunnel URL in $tunnelOutLogPath"
 }
 
+Set-Content -Path $urlFilePath -Value ("mobilelink: {0}" -f $url) -Encoding UTF8
+
 $state = [ordered]@{
     startedAt = (Get-Date).ToString("o")
     appUrl = $AppUrl
     publicUrl = $url
+    publicUrlFile = $urlFilePath
     appPid = $appProc.Id
     tunnelPid = $tunnelProc.Id
     appOutLog = $appOutLogPath
@@ -124,6 +131,7 @@ $state | ConvertTo-Json | Set-Content -Path $statePath -Encoding UTF8
 Write-Host ""
 Write-Host "Mobile demo is ready:"
 Write-Host "Public URL: $url"
+Write-Host "Saved to: $urlFilePath"
 Write-Host "App PID: $($appProc.Id)"
 Write-Host "Tunnel PID: $($tunnelProc.Id)"
 Write-Host "State file: $statePath"

@@ -6,6 +6,8 @@ $ErrorActionPreference = "Continue"
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $statePath = Join-Path $scriptRoot "mobile-demo-state.json"
+$repoRoot = (Resolve-Path (Join-Path $scriptRoot "..\..")).Path
+$urlFilePath = Join-Path $repoRoot "URLMOBILE.txt"
 
 function Stop-ById([int]$pid) {
     try {
@@ -51,5 +53,8 @@ if (Test-Path $statePath) {
     Remove-Item $statePath -Force
     Write-Host "Removed state file."
 }
+
+Set-Content -Path $urlFilePath -Value "mobilelink: (stopped)" -Encoding UTF8
+Write-Host "Updated URL file."
 
 Write-Host "Mobile demo processes stopped."

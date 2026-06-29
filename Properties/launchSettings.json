@@ -18,6 +18,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "mobile-demo": {
+      "commandName": "Executable",
+      "executablePath": "powershell.exe",
+      "commandLineArgs": "-ExecutionPolicy Bypass -File \"tools\\scripts\\Start-MobileDemo.ps1\"",
+      "workingDirectory": ".",
+      "nativeDebugging": false
     }
   }
 }
