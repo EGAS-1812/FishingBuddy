@@ -44,13 +44,13 @@ The application was developed as part of my Bachelor's degree in Computer Engine
 - Serilog
 - Integration testing
 
-## 📸 Screenshots
+## Screenshots
 
 ### AI-Assisted Fish Creation
 
 FishingBuddy uses AI to generate structured draft data for new fish species, including biological information, fishing recommendations, equipment, bait and techniques. The generated data can be reviewed and edited before being added to the application.
 
-![AI-Assisted Fish Draft](screenshots/ai-fish-draft.jpeg)
+![AI-Assisted Fish Draft](screenshots/ai-draft-result.jpeg)
 
 ### Dashboard
 
