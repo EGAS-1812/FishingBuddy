@@ -366,3 +366,8 @@ FodyWeavers.xsd
 # Local SQLite sidecar files
 *.db-shm
 *.db-wal
+
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal
