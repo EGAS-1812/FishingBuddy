@@ -10,7 +10,7 @@ The application was developed as part of my Bachelor's degree in Computer Engine
 
 A short demonstration of FishingBuddy and its main features:
 
-[▶️ Watch the FishingBuddy Demo](screenshots/demo-video.mp4)
+[▶️ Watch the FishingBuddy Demo](https://youtu.be/LxKEducJU-o)
 
 ## Features
 
