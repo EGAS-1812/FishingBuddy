@@ -6,6 +6,12 @@ Users can explore fish species, fishing techniques, baits and locations, keep tr
 
 The application was developed as part of my Bachelor's degree in Computer Engineering at the Zagreb University of Applied Sciences (TVZ).
 
+## 🎬 Demo
+
+A short demonstration of FishingBuddy and its main features:
+
+[▶️ Watch the FishingBuddy Demo](screenshots/demo-video.mp4)
+
 ## Features
 
 - Search for fish species and receive fishing recommendations
